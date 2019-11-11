@@ -1,48 +1,49 @@
 const { ApolloServer, gql } = require('apollo-server');
+const { Query } = require('./resolvers/Query');
 const { prisma } = require('./generated/prisma-client');
 
+// A schema is a collection of type definitions (hence "typeDefs")
+// that together define the "shape" of queries that are executed against
+// your data.
 const typeDefs = gql`
 type Query {
   users: [User!]!
 }
 
-type Mutation {
-}
-
 type User {
-  id: ID! @id
-  uuid: String! # research default uuid value here
+  id: ID!
+  uuid: String!
   name: String!
   profile: [ProfileField!]!
-  sent_requests: [Connection!]! @relation(name: "SendingConnection")
-  received_requests: [Connection!]! @relation(name: "ReceivingConnection")
+  sent_requests: [Connection!]!
+  received_requests: [Connection!]!
   manualContacts: [ManualContact!]!
   conferences: [Conference!]!
 }
 
 type Conference {
-  id: ID! @unique @id
+  id: ID!
   title: String
-  start_date: DateTime!
-  end_date: DateTime!
+  start_date: String!
+  end_date: String!
   location: Coordinate
   attendees: [User!]!
 }
 
 type Coordinate {
-  id: ID! @unique @id
+  id: ID!
   latitude: Float!
   longitude: Float!
 }
 
 type ManualContact {
-  id: ID! @unique @id
+  id: ID!
   name: String
   profile: [ProfileField!]!
 }
 
 type ProfileField {
-  id: ID! @unique @id
+  id: ID!
   user: User
   manualContacts: [ManualContact!]!
   value: String
@@ -51,9 +52,9 @@ type ProfileField {
 }
 
 type Connection {
-  id: ID! @unique @id
-  sender: User @relation(name: "SendingConnection")
-  recipient: User @relation(name: "ReceivingConnection")
+  id: ID!
+  sender: User
+  recipient: User
   status: ConnectionStatus
 }
 
@@ -74,12 +75,6 @@ enum Info {
   BIO
 }
 
-# enum Gender {
-#   MALE
-#   FEMALE
-#   NONBINARY
-# }
-
 enum Privacy {
   PUBLIC
   PRIVATE
@@ -89,7 +84,7 @@ enum Privacy {
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
-const resolvers = { Query, Mutation };
+const resolvers = { Query };
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
