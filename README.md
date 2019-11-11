@@ -15,18 +15,26 @@ To get the server running locally:
 🚫 adjust these scripts to match your project
 
 - Clone this repo
-- **yarn install** to install all required dependencies
-- **yarn server** to start the local server
-- **yarn test** to start server using testing environment
+- **npm install** to install all required dependencies
+- **npm run server** to start the local server
+- **npm run test** to start server using testing environment
 
-### Backend framework goes here
+### Backend Frameworks & Libraries
 
-🚫 Why did you choose this framework?
+*GraphQL*
+- Declarative data fetching
+- Zero-config caching (speed)
+- Seamlessly handles local & remote data
+- Vibrant ecosystem and extensibility
 
--    Point One
--    Point Two
--    Point Three
--    Point Four
+*Prisma*
+- Type-safe database access thanks to the custom and auto-generated Prisma client.
+- Simple and powerful API for working with relational data and transactions.
+- Visual data management with Prisma Admin.
+- Prisma unifies access to multiple databases at once (coming soon) and therefore drastically reduces complexity in cross-database workflows.
+- Realtime streaming & event system for your database ensuring you're getting updates for all important events happening in your database.
+- Automatic database migrations (optional) based on a declarative datamodel expressed using GraphQL's schema definition language (SDL).
+- Other database workflows such as data import, export & more.
 
 ## 2️⃣ Endpoints
 
@@ -53,23 +61,6 @@ To get the server running locally:
 
 # Data Model
 
-🚫This is just an example. Replace this with your data model
-
-#### 2️⃣ ORGANIZATIONS
-
----
-
-```
-{
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
-}
-```
-
 #### USERS
 
 ---
@@ -77,16 +68,28 @@ To get the server running locally:
 ```
 {
   id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
+  uuid: String
+  name: String
+  profile: [ProfileField]
+  sent_requests: [Connection]
+  received_requests: [Connection]
+  manualContacts: [ManualContact]
+  conferences: [Conference]
+}
+```
+
+#### CONFERENCES
+
+---
+
+```
+{
+  id: UUID
+  title: String
+  start_date: String
+  end_date: String
+  location: Coordinate
+  attendees: [User]
 }
 ```
 
@@ -103,9 +106,7 @@ To get the server running locally:
 `updateOrg(orgId)` -> Update an organization by ID
 
 `deleteOrg(orgId)` -> Delete an organization by ID
-<br>
-<br>
-<br>
+
 `getUsers(orgId)` -> if no param all users
 
 `getUser(userId)` -> Returns a single user by user ID
@@ -168,5 +169,5 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
+See [Frontend Documentation](https://github.com/Lambda-School-Labs/conference-contacts-fe) for details on the fronend of our project.
+See [iOS Documentation](https://github.com/Lambda-School-Labs/conference-contacts-ios) for details on the iOS side of our project.
