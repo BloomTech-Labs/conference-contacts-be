@@ -1,7 +1,10 @@
 const Query = {
-  users(parent, args, context, info) {
-    return context.prisma.users();
+  users(parent, args, { prisma }, info) {
+    return prisma.users();
+  },
+  user(parent, { email }, { prisma }, info) {
+    return prisma.user({ email });
   }
 };
 
-module.exports = { Query };
+module.exports = Query;
