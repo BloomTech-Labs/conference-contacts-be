@@ -328,13 +328,7 @@ export type Info =
 
 export type ConnectionStatus = "PENDING" | "CONNECTED" | "BLOCKED";
 
-export type UserOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "uuid_ASC"
-  | "uuid_DESC"
-  | "name_ASC"
-  | "name_DESC";
+export type UserOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
 
 export type ProfileFieldOrderByInput =
   | "id_ASC"
@@ -561,7 +555,6 @@ export interface ConnectionUpdateManyDataInput {
 
 export interface UserCreateWithoutSent_requestsInput {
   id?: Maybe<ID_Input>;
-  uuid: String;
   name: String;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   received_requests?: Maybe<ConnectionCreateManyWithoutRecipientInput>;
@@ -660,7 +653,6 @@ export interface CoordinateUpdateOneInput {
 }
 
 export interface UserUpdateInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
@@ -725,7 +717,6 @@ export type CoordinateWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface UserUpdateWithoutConferencesDataInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
@@ -794,7 +785,6 @@ export interface ProfileFieldUpdateWithoutUserDataInput {
 }
 
 export interface UserUpdateManyDataInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
 }
 
@@ -963,7 +953,6 @@ export interface UserUpsertWithoutProfileInput {
 
 export interface UserCreateWithoutConferencesInput {
   id?: Maybe<ID_Input>;
-  uuid: String;
   name: String;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionCreateManyWithoutSenderInput>;
@@ -986,20 +975,6 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  uuid?: Maybe<String>;
-  uuid_not?: Maybe<String>;
-  uuid_in?: Maybe<String[] | String>;
-  uuid_not_in?: Maybe<String[] | String>;
-  uuid_lt?: Maybe<String>;
-  uuid_lte?: Maybe<String>;
-  uuid_gt?: Maybe<String>;
-  uuid_gte?: Maybe<String>;
-  uuid_contains?: Maybe<String>;
-  uuid_not_contains?: Maybe<String>;
-  uuid_starts_with?: Maybe<String>;
-  uuid_not_starts_with?: Maybe<String>;
-  uuid_ends_with?: Maybe<String>;
-  uuid_not_ends_with?: Maybe<String>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -1108,7 +1083,6 @@ export interface ProfileFieldUpdateManyDataInput {
 
 export interface UserCreateWithoutReceived_requestsInput {
   id?: Maybe<ID_Input>;
-  uuid: String;
   name: String;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionCreateManyWithoutSenderInput>;
@@ -1165,7 +1139,6 @@ export interface ConnectionUpdateWithoutSenderDataInput {
 
 export interface UserCreateWithoutProfileInput {
   id?: Maybe<ID_Input>;
-  uuid: String;
   name: String;
   sent_requests?: Maybe<ConnectionCreateManyWithoutSenderInput>;
   received_requests?: Maybe<ConnectionCreateManyWithoutRecipientInput>;
@@ -1189,7 +1162,6 @@ export interface ConnectionCreateWithoutRecipientInput {
 }
 
 export interface UserUpdateWithoutReceived_requestsDataInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
@@ -1244,7 +1216,6 @@ export interface ManualContactUpdateManyInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
 }
 
@@ -1338,20 +1309,6 @@ export interface UserScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  uuid?: Maybe<String>;
-  uuid_not?: Maybe<String>;
-  uuid_in?: Maybe<String[] | String>;
-  uuid_not_in?: Maybe<String[] | String>;
-  uuid_lt?: Maybe<String>;
-  uuid_lte?: Maybe<String>;
-  uuid_gt?: Maybe<String>;
-  uuid_gte?: Maybe<String>;
-  uuid_contains?: Maybe<String>;
-  uuid_not_contains?: Maybe<String>;
-  uuid_starts_with?: Maybe<String>;
-  uuid_not_starts_with?: Maybe<String>;
-  uuid_ends_with?: Maybe<String>;
-  uuid_not_ends_with?: Maybe<String>;
   name?: Maybe<String>;
   name_not?: Maybe<String>;
   name_in?: Maybe<String[] | String>;
@@ -1386,7 +1343,6 @@ export interface UserUpsertWithoutReceived_requestsInput {
 }
 
 export interface UserUpdateWithoutProfileDataInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
   sent_requests?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
   received_requests?: Maybe<ConnectionUpdateManyWithoutRecipientInput>;
@@ -1471,7 +1427,6 @@ export interface UserCreateOneWithoutProfileInput {
 }
 
 export interface UserUpdateWithoutSent_requestsDataInput {
-  uuid?: Maybe<String>;
   name?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   received_requests?: Maybe<ConnectionUpdateManyWithoutRecipientInput>;
@@ -1516,7 +1471,6 @@ export interface ConferenceUpdateManyWithoutAttendeesInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  uuid: String;
   name: String;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   sent_requests?: Maybe<ConnectionCreateManyWithoutSenderInput>;
@@ -1733,7 +1687,6 @@ export interface NodeNode {
 
 export interface UserPreviousValues {
   id: ID_Output;
-  uuid: String;
   name: String;
 }
 
@@ -1741,7 +1694,6 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  uuid: () => Promise<String>;
   name: () => Promise<String>;
 }
 
@@ -1749,7 +1701,6 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  uuid: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1811,13 +1762,11 @@ export interface AggregateConferenceSubscription
 
 export interface User {
   id: ID_Output;
-  uuid: String;
   name: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  uuid: () => Promise<String>;
   name: () => Promise<String>;
   profile: <T = FragmentableArray<ProfileField>>(args?: {
     where?: ProfileFieldWhereInput;
@@ -1870,7 +1819,6 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  uuid: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
     where?: ProfileFieldWhereInput;
@@ -1927,7 +1875,6 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  uuid: () => Promise<String>;
   name: () => Promise<String>;
   profile: <T = FragmentableArray<ProfileField>>(args?: {
     where?: ProfileFieldWhereInput;

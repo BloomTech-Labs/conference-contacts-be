@@ -3,5 +3,11 @@ const Mutation = require('./Mutation');
 
 module.exports = {
   Query,
-  Mutation
+  Mutation,
+  MutationResponse: {
+    __resolveType(mutationResponse, context, info) {
+      console.log('mutation', mutationResponse)
+      return null;
+    }
+  }
 };
