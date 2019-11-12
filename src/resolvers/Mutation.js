@@ -3,7 +3,7 @@ const Mutation = {
   createUser(parent, args, { prisma }, info) {
     return prisma.createUser(args);
   },
-  updateUser(parent, { id, ...changes }, { prisma }, info) {
+  updateUser(parent, { data: { id, ...changes } }, { prisma }, info) {
     return prisma.updateUser({
       data: changes,
       where: { id }

@@ -6,8 +6,8 @@ const Query = {
   },
 
   // User
-  user(parent, { email }, { prisma }, info) {
-    return prisma.user({ email });
+  user(parent, { id }, { prisma }, info) {
+    return prisma.user({ id });
   },
 
   // Manual Contact
