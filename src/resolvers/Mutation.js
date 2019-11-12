@@ -1,15 +1,40 @@
+const mutationSuccess = (code, message, fields) => ({
+  code,
+  message,
+  success: true,
+  ...fields
+});
+
+const mutationError = error => ({
+  code: '500',
+  success: false,
+  message: `Something went wrong; ${error}`
+});
+
 const Mutation = {
-  createUser(parent, args, { prisma }, info) {
-    return prisma.createUser(args);
+  async createUser(parent, { data }, { prisma }, info) {
+    try {
+      const user = await prisma.createUser(data);
+      return mutationSuccess(201, 'Welcome!', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   },
-  updateUser(parent, { data: { id, ...changes } }, { prisma }, info) {
-    return prisma.updateUser({
-      data: changes,
-      where: { id }
-    });
+  async updateUser(parent, { id, data }, { prisma }, info) {
+    try {
+      const user = await prisma.updateUser({ data, where: { id } });
+      return mutationSuccess(200, 'Update successful!', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   },
-  deleteUser(parent, { id }, { prisma }, info) {
-    return prisma.deleteUser({ id });
+  async deleteUser(parent, { id }, { prisma }, info) {
+    try {
+      const user = await prisma.deleteUser({ id });
+      return mutationSuccess(204, 'User deleted successfully.', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   }
 };
 
