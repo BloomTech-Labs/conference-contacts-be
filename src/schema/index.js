@@ -8,6 +8,9 @@ const typeDefs = gql`
     conference(id: ID!): Conference
   }
 
+
+
+
   type Mutation {
     createUser(data: UserCreateInput!): User!
     updateUser(data: UserUpdateInput!): User!
@@ -32,6 +35,8 @@ const typeDefs = gql`
     received_requests: [Connection!]!
     manualContacts: [ManualContact!]!
     conferences: [Conference!]!
+    email: String!
+    password: String
   }
 
   type Conference {
@@ -93,6 +98,7 @@ const typeDefs = gql`
     PRIVATE
     CONNECTED
   }
-`;
+`
+;
 
 module.exports = typeDefs;
