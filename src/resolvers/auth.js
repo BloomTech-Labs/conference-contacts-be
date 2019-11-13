@@ -51,4 +51,49 @@ module.exports = {
         token
       };
     },
-  }}
+    async register(
+      _,
+      {
+        registerInput: { username, email, password }
+      }
+    ) {
+      // Validate user data
+      const { valid, errors } = validateRegisterInput(
+        username,
+        email,
+        password,
+      );
+      if (!valid) {
+        throw new UserInputError('Errors', { errors });
+      }
+      // TODO: Make sure user doesnt already exist
+      const user = await User.findOne({ username });
+      if (user) {
+        throw new UserInputError('Username is taken', {
+          errors: {
+            username: 'This username is taken'
+          }
+        });
+      }
+      // hash password and create an auth token
+      password = await bcrypt.hash(password, 12);
+
+      const newUser = new User({
+        email,
+        username,
+        password,
+        createdAt: new Date().toISOString()
+      });
+
+      const res = await newUser.save();
+
+      const token = generateToken(res);
+
+      return {
+        ...res._doc,
+        id: res._id,
+        token
+      };
+    }
+  }
+};
