@@ -9,35 +9,15 @@ var models = [
     embedded: false
   },
   {
-    name: "Conference",
-    embedded: false
-  },
-  {
-    name: "Coordinate",
-    embedded: false
-  },
-  {
-    name: "ManualContact",
-    embedded: false
-  },
-  {
     name: "ProfileField",
     embedded: false
   },
   {
-    name: "Connection",
+    name: "ProfileFieldType",
     embedded: false
   },
   {
-    name: "ConnectionStatus",
-    embedded: false
-  },
-  {
-    name: "Info",
-    embedded: false
-  },
-  {
-    name: "Privacy",
+    name: "ProfileFieldPrivacy",
     embedded: false
   }
 ];

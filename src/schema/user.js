@@ -4,42 +4,18 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    profile: [ProfileField!]!
-    sent_requests: [Connection!]!
-    received_requests: [Connection!]!
-    manualContacts: [ManualContact!]!
-    conferences: [Conference!]!
-  }
-
-  type ManualContact {
-    id: ID!
-    name: String
-    profile: [ProfileField!]!
+    profile: [ProfileField]!
   }
 
   type ProfileField {
     id: ID!
-    user: User
-    manualContacts: [ManualContact!]!
-    value: String
-    type: Info
-    privacy: Privacy
+    userId: String!
+    value: String!
+    type: ProfileFieldType!
+    privacy: ProfileFieldPrivacy!
   }
 
-  type Connection {
-    id: ID!
-    sender: User
-    recipient: User
-    status: ConnectionStatus
-  }
-
-  enum ConnectionStatus {
-    PENDING
-    CONNECTED
-    BLOCKED
-  }
-
-  enum Info {
+  enum ProfileFieldType {
     EMAIL
     PHONE
     SOCIAL
@@ -50,7 +26,7 @@ const typeDefs = gql`
     BIO
   }
 
-  enum Privacy {
+  enum ProfileFieldPrivacy {
     PUBLIC
     PRIVATE
     CONNECTED

@@ -1,57 +1,18 @@
 type User {
   id: ID! @id
   name: String!
-  profile: [ProfileField!]!
-  sent_requests: [Connection!]! @relation(name: "SendingConnection")
-  received_requests: [Connection!]! @relation(name: "ReceivingConnection")
-  manualContacts: [ManualContact!]!
-  conferences: [Conference!]!
-}
-
-type Conference {
-  id: ID! @id
-  title: String
-  start_date: DateTime!
-  end_date: DateTime!
-  location: Coordinate
-  attendees: [User!]!
-}
-
-type Coordinate {
-  id: ID! @id
-  latitude: Float!
-  longitude: Float!
-}
-
-type ManualContact {
-  id: ID! @id
-  name: String
-  profile: [ProfileField!]!
+  profile: [ProfileField]!
 }
 
 type ProfileField {
   id: ID! @id
-  user: User
-  manualContacts: [ManualContact!]!
-  value: String
-  type: Info
-  privacy: Privacy
+  userId: String!
+  value: String!
+  type: ProfileFieldType!
+  privacy: ProfileFieldPrivacy!
 }
 
-type Connection {
-  id: ID! @id
-  sender: User @relation(name: "SendingConnection")
-  recipient: User @relation(name: "ReceivingConnection")
-  status: ConnectionStatus
-}
-
-enum ConnectionStatus {
-  PENDING
-  CONNECTED
-  BLOCKED
-}
-
-enum Info {
+enum ProfileFieldType {
   EMAIL
   PHONE
   SOCIAL
@@ -62,7 +23,7 @@ enum Info {
   BIO
 }
 
-enum Privacy {
+enum ProfileFieldPrivacy {
   PUBLIC
   PRIVATE
   CONNECTED

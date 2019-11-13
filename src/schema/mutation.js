@@ -5,6 +5,8 @@ const typeDefs = gql`
     createUser(data: CreateUserInput!): UserMutationResponse!
     updateUser(id: ID!, data: UpdateUserInput!): UserMutationResponse
     deleteUser(id: ID!): UserMutationResponse
+    createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
+    deleteProfileField(id: ID!): ProfileMutationResponse
   }
 
   input CreateUserInput {
@@ -12,7 +14,14 @@ const typeDefs = gql`
   }
 
   input UpdateUserInput {
-    name: String
+    name: String!
+  }
+
+  input CreateProfileFieldInput {
+    value: String!
+    userId: String!
+    type: ProfileFieldType!
+    privacy: ProfileFieldPrivacy!
   }
 
   interface MutationResponse {
@@ -35,6 +44,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     user: User!
+  }
+
+  type ProfileMutationResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    profileField: ProfileField!
   }
 `;
 
