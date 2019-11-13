@@ -17,13 +17,13 @@ services:
             user: gddvrypsomjjxh
             password: 43d231b94fec1baa5b211d1c89309552434c91146a7aa66cafc86c71170698a8
             ssl: true
-    postgres-db:
-    image: postgres:10.3
-    restart: always
-    environment:
-      POSTGRES_USER: prisma
-      POSTGRES_PASSWORD: prisma
-    volumes:
-      - postgres:/var/lib/postgresql/data
-volumes:
-  postgres: ~
+#     postgres-db:
+#     image: postgres:10.3
+#     restart: always
+#     environment:
+#       POSTGRES_USER: prisma
+#       POSTGRES_PASSWORD: prisma
+#     volumes:
+#       - postgres:/var/lib/postgresql/data
+# volumes:
+#   postgres: ~

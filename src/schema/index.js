@@ -4,6 +4,8 @@ const typeDefs = gql`
   type Query {
     users: [User]!
     user(id: ID!): User
+    Profile: [ProfileField]!
+    ManualContacts: [ManualContact]!
     conferences: [Conference]!
     conference(id: ID!): Conference
   }
@@ -12,10 +14,24 @@ const typeDefs = gql`
     createUser(data: UserCreateInput!): User!
     updateUser(data: UserUpdateInput!): User!
     deleteUser(id: ID!): User
+
+    createProfileField(data: ProfileFieldInput!, id: ID!): ProfileField
   }
 
   input UserCreateInput {
     name: String!
+  }
+
+  input ProfileFieldInput {
+    id: ID!
+    name: String
+    email: String
+    phone: String
+    social: String
+    age: Int
+    industry: String
+    jobTitle: String
+    bio: String
   }
 
   input UserUpdateInput {

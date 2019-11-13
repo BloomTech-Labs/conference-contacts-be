@@ -10,50 +10,50 @@ const Query = {
     return prisma.user({ id });
   },
 
-  // Manual Contact
-  ManualContact(parent, args, { prisma }, info){
-    return prisma.ManualContact();
-  },
-
   // Profile Field
-  ProfileField(parent, args, { prisma }, info){
-    return prisma.ProfileField();
+  Profile(parent, args, { prisma }, info){
+    return prisma.Profile(args);
   },
 
-  // Connection
-  UsersConnection(parent, { id }, { prisma }, info){
-    return prisma.UsersConnection({ id });
+  // Manual Contact
+  ManualContacts(parent, args, { prisma }, info){
+    return prisma.ManualContacts();
   },
 
-  // Conferences
-  conferences(parent, { id }, { prisma }, info){
-    return prisma.conferences({ id });
-  },
+  // // Connection
+  // UsersConnection(parent, { id }, { prisma }, info){
+  //   return prisma.UsersConnection({ id });
+  // },
 
-  // Conference
-  conference(parent, { id }, { prisma }, info){
-    return prisma.conference({ id });
-  },
+  // // Conferences
+  // conferences(parent, { id }, { prisma }, info){
+  //   return prisma.conferences({ id });
+  // },
 
-  // Coordinate
-  Coordinate(parent, args, { prisma }, info){
-    return primsa.Coordinate();
-  },
+  // // Conference
+  // conference(parent, { id }, { prisma }, info){
+  //   return prisma.conference({ id });
+  // },
 
-  // Connection Status
-  ConnectionStatus(parent, args, { prisma }, info){
-    return prisma.ConnectionStatus()
-  },
+  // // Coordinate
+  // Coordinate(parent, args, { prisma }, info){
+  //   return primsa.Coordinate();
+  // },
 
-  // Info
-  Info(parent, args, { prisma }, info){
-    return prisma.Info()
-  },
+  // // Connection Status
+  // ConnectionStatus(parent, args, { prisma }, info){
+  //   return prisma.ConnectionStatus()
+  // },
 
-  // Privacy 
-  Privacy(parent, args, { prisma }, info){
-    return prisma.Privacy()
-  }
+  // // Info
+  // Info(parent, args, { prisma }, info){
+  //   return prisma.Info()
+  // },
+
+  // // Privacy 
+  // Privacy(parent, args, { prisma }, info){
+  //   return prisma.Privacy()
+  // }
 };
 
 module.exports = Query;
