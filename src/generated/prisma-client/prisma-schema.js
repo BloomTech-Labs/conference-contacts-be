@@ -1208,7 +1208,6 @@ type Subscription {
 
 type User {
   id: ID!
-  uuid: String!
   name: String!
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
   sent_requests(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
@@ -1225,7 +1224,6 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  uuid: String!
   name: String!
   profile: ProfileFieldCreateManyWithoutUserInput
   sent_requests: ConnectionCreateManyWithoutSenderInput
@@ -1256,7 +1254,6 @@ input UserCreateOneWithoutSent_requestsInput {
 
 input UserCreateWithoutConferencesInput {
   id: ID
-  uuid: String!
   name: String!
   profile: ProfileFieldCreateManyWithoutUserInput
   sent_requests: ConnectionCreateManyWithoutSenderInput
@@ -1266,7 +1263,6 @@ input UserCreateWithoutConferencesInput {
 
 input UserCreateWithoutProfileInput {
   id: ID
-  uuid: String!
   name: String!
   sent_requests: ConnectionCreateManyWithoutSenderInput
   received_requests: ConnectionCreateManyWithoutRecipientInput
@@ -1276,7 +1272,6 @@ input UserCreateWithoutProfileInput {
 
 input UserCreateWithoutReceived_requestsInput {
   id: ID
-  uuid: String!
   name: String!
   profile: ProfileFieldCreateManyWithoutUserInput
   sent_requests: ConnectionCreateManyWithoutSenderInput
@@ -1286,7 +1281,6 @@ input UserCreateWithoutReceived_requestsInput {
 
 input UserCreateWithoutSent_requestsInput {
   id: ID
-  uuid: String!
   name: String!
   profile: ProfileFieldCreateManyWithoutUserInput
   received_requests: ConnectionCreateManyWithoutRecipientInput
@@ -1302,15 +1296,12 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  uuid_ASC
-  uuid_DESC
   name_ASC
   name_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  uuid: String!
   name: String!
 }
 
@@ -1329,20 +1320,6 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  uuid: String
-  uuid_not: String
-  uuid_in: [String!]
-  uuid_not_in: [String!]
-  uuid_lt: String
-  uuid_lte: String
-  uuid_gt: String
-  uuid_gte: String
-  uuid_contains: String
-  uuid_not_contains: String
-  uuid_starts_with: String
-  uuid_not_starts_with: String
-  uuid_ends_with: String
-  uuid_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]
@@ -1381,7 +1358,6 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  uuid: String
   name: String
   profile: ProfileFieldUpdateManyWithoutUserInput
   sent_requests: ConnectionUpdateManyWithoutSenderInput
@@ -1391,12 +1367,10 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyDataInput {
-  uuid: String
   name: String
 }
 
 input UserUpdateManyMutationInput {
-  uuid: String
   name: String
 }
 
@@ -1445,7 +1419,6 @@ input UserUpdateOneWithoutSent_requestsInput {
 }
 
 input UserUpdateWithoutConferencesDataInput {
-  uuid: String
   name: String
   profile: ProfileFieldUpdateManyWithoutUserInput
   sent_requests: ConnectionUpdateManyWithoutSenderInput
@@ -1454,7 +1427,6 @@ input UserUpdateWithoutConferencesDataInput {
 }
 
 input UserUpdateWithoutProfileDataInput {
-  uuid: String
   name: String
   sent_requests: ConnectionUpdateManyWithoutSenderInput
   received_requests: ConnectionUpdateManyWithoutRecipientInput
@@ -1463,7 +1435,6 @@ input UserUpdateWithoutProfileDataInput {
 }
 
 input UserUpdateWithoutReceived_requestsDataInput {
-  uuid: String
   name: String
   profile: ProfileFieldUpdateManyWithoutUserInput
   sent_requests: ConnectionUpdateManyWithoutSenderInput
@@ -1472,7 +1443,6 @@ input UserUpdateWithoutReceived_requestsDataInput {
 }
 
 input UserUpdateWithoutSent_requestsDataInput {
-  uuid: String
   name: String
   profile: ProfileFieldUpdateManyWithoutUserInput
   received_requests: ConnectionUpdateManyWithoutRecipientInput
@@ -1521,20 +1491,6 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  uuid: String
-  uuid_not: String
-  uuid_in: [String!]
-  uuid_not_in: [String!]
-  uuid_lt: String
-  uuid_lte: String
-  uuid_gt: String
-  uuid_gte: String
-  uuid_contains: String
-  uuid_not_contains: String
-  uuid_starts_with: String
-  uuid_not_starts_with: String
-  uuid_ends_with: String
-  uuid_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]

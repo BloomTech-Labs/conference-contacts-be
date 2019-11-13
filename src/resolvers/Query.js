@@ -11,8 +11,8 @@ const Query = {
   },
 
   // Profile Field
-  Profile(parent, args, { prisma }, info){
-    return prisma.Profile(args);
+  Profile(parent, { id, data } , { prisma }, info){
+    return prisma.ProfileField({ id, data });
   },
 
   // Manual Contact

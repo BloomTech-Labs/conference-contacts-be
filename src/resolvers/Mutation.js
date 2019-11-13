@@ -1,21 +1,50 @@
+const mutationSuccess = (code, message, fields) => ({
+  code,
+  message,
+  success: true,
+  ...fields
+});
+
+const mutationError = error => ({
+  code: '500',
+  success: false,
+  message: `Something went wrong; ${error}`
+});
+
 const Mutation = {
-  // Mutation User
-  createUser(parent, args, { prisma }, info) {
-    return prisma.createUser(args);
+  async createUser(parent, { data }, { prisma }, info) {
+    try {
+      const user = await prisma.createUser(data);
+      return mutationSuccess(201, 'Welcome!', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   },
-  updateUser(parent, { data: { id, ...changes } }, { prisma }, info) {
-    return prisma.updateUser({
-      data: changes,
-      where: { id }
-    });
+  async updateUser(parent, { id, data }, { prisma }, info) {
+    try {
+      const user = await prisma.updateUser({ data, where: { id } });
+      return mutationSuccess(200, 'Update successful!', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   },
-  deleteUser(parent, { id }, { prisma }, info) {
-    return prisma.deleteUser({ id });
+  async deleteUser(parent, { id }, { prisma }, info) {
+    try {
+      const user = await prisma.deleteUser({ id });
+      return mutationSuccess(204, 'User deleted successfully.', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
   },
 
   // Mutation Profile Field
-  createProfileField(parent, { type, value }, { prisma }, info){
-    return prisma.createProfileField({ type, value })
+  async createProfileField(parent, { user: id, data }, { prisma }, info){
+    try {
+      const profileField = await prisma.createProfileField({ user: id, data })
+      return mutationSuccess(200, 'Created profile field successfully!', { profileField } )
+    } catch (error) {
+      return mutationError(error);
+    }
   },
   // updateProfileField(parent, { data: { id, ...changes } }, { prisma }, info){
   //   return prisma.updateProfileField({
@@ -82,6 +111,14 @@ const Mutation = {
   // deleteCoordinate(parent, { id }, { prisma }, info){
   //   return this.deleteCoordinate({ id })
   // },
+  async deleteUser(parent, { id }, { prisma }, info) {
+    try {
+      const user = await prisma.deleteUser({ id });
+      return mutationSuccess(204, 'User deleted successfully.', { user });
+    } catch (error) {
+      return mutationError(error);
+    }
+  }
 };
 
 module.exports = Mutation;

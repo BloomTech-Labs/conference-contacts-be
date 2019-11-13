@@ -1,6 +1,5 @@
 type User {
   id: ID! @id
-  uuid: String! # research default uuid value here
   name: String!
   profile: [ProfileField!]!
   sent_requests: [Connection!]! @relation(name: "SendingConnection")
@@ -62,12 +61,6 @@ enum Info {
   JOBTITLE
   BIO
 }
-
-# enum Gender {
-#   MALE
-#   FEMALE
-#   NONBINARY
-# }
 
 enum Privacy {
   PUBLIC
