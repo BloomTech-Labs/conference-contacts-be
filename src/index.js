@@ -1,13 +1,13 @@
 const { ApolloServer } = require('apollo-server');
-
+const mongoose = require('mongoose');
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = require('./resolvers');
-
+const { MONGODB } = require('../config');
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
-const typeDefs = require('./schema');
+const typeDefs = require('./schema/index');
 
 // Prisma allows us to interact with our database
 const { prisma } = require('./generated/prisma-client');
@@ -19,7 +19,13 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({ req,prisma })
 });
+// mongoose
+//   .connect(MONGODB, { useNewUrlParser: true })
+//   .then(() => {
+//     console.log('MongoDB Connected');
+//     return server.listen({ port: 4001 });
 
+//   })
 // The `listen` method launches a web server.
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);

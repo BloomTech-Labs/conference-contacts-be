@@ -5,8 +5,7 @@ const typeDefs = gql`
     users: [User]!
     user(id: ID!): User
     conferences: [Conference]!
-    conference(id: ID!): Conference
-   
+    conference(id: ID!): Conference!
   }
 
   input RegisterInput {
