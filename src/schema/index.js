@@ -6,8 +6,9 @@ const typeDefs = gql`
     user(id: ID!): User
     conferences: [Conference]!
     conference(id: ID!): Conference!
-  }
 
+  }
+  
   input RegisterInput {
     username: String!
     password: String!

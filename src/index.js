@@ -19,13 +19,13 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({ req,prisma })
 });
-// mongoose
-//   .connect(MONGODB, { useNewUrlParser: true })
-//   .then(() => {
-//     console.log('MongoDB Connected');
-//     return server.listen({ port: 4001 });
+mongoose
+  .connect(MONGODB, { useNewUrlParser: true })
+  .then(() => {
+    console.log('MongoDB Connected');
+    return server.listen({ port: 4001 });
 
-//   })
+  })
 // The `listen` method launches a web server.
 server.listen().then(({ url }) => {
   console.log(`🚀  Server ready at ${url}`);

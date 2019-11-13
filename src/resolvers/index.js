@@ -1,7 +1,9 @@
-const Query = require('./Query');
+// const postsResolvers = require('./posts');
 const authResolvers = require('./auth');
 module.exports = {
-  Query,
+  // Query:{
+  //   ...postsResolvers.Query
+  // },
   Mutation: {
     ...authResolvers.Mutation
   }
