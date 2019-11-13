@@ -6,19 +6,34 @@ const typeDefs = gql`
     user(id: ID!): User
     conferences: [Conference]!
     conference(id: ID!): Conference
+   
+  }
+
+  input RegisterInput {
+    username: String!
+    password: String!
+    email: String!
+  }
+  type Auth {
+    id: ID!
+    email: String!
+    token: String!
+    username: String!
+    createdAt: String!
   }
 
 
-
-
   type Mutation {
+    register(registerInput: RegisterInput): Auth!
+    login(username: String!, password: String!): Auth!
     createUser(data: UserCreateInput!): User!
     updateUser(data: UserUpdateInput!): User!
     deleteUser(id: ID!): User
   }
 
   input UserCreateInput {
-    name: String!
+    email: String!
+    password: String!
   }
 
   input UserUpdateInput {

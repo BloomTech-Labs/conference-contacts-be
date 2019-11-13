@@ -17,7 +17,7 @@ const { prisma } = require('./generated/prisma-client');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => ({ prisma })
+  context: ({ req }) => ({ req,prisma })
 });
 
 // The `listen` method launches a web server.
