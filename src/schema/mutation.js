@@ -7,6 +7,8 @@ const typeDefs = gql`
     deleteUser(id: ID!): UserMutationResponse
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
     deleteProfileField(id: ID!): ProfileMutationResponse
+    registerUser(data: RegisterUserInput!): UserMutationResponse
+    loginUser(data: LoginUserInput!):  UserMutationResponse
   }
 
   input CreateUserInput {
@@ -22,6 +24,16 @@ const typeDefs = gql`
     userId: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
+  }
+
+  input RegisterUserInput {
+    email: String!
+    password: String!
+  }
+
+  input LoginUserInput {
+    email: String!
+    password: String!
   }
 
   interface MutationResponse {
