@@ -8,9 +8,9 @@ const client = jwksClient({
   jwksUri: `https://dev-1lez5gah.auth0.com/.well-known/jwks.json`
 });
 
-function getKey(header, cb){
-  client.getSigningKey(header.kid, function(err, key) {
-    var signingKey = key.publicKey || key.rsaPublicKey;
+function getKey(header, cb) {
+  client.getSigningKey(header.kid, function (err, key) {
+    let signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
 }
@@ -38,20 +38,19 @@ const { prisma } = require('./generated/prisma-client');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, prisma }) => {
+  context: ({ req }) => {
     const token = req.headers.authorization;
+    if (!token) return {prisma};
     const user = new Promise((resolve, reject) => {
       jwt.verify(token, getKey, options, (err, decoded) => {
-        if(!err){
-          return resolve(decoded.email) 
+        if (err) {
+          return reject(err)
         }
-        reject(err) 
+        resolve(decoded.email)
       })
     });
 
-    return {
-      user
-    }
+    return {user, prisma}
   }
 });
 

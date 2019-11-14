@@ -7,6 +7,11 @@ const typeDefs = gql`
     profile: [ProfileField]!
   }
 
+  type Auth {
+    email: String!
+    password: String!
+  }
+
   type ProfileField {
     id: ID!
     userId: String!
