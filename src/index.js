@@ -10,7 +10,7 @@ const client = jwksClient({
 
 function getKey(header, cb){
   client.getSigningKey(header.kid, function(err, key) {
-    let signingKey = key.publicKey || key.rsaPublicKey;
+    var signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
 }
@@ -38,7 +38,7 @@ const { prisma } = require('./generated/prisma-client');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req, prisma }) => {
+  context: ({ req }) => {
     prisma
     const token = req.headers.authorization;
     const user = new Promise((resolve, reject) => {
