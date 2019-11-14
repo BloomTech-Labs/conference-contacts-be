@@ -38,15 +38,14 @@ const { prisma } = require('./generated/prisma-client');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    prisma
+  context: ({ req, prisma }) => {
     const token = req.headers.authorization;
     const user = new Promise((resolve, reject) => {
       jwt.verify(token, getKey, options, (err, decoded) => {
-        if(err){
-          return reject(err)
+        if(!err){
+          return resolve(decoded.email) 
         }
-        resolve(decoded.email) 
+        reject(err) 
       })
     });
 
