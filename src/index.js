@@ -1,4 +1,25 @@
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer, gql, AuthenticationError } = require('apollo-server');
+
+// Auth0 Config
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
+
+const client = jwksClient({
+  jwksUri: `https://dev-1lez5gah.auth0.com/.well-known/jwks.json`
+});
+
+function getKey(header, cb){
+  client.getSigningKey(header.kid, function(err, key) {
+    let signingKey = key.publicKey || key.rsaPublicKey;
+    cb(null, signingKey);
+  });
+}
+
+const options = {
+  audience: '4fdSpYCb8sYy7diMO0fnsr5jEt501OZg',
+  issuer: `https://dev-1lez5gah.auth0.com/`,
+  algorithms: ['RS256']
+};
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
@@ -17,7 +38,22 @@ const { prisma } = require('./generated/prisma-client');
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => ({ prisma })
+  context: ({ req, prisma }) => {
+    prisma
+    const token = req.headers.authorization;
+    const user = new Promise((resolve, reject) => {
+      jwt.verify(token, getKey, options, (err, decoded) => {
+        if(err){
+          return reject(err)
+        }
+        resolve(decoded.email) 
+      })
+    });
+
+    return {
+      user
+    }
+  }
 });
 
 // The `listen` method launches a web server.
