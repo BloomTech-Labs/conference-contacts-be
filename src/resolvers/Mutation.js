@@ -12,10 +12,25 @@ const mutationError = error => ({
 });
 
 const Mutation = {
+  async registerUser(parent, { data }, { prisma }, info) {
+    try {
+      const registerUser = await prisma.registerUser(data);
+      return mutationSuccess(201, 'Welcome!', { registerUser });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async loginUser(parent, { data }, { prisma }, info) {
+    try {
+      const loginUser = await prisma.loginUser(data);
+      return mutationSuccess(201, 'Welcome!', { loginUser });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
   async createUser(parent, { data }, { prisma }, info) {
     try {
       const user = await prisma.createUser(data);
-      const email = await createUser;
       return mutationSuccess(201, 'Welcome!', { user });
     } catch (error) {
       return mutationError(error);
