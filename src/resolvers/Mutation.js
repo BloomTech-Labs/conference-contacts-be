@@ -35,6 +35,26 @@ const Mutation = {
     } catch (error) {
       return mutationError(error);
     }
+  },
+  async createProfileField(parent, { data }, { prisma }, info) {
+    try {
+      const profileField = await prisma.createProfileField(data);
+      return mutationSuccess(201, 'Profile fields created successfully!', {
+        profileField
+      });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async deleteProfileField(parent, { id }, { prisma }, info) {
+    try {
+      const profileField = await prisma.deleteProfileField({ id });
+      return mutationSuccess(204, 'User deleted successfully.', {
+        profileField
+      });
+    } catch (error) {
+      return mutationError(error);
+    }
   }
 };
 
