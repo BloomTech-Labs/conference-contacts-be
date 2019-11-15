@@ -5,7 +5,7 @@ const gql = require("graphql-tag");
 const EasyGraphQLTester = require("../lib");
 
 const userSchema = fs.readFileSync(
-  path.join(__dirname, "schema", "user.gql"),
+  path.join(__dirname, "schema", "query.js"),
   "utf8"
 );
 const familySchema = fs.readFileSync(
