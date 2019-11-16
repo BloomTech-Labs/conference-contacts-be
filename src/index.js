@@ -9,14 +9,14 @@ const client = jwksClient({
 });
 
 function getKey(header, cb) {
-  client.getSigningKey(header.kid, function (err, key) {
+  client.getSigningKey(header.kid, function(err, key) {
     let signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
 }
 
 const options = {
-  audience: '4fdSpYCb8sYy7diMO0fnsr5jEt501OZg',
+  audience: 'https://api.swaap.co/',
   issuer: `https://dev-1lez5gah.auth0.com/`,
   algorithms: ['RS256']
 };
@@ -40,17 +40,23 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     const token = req.headers.authorization;
-    if (!token) return {prisma};
+    if (!token) return { prisma };
+
     const user = new Promise((resolve, reject) => {
-      jwt.verify(token, getKey, options, (err, decoded) => {
-        if (err) {
-          return reject(err)
+      // decode the token
+      jwt.verify(token, getKey, options, async (err, decoded) => {
+        if (err) return reject(err);
+        try {
+          let [user] = await prisma.users({ where: { authId: decoded.sub } });
+          if (!user) user = await prisma.createUser({ authId: decoded.sub });
+          resolve(user);
+        } catch (error) {
+          throw new AuthenticationError(error);
         }
-        resolve(decoded.email)
-      })
+      });
     });
 
-    return {user, prisma}
+    return { user, prisma };
   }
 });
 
