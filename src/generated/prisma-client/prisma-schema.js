@@ -51,7 +51,7 @@ type PageInfo {
 
 type ProfileField {
   id: ID!
-  userId: String!
+  authId: String!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
@@ -65,7 +65,7 @@ type ProfileFieldConnection {
 
 input ProfileFieldCreateInput {
   id: ID
-  userId: String!
+  authId: String!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
@@ -84,8 +84,8 @@ type ProfileFieldEdge {
 enum ProfileFieldOrderByInput {
   id_ASC
   id_DESC
-  userId_ASC
-  userId_DESC
+  authId_ASC
+  authId_DESC
   value_ASC
   value_DESC
   type_ASC
@@ -96,7 +96,7 @@ enum ProfileFieldOrderByInput {
 
 type ProfileFieldPreviousValues {
   id: ID!
-  userId: String!
+  authId: String!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
@@ -123,20 +123,20 @@ input ProfileFieldScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  userId: String
-  userId_not: String
-  userId_in: [String!]
-  userId_not_in: [String!]
-  userId_lt: String
-  userId_lte: String
-  userId_gt: String
-  userId_gte: String
-  userId_contains: String
-  userId_not_contains: String
-  userId_starts_with: String
-  userId_not_starts_with: String
-  userId_ends_with: String
-  userId_not_ends_with: String
+  authId: String
+  authId_not: String
+  authId_in: [String!]
+  authId_not_in: [String!]
+  authId_lt: String
+  authId_lte: String
+  authId_gt: String
+  authId_gte: String
+  authId_contains: String
+  authId_not_contains: String
+  authId_starts_with: String
+  authId_not_starts_with: String
+  authId_ends_with: String
+  authId_not_ends_with: String
   value: String
   value_not: String
   value_in: [String!]
@@ -194,21 +194,21 @@ enum ProfileFieldType {
 }
 
 input ProfileFieldUpdateDataInput {
-  userId: String
+  authId: String
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
 }
 
 input ProfileFieldUpdateInput {
-  userId: String
+  authId: String
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
 }
 
 input ProfileFieldUpdateManyDataInput {
-  userId: String
+  authId: String
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
@@ -227,7 +227,7 @@ input ProfileFieldUpdateManyInput {
 }
 
 input ProfileFieldUpdateManyMutationInput {
-  userId: String
+  authId: String
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
@@ -264,20 +264,20 @@ input ProfileFieldWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  userId: String
-  userId_not: String
-  userId_in: [String!]
-  userId_not_in: [String!]
-  userId_lt: String
-  userId_lte: String
-  userId_gt: String
-  userId_gte: String
-  userId_contains: String
-  userId_not_contains: String
-  userId_starts_with: String
-  userId_not_starts_with: String
-  userId_ends_with: String
-  userId_not_ends_with: String
+  authId: String
+  authId_not: String
+  authId_in: [String!]
+  authId_not_in: [String!]
+  authId_lt: String
+  authId_lte: String
+  authId_gt: String
+  authId_gte: String
+  authId_contains: String
+  authId_not_contains: String
+  authId_starts_with: String
+  authId_not_starts_with: String
+  authId_ends_with: String
+  authId_not_ends_with: String
   value: String
   value_not: String
   value_in: [String!]
@@ -326,7 +326,7 @@ type Subscription {
 
 type User {
   id: ID!
-  name: String!
+  authId: String!
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
 }
 
@@ -338,7 +338,7 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  name: String!
+  authId: String!
   profile: ProfileFieldCreateManyInput
 }
 
@@ -350,13 +350,13 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  name_ASC
-  name_DESC
+  authId_ASC
+  authId_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  authId: String!
 }
 
 type UserSubscriptionPayload {
@@ -378,12 +378,12 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  name: String
+  authId: String
   profile: ProfileFieldUpdateManyInput
 }
 
 input UserUpdateManyMutationInput {
-  name: String
+  authId: String
 }
 
 input UserWhereInput {
@@ -401,20 +401,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  authId: String
+  authId_not: String
+  authId_in: [String!]
+  authId_not_in: [String!]
+  authId_lt: String
+  authId_lte: String
+  authId_gt: String
+  authId_gte: String
+  authId_contains: String
+  authId_not_contains: String
+  authId_starts_with: String
+  authId_not_starts_with: String
+  authId_ends_with: String
+  authId_not_ends_with: String
   profile_every: ProfileFieldWhereInput
   profile_some: ProfileFieldWhereInput
   profile_none: ProfileFieldWhereInput

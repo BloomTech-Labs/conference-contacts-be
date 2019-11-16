@@ -1,6 +1,6 @@
 const User = {
   profile(parent, args, { prisma }, info) {
-    return prisma.profileFields({ where: { userId: parent.id } });
+    return prisma.profileFields({ where: { authId: parent.id } });
   }
 };
 

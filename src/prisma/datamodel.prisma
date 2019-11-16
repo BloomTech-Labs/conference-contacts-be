@@ -1,12 +1,12 @@
 type User {
   id: ID! @id
-  name: String!
+  authId: String!
   profile: [ProfileField]!
 }
 
 type ProfileField {
   id: ID! @id
-  userId: String!
+  authId: String!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
