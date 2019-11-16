@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "server": "nodemon src/index.js",
-	  "test": "jest"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -21,7 +21,11 @@
   "homepage": "https://github.com/Lambda-School-Labs/conference-contacts-be#readme",
   "dependencies": {
     "apollo-server": "^2.9.7",
+    "chai": "^4.2.0",
+    "easygraphql-tester": "^5.1.6",
+    "fs": "0.0.1-security",
     "graphql": "^14.5.8",
+    "path": "^0.12.7",
     "prisma-client-lib": "^1.34.10"
   },
   "devDependencies": {
