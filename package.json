@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "server": "nodemon src/index.js",
-    "deploy": "prisma deploy -p src/prisma/prisma-production.yml",
-    "deploy:dev": "prisma deploy -p src/prisma/prisma-staging.yml",
+    "deploy": "cd src/prisma && prisma deploy",
     "dd": "docker-compose -f src/prisma/docker-compose.yml down",
     "du": "docker-compose -f src/prisma/docker-compose.yml up -d"
   },
@@ -24,6 +23,7 @@
   "homepage": "https://github.com/Lambda-School-Labs/conference-contacts-be#readme",
   "dependencies": {
     "apollo-server": "^2.9.7",
+    "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.6.0",
