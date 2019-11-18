@@ -31,33 +31,40 @@ const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
 
 // Prisma allows us to interact with our database
-const { prisma } = require('./generated/prisma-client');
+const { prisma } = require(
+  process.env.NODE_ENV === 'production'
+    ? './generated/prisma-client'
+    : './generated/prisma-client-staging'
+);
+
+// Fetch existing user or create a new one if none exist
+async function getUser(token) {
+  return new Promise((resolve, reject) => {
+    if (!token || token === '') resolve(null);
+    jwt.verify(token, getKey, options, async (err, decoded) => {
+      if (err) reject(err);
+      try {
+        resolve(
+          (await prisma.$exists.user({ authId: decoded.sub }))
+            ? await prisma.users({ where: { authId: decoded.sub } })[0]
+            : await prisma.createUser({ authId: decoded.sub })
+        );
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => {
-    const token = req.headers.authorization;
-    if (!token) return { prisma };
-
-    const user = new Promise((resolve, reject) => {
-      // decode the token
-      jwt.verify(token, getKey, options, async (err, decoded) => {
-        if (err) return reject(err);
-        try {
-          let [user] = await prisma.users({ where: { authId: decoded.sub } });
-          if (!user) user = await prisma.createUser({ authId: decoded.sub });
-          resolve(user);
-        } catch (error) {
-          throw new AuthenticationError(error);
-        }
-      });
-    });
-
-    return { user, prisma };
-  }
+  context: ({ req }) => ({
+    user: getUser(req.headers.authorization),
+    prisma
+  })
 });
 
 // The `listen` method launches a web server.
