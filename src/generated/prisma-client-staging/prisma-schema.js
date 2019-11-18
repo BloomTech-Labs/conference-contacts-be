@@ -51,7 +51,7 @@ type PageInfo {
 
 type ProfileField {
   id: ID!
-  userId: String!
+  user: User!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
@@ -65,15 +65,22 @@ type ProfileFieldConnection {
 
 input ProfileFieldCreateInput {
   id: ID
-  userId: String!
+  user: UserCreateOneWithoutProfileInput!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
 }
 
-input ProfileFieldCreateManyInput {
-  create: [ProfileFieldCreateInput!]
+input ProfileFieldCreateManyWithoutUserInput {
+  create: [ProfileFieldCreateWithoutUserInput!]
   connect: [ProfileFieldWhereUniqueInput!]
+}
+
+input ProfileFieldCreateWithoutUserInput {
+  id: ID
+  value: String!
+  type: ProfileFieldType!
+  privacy: ProfileFieldPrivacy!
 }
 
 type ProfileFieldEdge {
@@ -84,8 +91,6 @@ type ProfileFieldEdge {
 enum ProfileFieldOrderByInput {
   id_ASC
   id_DESC
-  userId_ASC
-  userId_DESC
   value_ASC
   value_DESC
   type_ASC
@@ -96,7 +101,6 @@ enum ProfileFieldOrderByInput {
 
 type ProfileFieldPreviousValues {
   id: ID!
-  userId: String!
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
@@ -123,20 +127,6 @@ input ProfileFieldScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  userId: String
-  userId_not: String
-  userId_in: [String!]
-  userId_not_in: [String!]
-  userId_lt: String
-  userId_lte: String
-  userId_gt: String
-  userId_gte: String
-  userId_contains: String
-  userId_not_contains: String
-  userId_starts_with: String
-  userId_not_starts_with: String
-  userId_ends_with: String
-  userId_not_ends_with: String
   value: String
   value_not: String
   value_in: [String!]
@@ -193,44 +183,35 @@ enum ProfileFieldType {
   BIO
 }
 
-input ProfileFieldUpdateDataInput {
-  userId: String
-  value: String
-  type: ProfileFieldType
-  privacy: ProfileFieldPrivacy
-}
-
 input ProfileFieldUpdateInput {
-  userId: String
+  user: UserUpdateOneRequiredWithoutProfileInput
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
 }
 
 input ProfileFieldUpdateManyDataInput {
-  userId: String
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
 }
 
-input ProfileFieldUpdateManyInput {
-  create: [ProfileFieldCreateInput!]
-  update: [ProfileFieldUpdateWithWhereUniqueNestedInput!]
-  upsert: [ProfileFieldUpsertWithWhereUniqueNestedInput!]
+input ProfileFieldUpdateManyMutationInput {
+  value: String
+  type: ProfileFieldType
+  privacy: ProfileFieldPrivacy
+}
+
+input ProfileFieldUpdateManyWithoutUserInput {
+  create: [ProfileFieldCreateWithoutUserInput!]
   delete: [ProfileFieldWhereUniqueInput!]
   connect: [ProfileFieldWhereUniqueInput!]
   set: [ProfileFieldWhereUniqueInput!]
   disconnect: [ProfileFieldWhereUniqueInput!]
+  update: [ProfileFieldUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [ProfileFieldUpsertWithWhereUniqueWithoutUserInput!]
   deleteMany: [ProfileFieldScalarWhereInput!]
   updateMany: [ProfileFieldUpdateManyWithWhereNestedInput!]
-}
-
-input ProfileFieldUpdateManyMutationInput {
-  userId: String
-  value: String
-  type: ProfileFieldType
-  privacy: ProfileFieldPrivacy
 }
 
 input ProfileFieldUpdateManyWithWhereNestedInput {
@@ -238,15 +219,21 @@ input ProfileFieldUpdateManyWithWhereNestedInput {
   data: ProfileFieldUpdateManyDataInput!
 }
 
-input ProfileFieldUpdateWithWhereUniqueNestedInput {
-  where: ProfileFieldWhereUniqueInput!
-  data: ProfileFieldUpdateDataInput!
+input ProfileFieldUpdateWithoutUserDataInput {
+  value: String
+  type: ProfileFieldType
+  privacy: ProfileFieldPrivacy
 }
 
-input ProfileFieldUpsertWithWhereUniqueNestedInput {
+input ProfileFieldUpdateWithWhereUniqueWithoutUserInput {
   where: ProfileFieldWhereUniqueInput!
-  update: ProfileFieldUpdateDataInput!
-  create: ProfileFieldCreateInput!
+  data: ProfileFieldUpdateWithoutUserDataInput!
+}
+
+input ProfileFieldUpsertWithWhereUniqueWithoutUserInput {
+  where: ProfileFieldWhereUniqueInput!
+  update: ProfileFieldUpdateWithoutUserDataInput!
+  create: ProfileFieldCreateWithoutUserInput!
 }
 
 input ProfileFieldWhereInput {
@@ -264,20 +251,7 @@ input ProfileFieldWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  userId: String
-  userId_not: String
-  userId_in: [String!]
-  userId_not_in: [String!]
-  userId_lt: String
-  userId_lte: String
-  userId_gt: String
-  userId_gte: String
-  userId_contains: String
-  userId_not_contains: String
-  userId_starts_with: String
-  userId_not_starts_with: String
-  userId_ends_with: String
-  userId_not_ends_with: String
+  user: UserWhereInput
   value: String
   value_not: String
   value_in: [String!]
@@ -326,7 +300,9 @@ type Subscription {
 
 type User {
   id: ID!
-  name: String!
+  authId: String!
+  name: String
+  picture: String
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
 }
 
@@ -338,8 +314,22 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  name: String!
-  profile: ProfileFieldCreateManyInput
+  authId: String!
+  name: String
+  picture: String
+  profile: ProfileFieldCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutProfileInput {
+  create: UserCreateWithoutProfileInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutProfileInput {
+  id: ID
+  authId: String!
+  name: String
+  picture: String
 }
 
 type UserEdge {
@@ -350,13 +340,19 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  authId_ASC
+  authId_DESC
   name_ASC
   name_DESC
+  picture_ASC
+  picture_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  authId: String!
+  name: String
+  picture: String
 }
 
 type UserSubscriptionPayload {
@@ -378,12 +374,34 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  authId: String
   name: String
-  profile: ProfileFieldUpdateManyInput
+  picture: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
+  authId: String
   name: String
+  picture: String
+}
+
+input UserUpdateOneRequiredWithoutProfileInput {
+  create: UserCreateWithoutProfileInput
+  update: UserUpdateWithoutProfileDataInput
+  upsert: UserUpsertWithoutProfileInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutProfileDataInput {
+  authId: String
+  name: String
+  picture: String
+}
+
+input UserUpsertWithoutProfileInput {
+  update: UserUpdateWithoutProfileDataInput!
+  create: UserCreateWithoutProfileInput!
 }
 
 input UserWhereInput {
@@ -401,6 +419,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  authId: String
+  authId_not: String
+  authId_in: [String!]
+  authId_not_in: [String!]
+  authId_lt: String
+  authId_lte: String
+  authId_gt: String
+  authId_gte: String
+  authId_contains: String
+  authId_not_contains: String
+  authId_starts_with: String
+  authId_not_starts_with: String
+  authId_ends_with: String
+  authId_not_ends_with: String
   name: String
   name_not: String
   name_in: [String!]
@@ -415,6 +447,20 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   profile_every: ProfileFieldWhereInput
   profile_some: ProfileFieldWhereInput
   profile_none: ProfileFieldWhereInput
@@ -425,6 +471,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  authId: String
 }
 `
       }

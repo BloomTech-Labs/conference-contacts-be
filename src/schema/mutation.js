@@ -10,16 +10,19 @@ const typeDefs = gql`
   }
 
   input CreateUserInput {
+    authId: String!
     name: String!
+    picture: String
   }
 
   input UpdateUserInput {
-    name: String!
+    name: String
+    picture: String
   }
 
   input CreateProfileFieldInput {
     value: String!
-    userId: String!
+    authId: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
   }

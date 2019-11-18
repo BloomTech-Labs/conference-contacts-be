@@ -3,13 +3,15 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type User {
     id: ID!
-    name: String!
+    authId: String!
+    name: String
+    picture: String
     profile: [ProfileField]!
   }
 
   type ProfileField {
     id: ID!
-    userId: String!
+    user: User!
     value: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
