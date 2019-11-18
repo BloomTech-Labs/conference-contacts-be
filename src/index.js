@@ -35,11 +35,7 @@ const resolvers = require('./resolvers');
 const typeDefs = require('./schema');
 
 // Prisma allows us to interact with our database
-const { prisma } = require(
-  process.env.NODE_ENV === 'production'
-    ? './generated/prisma-client'
-    : './generated/prisma-client-staging'
-);
+const { prisma } = require('./prisma/generated/prisma-client');
 
 // Fetch existing user or create a new one if none exist
 async function getUser(token) {
@@ -50,7 +46,7 @@ async function getUser(token) {
       try {
         resolve(
           (await prisma.$exists.user({ authId: decoded.sub }))
-            ? await prisma.users({ where: { authId: decoded.sub } })[0]
+            ? await prisma.user({ where: { authId: decoded.sub } })
             : await prisma.createUser({ authId: decoded.sub })
         );
       } catch (error) {
@@ -59,8 +55,6 @@ async function getUser(token) {
     });
   });
 }
-
-console.log(process.env.ENGINE_API_KEY)
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.

@@ -12,14 +12,6 @@ const mutationError = error => ({
 });
 
 const Mutation = {
-  async createUser(parent, { data }, { prisma }, info) {
-    try {
-      const user = await prisma.createUser(data);
-      return mutationSuccess(201, 'Welcome!', { user });
-    } catch (error) {
-      return mutationError(error);
-    }
-  },
   async updateUser(parent, { id, data }, { prisma }, info) {
     try {
       const user = await prisma.updateUser({ data, where: { id } });
@@ -38,7 +30,11 @@ const Mutation = {
   },
   async createProfileField(parent, { data }, { prisma }, info) {
     try {
-      const profileField = await prisma.createProfileField(data);
+      const { value, type, privacy, authId } = data;
+      const profileField = await prisma.createProfileField({
+        value, type, privacy,
+        user: { connect: { authId } }
+      });
       return mutationSuccess(201, 'Profile fields created successfully!', {
         profileField
       });
