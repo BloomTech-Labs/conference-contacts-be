@@ -1,18 +1,13 @@
 # Specifies the HTTP endpoint of your Prisma API
-endpoint: http://localhost:4469
+endpoint: ${env:PRISMA_ENDPOINT}
 
 # Defines your models, each model is mapped to the database as a table
-datamodel: datamodel-staging.prisma
+datamodel: ${env:PRISMA_DATAMODEL}
 
 # Specifies the language and directory for the generated Prisma client
 generate:
   - generator: javascript-client
-    output: ../generated/prisma-client-staging/
-
-# Generate the correct prisma models for staging environment
-hooks:
-  post-deploy:
-    - prisma generate -p prisma-staging
+    output: ${env:PRISMA_OUTPUT}
 
 # Seed your service with initial data based on `seed.graphql`
 seed:

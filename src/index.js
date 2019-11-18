@@ -1,4 +1,8 @@
-const { ApolloServer, gql, AuthenticationError } = require('apollo-server');
+// Load environment variables
+require('dotenv').config();
+
+// Apollo Server
+const { ApolloServer } = require('apollo-server');
 
 // Auth0 Config
 const jwt = require('jsonwebtoken');
@@ -55,6 +59,8 @@ async function getUser(token) {
     });
   });
 }
+
+console.log(process.env.ENGINE_API_KEY)
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.

@@ -4,12 +4,14 @@ const typeDefs = gql`
   type User {
     id: ID!
     authId: String!
+    name: String
+    picture: String
     profile: [ProfileField]!
   }
 
   type ProfileField {
     id: ID!
-    authId: String!
+    user: User!
     value: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!

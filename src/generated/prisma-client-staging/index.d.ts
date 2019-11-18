@@ -172,7 +172,11 @@ export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "authId_ASC"
-  | "authId_DESC";
+  | "authId_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "picture_ASC"
+  | "picture_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -222,6 +226,34 @@ export interface UserWhereInput {
   authId_not_starts_with?: Maybe<String>;
   authId_ends_with?: Maybe<String>;
   authId_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  picture?: Maybe<String>;
+  picture_not?: Maybe<String>;
+  picture_in?: Maybe<String[] | String>;
+  picture_not_in?: Maybe<String[] | String>;
+  picture_lt?: Maybe<String>;
+  picture_lte?: Maybe<String>;
+  picture_gt?: Maybe<String>;
+  picture_gte?: Maybe<String>;
+  picture_contains?: Maybe<String>;
+  picture_not_contains?: Maybe<String>;
+  picture_starts_with?: Maybe<String>;
+  picture_not_starts_with?: Maybe<String>;
+  picture_ends_with?: Maybe<String>;
+  picture_not_ends_with?: Maybe<String>;
   profile_every?: Maybe<ProfileFieldWhereInput>;
   profile_some?: Maybe<ProfileFieldWhereInput>;
   profile_none?: Maybe<ProfileFieldWhereInput>;
@@ -272,6 +304,8 @@ export interface ProfileFieldSubscriptionWhereInput {
 export interface UserCreateWithoutProfileInput {
   id?: Maybe<ID_Input>;
   authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
 }
 
 export interface ProfileFieldUpdateManyDataInput {
@@ -329,6 +363,8 @@ export interface ProfileFieldUpsertWithWhereUniqueWithoutUserInput {
 
 export interface UserUpdateWithoutProfileDataInput {
   authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
 }
 
 export interface ProfileFieldUpdateWithWhereUniqueWithoutUserInput {
@@ -355,6 +391,8 @@ export interface UserSubscriptionWhereInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
 }
 
@@ -367,6 +405,8 @@ export interface ProfileFieldCreateWithoutUserInput {
 
 export interface UserUpdateInput {
   authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
 }
 
@@ -415,6 +455,8 @@ export interface ProfileFieldWhereInput {
 
 export interface UserUpdateManyMutationInput {
   authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
 }
 
 export interface ProfileFieldUpdateWithoutUserDataInput {
@@ -493,6 +535,8 @@ export interface BatchPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   authId: String;
+  name?: String;
+  picture?: String;
 }
 
 export interface UserPreviousValuesPromise
@@ -500,6 +544,8 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -507,6 +553,8 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   authId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregateProfileField {
@@ -703,11 +751,15 @@ export interface UserSubscriptionPayloadSubscription
 export interface User {
   id: ID_Output;
   authId: String;
+  name?: String;
+  picture?: String;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
   profile: <T = FragmentableArray<ProfileField>>(args?: {
     where?: ProfileFieldWhereInput;
     orderBy?: ProfileFieldOrderByInput;
@@ -724,6 +776,8 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   authId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
   profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
     where?: ProfileFieldWhereInput;
     orderBy?: ProfileFieldOrderByInput;
@@ -740,6 +794,8 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
   profile: <T = FragmentableArray<ProfileField>>(args?: {
     where?: ProfileFieldWhereInput;
     orderBy?: ProfileFieldOrderByInput;

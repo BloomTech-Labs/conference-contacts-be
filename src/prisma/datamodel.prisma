@@ -1,6 +1,8 @@
 type User {
   id: ID! @id
   authId: String! @unique
+  name: String
+  picture: String
   profile: [ProfileField]!
 }
 

@@ -301,6 +301,8 @@ type Subscription {
 type User {
   id: ID!
   authId: String!
+  name: String
+  picture: String
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
 }
 
@@ -313,6 +315,8 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   authId: String!
+  name: String
+  picture: String
   profile: ProfileFieldCreateManyWithoutUserInput
 }
 
@@ -324,6 +328,8 @@ input UserCreateOneWithoutProfileInput {
 input UserCreateWithoutProfileInput {
   id: ID
   authId: String!
+  name: String
+  picture: String
 }
 
 type UserEdge {
@@ -336,11 +342,17 @@ enum UserOrderByInput {
   id_DESC
   authId_ASC
   authId_DESC
+  name_ASC
+  name_DESC
+  picture_ASC
+  picture_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   authId: String!
+  name: String
+  picture: String
 }
 
 type UserSubscriptionPayload {
@@ -363,11 +375,15 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   authId: String
+  name: String
+  picture: String
   profile: ProfileFieldUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
   authId: String
+  name: String
+  picture: String
 }
 
 input UserUpdateOneRequiredWithoutProfileInput {
@@ -379,6 +395,8 @@ input UserUpdateOneRequiredWithoutProfileInput {
 
 input UserUpdateWithoutProfileDataInput {
   authId: String
+  name: String
+  picture: String
 }
 
 input UserUpsertWithoutProfileInput {
@@ -415,6 +433,34 @@ input UserWhereInput {
   authId_not_starts_with: String
   authId_ends_with: String
   authId_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  picture: String
+  picture_not: String
+  picture_in: [String!]
+  picture_not_in: [String!]
+  picture_lt: String
+  picture_lte: String
+  picture_gt: String
+  picture_gte: String
+  picture_contains: String
+  picture_not_contains: String
+  picture_starts_with: String
+  picture_not_starts_with: String
+  picture_ends_with: String
+  picture_not_ends_with: String
   profile_every: ProfileFieldWhereInput
   profile_some: ProfileFieldWhereInput
   profile_none: ProfileFieldWhereInput
