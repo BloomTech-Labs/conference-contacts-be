@@ -2,20 +2,13 @@ const fs = require("fs");
 const path = require("path");
 const { expect } = require("chai");
 const gql = require("graphql-tag");
-const EasyGraphQLTester = require("../lib");
+const EasyGraphQLTester = require("easygraphql-tester");
 
 const userSchema = fs.readFileSync(
-  path.join(__dirname, "schema", "query.js"),
+  path.join(__dirname, "../schema", "index.js"),
   "utf8"
 );
-const familySchema = fs.readFileSync(
-  path.join(__dirname, "schema", "family.gql"),
-  "utf8"
-);
-const customRootTypeNamesSchema = fs.readFileSync(
-  path.join(__dirname, "schema", "customRootTypeNames.gql"),
-  "utf8"
-);
+
 
 describe("Query", () => {
   let tester;
@@ -32,7 +25,7 @@ describe("Query", () => {
         }
       }
     };
-    tester = new EasyGraphQLTester([userSchema, familySchema], resolvers);
+    tester = new EasyGraphQLTester([userSchema], resolvers);
   });
 
   describe("Should throw an error if a field is missing", () => {
@@ -58,8 +51,8 @@ describe("Query", () => {
         error = err;
       }
 
-      expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.be.eq(
+      expect(error).toBe(Error);
+      expect(error.message).toBe(
         'Cannot query field "getUser" on type "Query". Did you mean "getUsers" or "getMe"?'
       );
     });
@@ -86,8 +79,8 @@ describe("Query", () => {
         error = err;
       }
 
-      expect(error).to.be.an.instanceOf(Error);
-      expect(error.message).to.be.eq(
+      expect(error).toBe(Error);
+      expect(error.message).toBe(
         'Cannot query field "invalidField" on type "Me".'
       );
-    });
+   // });

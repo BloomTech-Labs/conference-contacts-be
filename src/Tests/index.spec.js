@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server';
+import  {ApolloServer}  from 'apollo-server';
 import { createTestClient } from 'apollo-server-testing';
 
 const prepareServer = async () => {
@@ -6,9 +6,11 @@ const prepareServer = async () => {
   const schema = await Schemas.getSchemas();
   return new ApolloServer({
     schema,
-    dataSources: () => ({
+	typeDefs,
+    resolvers
+   /* dataSources: () => ({
       data: new MockDatasource(), // provides mocked data
-    }),
+    })*/
   });
 };
 
