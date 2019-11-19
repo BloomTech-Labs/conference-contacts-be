@@ -6,7 +6,18 @@ const typeDefs = gql`
     authId: String!
     name: String
     picture: String
+    birthdate: String
+    gender: GenderType
+    industry: String
+    jobtitle: String
+    bio: String
     profile: [ProfileField]!
+  }
+
+  enum GenderType {
+    MALE
+    FEMALE
+    NONBINARY
   }
 
   type ProfileField {
@@ -15,18 +26,13 @@ const typeDefs = gql`
     value: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
-    preferredContact: Boolean @default(value: false)
+    preferredContact: Boolean
   }
 
   enum ProfileFieldType {
     EMAIL
     PHONE
     SOCIAL
-    AGE
-    GENDER
-    INDUSTRY
-    JOBTITLE
-    BIO
   }
 
   enum ProfileFieldPrivacy {

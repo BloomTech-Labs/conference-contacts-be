@@ -3,7 +3,18 @@ type User {
   authId: String! @unique
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
   profile: [ProfileField]!
+}
+
+enum GenderType {
+  MALE
+  FEMALE
+  NONBINARY
 }
 
 type ProfileField {
@@ -19,11 +30,6 @@ enum ProfileFieldType {
   EMAIL
   PHONE
   SOCIAL
-  AGE
-  GENDER
-  INDUSTRY
-  JOBTITLE
-  BIO
 }
 
 enum ProfileFieldPrivacy {
