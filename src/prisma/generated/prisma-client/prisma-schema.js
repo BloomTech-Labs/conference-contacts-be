@@ -55,6 +55,7 @@ type ProfileField {
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean
 }
 
 type ProfileFieldConnection {
@@ -69,6 +70,7 @@ input ProfileFieldCreateInput {
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean
 }
 
 input ProfileFieldCreateManyWithoutUserInput {
@@ -81,6 +83,7 @@ input ProfileFieldCreateWithoutUserInput {
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean
 }
 
 type ProfileFieldEdge {
@@ -97,6 +100,8 @@ enum ProfileFieldOrderByInput {
   type_DESC
   privacy_ASC
   privacy_DESC
+  preferredContact_ASC
+  preferredContact_DESC
 }
 
 type ProfileFieldPreviousValues {
@@ -104,6 +109,7 @@ type ProfileFieldPreviousValues {
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean
 }
 
 enum ProfileFieldPrivacy {
@@ -149,6 +155,8 @@ input ProfileFieldScalarWhereInput {
   privacy_not: ProfileFieldPrivacy
   privacy_in: [ProfileFieldPrivacy!]
   privacy_not_in: [ProfileFieldPrivacy!]
+  preferredContact: Boolean
+  preferredContact_not: Boolean
   AND: [ProfileFieldScalarWhereInput!]
   OR: [ProfileFieldScalarWhereInput!]
   NOT: [ProfileFieldScalarWhereInput!]
@@ -188,18 +196,21 @@ input ProfileFieldUpdateInput {
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
+  preferredContact: Boolean
 }
 
 input ProfileFieldUpdateManyDataInput {
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
+  preferredContact: Boolean
 }
 
 input ProfileFieldUpdateManyMutationInput {
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
+  preferredContact: Boolean
 }
 
 input ProfileFieldUpdateManyWithoutUserInput {
@@ -223,6 +234,7 @@ input ProfileFieldUpdateWithoutUserDataInput {
   value: String
   type: ProfileFieldType
   privacy: ProfileFieldPrivacy
+  preferredContact: Boolean
 }
 
 input ProfileFieldUpdateWithWhereUniqueWithoutUserInput {
@@ -274,6 +286,8 @@ input ProfileFieldWhereInput {
   privacy_not: ProfileFieldPrivacy
   privacy_in: [ProfileFieldPrivacy!]
   privacy_not_in: [ProfileFieldPrivacy!]
+  preferredContact: Boolean
+  preferredContact_not: Boolean
   AND: [ProfileFieldWhereInput!]
   OR: [ProfileFieldWhereInput!]
   NOT: [ProfileFieldWhereInput!]

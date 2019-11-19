@@ -12,6 +12,7 @@ type ProfileField {
   value: String!
   type: ProfileFieldType!
   privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean @default(value: false)
 }
 
 enum ProfileFieldType {
