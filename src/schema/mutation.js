@@ -10,9 +10,10 @@ const typeDefs = gql`
   }
 
   input CreateUserInput {
-    authId: String!
-    name: String!
+    sub: String!
+    name: String
     picture: String
+    email: String
   }
 
   input UpdateUserInput {
