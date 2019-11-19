@@ -64,7 +64,11 @@ const server = new ApolloServer({
   context: ({ req }) => ({
     user: getUser(req.headers.authorization),
     prisma
-  })
+  }),
+  engine: {
+    apiKey: process.env.ENGINE_API_KEY,
+    schemaTag: process.env.ENGINE_SCHEMA_TAG
+  }
 });
 
 // The `listen` method launches a web server.
