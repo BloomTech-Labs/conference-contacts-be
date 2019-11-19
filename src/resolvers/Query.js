@@ -3,7 +3,7 @@ const Query = {
     return prisma.users();
   },
   user(parent, { id }, { prisma }, info) {
-    return prisma.user({ id });
+    return prisma.users({ id });
   }
 };
 
