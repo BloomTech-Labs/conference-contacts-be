@@ -45,11 +45,8 @@ async function getUser(token) {
       if (err) reject(err);
       try {
         const authId = decoded.sub.split('|')[1];
-        resolve(
-          (await prisma.$exists.user({ authId }))
-            ? await prisma.user({ where: { authId } })
-            : await prisma.createUser({ authId })
-        );
+        const user = await prisma.user({ authId });
+        resolve(user);
       } catch (error) {
         reject(error);
       }
