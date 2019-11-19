@@ -44,10 +44,11 @@ async function getUser(token) {
     jwt.verify(token, getKey, options, async (err, decoded) => {
       if (err) reject(err);
       try {
+        const authId = decoded.sub.split('|')[1];
         resolve(
-          (await prisma.$exists.user({ authId: decoded.sub }))
-            ? await prisma.user({ where: { authId: decoded.sub } })
-            : await prisma.createUser({ authId: decoded.sub })
+          (await prisma.$exists.user({ authId }))
+            ? await prisma.user({ where: { authId } })
+            : await prisma.createUser({ authId })
         );
       } catch (error) {
         reject(error);
