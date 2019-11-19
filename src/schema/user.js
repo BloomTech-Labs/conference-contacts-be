@@ -15,6 +15,7 @@ const typeDefs = gql`
     value: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
+    preferredContact: Boolean @default(value: false)
   }
 
   enum ProfileFieldType {
