@@ -38,7 +38,7 @@ const typeDefs = require('./schema');
 const { prisma } = require('./prisma/generated/prisma-client');
 
 // Fetch existing user or create a new one if none exist
-async function getUser(token) {
+function getUser(token) {
   return new Promise((resolve, reject) => {
     if (!token || token === '') resolve(null);
     jwt.verify(token, getKey, options, async (err, decoded) => {

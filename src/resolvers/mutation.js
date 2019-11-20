@@ -24,6 +24,7 @@ const Mutation = {
             value: email,
             type: 'EMAIL',
             privacy: 'PRIVATE',
+            preferredContact: true,
             user: { connect: { authId } }
           });
         return mutationSuccess(201, 'User creation successful!', { user });

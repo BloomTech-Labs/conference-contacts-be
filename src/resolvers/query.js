@@ -2,8 +2,9 @@ const Query = {
   users(parent, args, { prisma }, info) {
     return prisma.users();
   },
-  user(parent, { id }, { prisma }, info) {
-    return prisma.user({ id });
+  async user(parent, { id }, { prisma, user }, info) {
+    await user;
+    return prisma.user({ id: user.id });
   }
 };
 
