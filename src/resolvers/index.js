@@ -1,5 +1,6 @@
-const Query = require('./Query');
-const Mutation = require('./Mutation');
+const Query = require('./query');
+const Mutation = require('./mutation');
+const User = require('./user');
 
 module.exports = {
   Query,
@@ -8,5 +9,6 @@ module.exports = {
     __resolveType(mutationResponse, context, info) {
       return null;
     }
-  }
+  },
+  User
 };

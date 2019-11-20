@@ -2,8 +2,8 @@ const Query = {
   users(parent, args, { prisma }, info) {
     return prisma.users();
   },
-  user(parent, { id }, { prisma }, info) {
-    return prisma.users({ id });
+  user(parent, args, { prisma, user }, info) {
+    return prisma.user({ authId: user.authId });
   }
 };
 

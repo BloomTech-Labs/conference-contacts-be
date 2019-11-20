@@ -146,17 +146,11 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ProfileFieldType =
-  | "EMAIL"
-  | "PHONE"
-  | "SOCIAL"
-  | "AGE"
-  | "GENDER"
-  | "INDUSTRY"
-  | "JOBTITLE"
-  | "BIO";
+export type ProfileFieldType = "EMAIL" | "PHONE" | "SOCIAL";
 
 export type ProfileFieldPrivacy = "PUBLIC" | "PRIVATE" | "CONNECTED";
+
+export type GenderType = "MALE" | "FEMALE" | "NONBINARY";
 
 export type ProfileFieldOrderByInput =
   | "id_ASC"
@@ -178,57 +172,37 @@ export type UserOrderByInput =
   | "name_ASC"
   | "name_DESC"
   | "picture_ASC"
-  | "picture_DESC";
+  | "picture_DESC"
+  | "birthdate_ASC"
+  | "birthdate_DESC"
+  | "gender_ASC"
+  | "gender_DESC"
+  | "industry_ASC"
+  | "industry_DESC"
+  | "jobtitle_ASC"
+  | "jobtitle_DESC"
+  | "bio_ASC"
+  | "bio_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface ProfileFieldUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutProfileInput>;
+  value?: Maybe<String>;
+  type?: Maybe<ProfileFieldType>;
+  privacy?: Maybe<ProfileFieldPrivacy>;
+  preferredContact?: Maybe<Boolean>;
+}
 
 export type ProfileFieldWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface ProfileFieldWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  user?: Maybe<UserWhereInput>;
+export interface ProfileFieldUpdateManyMutationInput {
   value?: Maybe<String>;
-  value_not?: Maybe<String>;
-  value_in?: Maybe<String[] | String>;
-  value_not_in?: Maybe<String[] | String>;
-  value_lt?: Maybe<String>;
-  value_lte?: Maybe<String>;
-  value_gt?: Maybe<String>;
-  value_gte?: Maybe<String>;
-  value_contains?: Maybe<String>;
-  value_not_contains?: Maybe<String>;
-  value_starts_with?: Maybe<String>;
-  value_not_starts_with?: Maybe<String>;
-  value_ends_with?: Maybe<String>;
-  value_not_ends_with?: Maybe<String>;
   type?: Maybe<ProfileFieldType>;
-  type_not?: Maybe<ProfileFieldType>;
-  type_in?: Maybe<ProfileFieldType[] | ProfileFieldType>;
-  type_not_in?: Maybe<ProfileFieldType[] | ProfileFieldType>;
   privacy?: Maybe<ProfileFieldPrivacy>;
-  privacy_not?: Maybe<ProfileFieldPrivacy>;
-  privacy_in?: Maybe<ProfileFieldPrivacy[] | ProfileFieldPrivacy>;
-  privacy_not_in?: Maybe<ProfileFieldPrivacy[] | ProfileFieldPrivacy>;
   preferredContact?: Maybe<Boolean>;
-  preferredContact_not?: Maybe<Boolean>;
-  AND?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
-  OR?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
-  NOT?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -288,6 +262,66 @@ export interface UserWhereInput {
   picture_not_starts_with?: Maybe<String>;
   picture_ends_with?: Maybe<String>;
   picture_not_ends_with?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  birthdate_not?: Maybe<String>;
+  birthdate_in?: Maybe<String[] | String>;
+  birthdate_not_in?: Maybe<String[] | String>;
+  birthdate_lt?: Maybe<String>;
+  birthdate_lte?: Maybe<String>;
+  birthdate_gt?: Maybe<String>;
+  birthdate_gte?: Maybe<String>;
+  birthdate_contains?: Maybe<String>;
+  birthdate_not_contains?: Maybe<String>;
+  birthdate_starts_with?: Maybe<String>;
+  birthdate_not_starts_with?: Maybe<String>;
+  birthdate_ends_with?: Maybe<String>;
+  birthdate_not_ends_with?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  gender_not?: Maybe<GenderType>;
+  gender_in?: Maybe<GenderType[] | GenderType>;
+  gender_not_in?: Maybe<GenderType[] | GenderType>;
+  industry?: Maybe<String>;
+  industry_not?: Maybe<String>;
+  industry_in?: Maybe<String[] | String>;
+  industry_not_in?: Maybe<String[] | String>;
+  industry_lt?: Maybe<String>;
+  industry_lte?: Maybe<String>;
+  industry_gt?: Maybe<String>;
+  industry_gte?: Maybe<String>;
+  industry_contains?: Maybe<String>;
+  industry_not_contains?: Maybe<String>;
+  industry_starts_with?: Maybe<String>;
+  industry_not_starts_with?: Maybe<String>;
+  industry_ends_with?: Maybe<String>;
+  industry_not_ends_with?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  jobtitle_not?: Maybe<String>;
+  jobtitle_in?: Maybe<String[] | String>;
+  jobtitle_not_in?: Maybe<String[] | String>;
+  jobtitle_lt?: Maybe<String>;
+  jobtitle_lte?: Maybe<String>;
+  jobtitle_gt?: Maybe<String>;
+  jobtitle_gte?: Maybe<String>;
+  jobtitle_contains?: Maybe<String>;
+  jobtitle_not_contains?: Maybe<String>;
+  jobtitle_starts_with?: Maybe<String>;
+  jobtitle_not_starts_with?: Maybe<String>;
+  jobtitle_ends_with?: Maybe<String>;
+  jobtitle_not_ends_with?: Maybe<String>;
+  bio?: Maybe<String>;
+  bio_not?: Maybe<String>;
+  bio_in?: Maybe<String[] | String>;
+  bio_not_in?: Maybe<String[] | String>;
+  bio_lt?: Maybe<String>;
+  bio_lte?: Maybe<String>;
+  bio_gt?: Maybe<String>;
+  bio_gte?: Maybe<String>;
+  bio_contains?: Maybe<String>;
+  bio_not_contains?: Maybe<String>;
+  bio_starts_with?: Maybe<String>;
+  bio_not_starts_with?: Maybe<String>;
+  bio_ends_with?: Maybe<String>;
+  bio_not_ends_with?: Maybe<String>;
   profile_every?: Maybe<ProfileFieldWhereInput>;
   profile_some?: Maybe<ProfileFieldWhereInput>;
   profile_none?: Maybe<ProfileFieldWhereInput>;
@@ -296,11 +330,6 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  authId?: Maybe<String>;
-}>;
-
 export interface ProfileFieldCreateInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutProfileInput;
@@ -308,59 +337,6 @@ export interface ProfileFieldCreateInput {
   type: ProfileFieldType;
   privacy: ProfileFieldPrivacy;
   preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserCreateOneWithoutProfileInput {
-  create?: Maybe<UserCreateWithoutProfileInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutProfileInput {
-  id?: Maybe<ID_Input>;
-  authId: String;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-}
-
-export interface ProfileFieldUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredWithoutProfileInput>;
-  value?: Maybe<String>;
-  type?: Maybe<ProfileFieldType>;
-  privacy?: Maybe<ProfileFieldPrivacy>;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserUpdateOneRequiredWithoutProfileInput {
-  create?: Maybe<UserCreateWithoutProfileInput>;
-  update?: Maybe<UserUpdateWithoutProfileDataInput>;
-  upsert?: Maybe<UserUpsertWithoutProfileInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutProfileDataInput {
-  authId?: Maybe<String>;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-}
-
-export interface UserUpsertWithoutProfileInput {
-  update: UserUpdateWithoutProfileDataInput;
-  create: UserCreateWithoutProfileInput;
-}
-
-export interface ProfileFieldUpdateManyMutationInput {
-  value?: Maybe<String>;
-  type?: Maybe<ProfileFieldType>;
-  privacy?: Maybe<ProfileFieldPrivacy>;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  authId: String;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
 }
 
 export interface ProfileFieldCreateManyWithoutUserInput {
@@ -372,19 +348,45 @@ export interface ProfileFieldCreateManyWithoutUserInput {
   >;
 }
 
-export interface ProfileFieldCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  value: String;
-  type: ProfileFieldType;
-  privacy: ProfileFieldPrivacy;
-  preferredContact?: Maybe<Boolean>;
+export interface UserCreateOneWithoutProfileInput {
+  create?: Maybe<UserCreateWithoutProfileInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateInput {
-  authId?: Maybe<String>;
+export interface ProfileFieldSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ProfileFieldWhereInput>;
+  AND?: Maybe<
+    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
+  >;
+}
+
+export interface UserCreateWithoutProfileInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
-  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  birthdate?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  bio?: Maybe<String>;
+}
+
+export interface ProfileFieldUpdateManyDataInput {
+  value?: Maybe<String>;
+  type?: Maybe<ProfileFieldType>;
+  privacy?: Maybe<ProfileFieldPrivacy>;
+  preferredContact?: Maybe<Boolean>;
 }
 
 export interface ProfileFieldUpdateManyWithoutUserInput {
@@ -416,9 +418,143 @@ export interface ProfileFieldUpdateManyWithoutUserInput {
   >;
 }
 
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  authId?: Maybe<String>;
+}>;
+
+export interface UserUpdateOneRequiredWithoutProfileInput {
+  create?: Maybe<UserCreateWithoutProfileInput>;
+  update?: Maybe<UserUpdateWithoutProfileDataInput>;
+  upsert?: Maybe<UserUpsertWithoutProfileInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface ProfileFieldUpsertWithWhereUniqueWithoutUserInput {
+  where: ProfileFieldWhereUniqueInput;
+  update: ProfileFieldUpdateWithoutUserDataInput;
+  create: ProfileFieldCreateWithoutUserInput;
+}
+
+export interface UserUpdateWithoutProfileDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  bio?: Maybe<String>;
+}
+
 export interface ProfileFieldUpdateWithWhereUniqueWithoutUserInput {
   where: ProfileFieldWhereUniqueInput;
   data: ProfileFieldUpdateWithoutUserDataInput;
+}
+
+export interface UserUpsertWithoutProfileInput {
+  update: UserUpdateWithoutProfileDataInput;
+  create: UserCreateWithoutProfileInput;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+}
+
+export interface ProfileFieldCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  value: String;
+  type: ProfileFieldType;
+  privacy: ProfileFieldPrivacy;
+  preferredContact?: Maybe<Boolean>;
+}
+
+export interface UserUpdateInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+}
+
+export interface ProfileFieldWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  value?: Maybe<String>;
+  value_not?: Maybe<String>;
+  value_in?: Maybe<String[] | String>;
+  value_not_in?: Maybe<String[] | String>;
+  value_lt?: Maybe<String>;
+  value_lte?: Maybe<String>;
+  value_gt?: Maybe<String>;
+  value_gte?: Maybe<String>;
+  value_contains?: Maybe<String>;
+  value_not_contains?: Maybe<String>;
+  value_starts_with?: Maybe<String>;
+  value_not_starts_with?: Maybe<String>;
+  value_ends_with?: Maybe<String>;
+  value_not_ends_with?: Maybe<String>;
+  type?: Maybe<ProfileFieldType>;
+  type_not?: Maybe<ProfileFieldType>;
+  type_in?: Maybe<ProfileFieldType[] | ProfileFieldType>;
+  type_not_in?: Maybe<ProfileFieldType[] | ProfileFieldType>;
+  privacy?: Maybe<ProfileFieldPrivacy>;
+  privacy_not?: Maybe<ProfileFieldPrivacy>;
+  privacy_in?: Maybe<ProfileFieldPrivacy[] | ProfileFieldPrivacy>;
+  privacy_not_in?: Maybe<ProfileFieldPrivacy[] | ProfileFieldPrivacy>;
+  preferredContact?: Maybe<Boolean>;
+  preferredContact_not?: Maybe<Boolean>;
+  AND?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
+  OR?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
+  NOT?: Maybe<ProfileFieldWhereInput[] | ProfileFieldWhereInput>;
+}
+
+export interface UserUpdateManyMutationInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  gender?: Maybe<GenderType>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  bio?: Maybe<String>;
 }
 
 export interface ProfileFieldUpdateWithoutUserDataInput {
@@ -426,12 +562,6 @@ export interface ProfileFieldUpdateWithoutUserDataInput {
   type?: Maybe<ProfileFieldType>;
   privacy?: Maybe<ProfileFieldPrivacy>;
   preferredContact?: Maybe<Boolean>;
-}
-
-export interface ProfileFieldUpsertWithWhereUniqueWithoutUserInput {
-  where: ProfileFieldWhereUniqueInput;
-  update: ProfileFieldUpdateWithoutUserDataInput;
-  create: ProfileFieldCreateWithoutUserInput;
 }
 
 export interface ProfileFieldScalarWhereInput {
@@ -483,49 +613,124 @@ export interface ProfileFieldUpdateManyWithWhereNestedInput {
   data: ProfileFieldUpdateManyDataInput;
 }
 
-export interface ProfileFieldUpdateManyDataInput {
-  value?: Maybe<String>;
-  type?: Maybe<ProfileFieldType>;
-  privacy?: Maybe<ProfileFieldPrivacy>;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserUpdateManyMutationInput {
-  authId?: Maybe<String>;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-}
-
-export interface ProfileFieldSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ProfileFieldWhereInput>;
-  AND?: Maybe<
-    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    ProfileFieldSubscriptionWhereInput[] | ProfileFieldSubscriptionWhereInput
-  >;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  authId: String;
+  name?: String;
+  picture?: String;
+  birthdate?: String;
+  gender?: GenderType;
+  industry?: String;
+  jobtitle?: String;
+  bio?: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
+  birthdate: () => Promise<String>;
+  gender: () => Promise<GenderType>;
+  industry: () => Promise<String>;
+  jobtitle: () => Promise<String>;
+  bio: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  authId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+  birthdate: () => Promise<AsyncIterator<String>>;
+  gender: () => Promise<AsyncIterator<GenderType>>;
+  industry: () => Promise<AsyncIterator<String>>;
+  jobtitle: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateProfileField {
+  count: Int;
+}
+
+export interface AggregateProfileFieldPromise
+  extends Promise<AggregateProfileField>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateProfileFieldSubscription
+  extends Promise<AsyncIterator<AggregateProfileField>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProfileFieldSubscriptionPayload {
+  mutation: MutationType;
+  node: ProfileField;
+  updatedFields: String[];
+  previousValues: ProfileFieldPreviousValues;
+}
+
+export interface ProfileFieldSubscriptionPayloadPromise
+  extends Promise<ProfileFieldSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProfileFieldPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProfileFieldPreviousValuesPromise>() => T;
+}
+
+export interface ProfileFieldSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProfileFieldSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ProfileFieldSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProfileFieldPreviousValuesSubscription>() => T;
+}
+
+export interface ProfileFieldEdge {
+  node: ProfileField;
+  cursor: String;
+}
+
+export interface ProfileFieldEdgePromise
+  extends Promise<ProfileFieldEdge>,
+    Fragmentable {
+  node: <T = ProfileFieldPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProfileFieldEdgeSubscription
+  extends Promise<AsyncIterator<ProfileFieldEdge>>,
+    Fragmentable {
+  node: <T = ProfileFieldSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ProfileField {
@@ -567,65 +772,6 @@ export interface ProfileFieldNullablePromise
   type: () => Promise<ProfileFieldType>;
   privacy: () => Promise<ProfileFieldPrivacy>;
   preferredContact: () => Promise<Boolean>;
-}
-
-export interface User {
-  id: ID_Output;
-  authId: String;
-  name?: String;
-  picture?: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  authId: () => Promise<String>;
-  name: () => Promise<String>;
-  picture: () => Promise<String>;
-  profile: <T = FragmentableArray<ProfileField>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  authId: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  picture: () => Promise<AsyncIterator<String>>;
-  profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  authId: () => Promise<String>;
-  name: () => Promise<String>;
-  picture: () => Promise<String>;
-  profile: <T = FragmentableArray<ProfileField>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
 }
 
 export interface ProfileFieldConnection {
@@ -672,39 +818,136 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ProfileFieldEdge {
-  node: ProfileField;
-  cursor: String;
+export interface ProfileFieldPreviousValues {
+  id: ID_Output;
+  value: String;
+  type: ProfileFieldType;
+  privacy: ProfileFieldPrivacy;
+  preferredContact?: Boolean;
 }
 
-export interface ProfileFieldEdgePromise
-  extends Promise<ProfileFieldEdge>,
+export interface ProfileFieldPreviousValuesPromise
+  extends Promise<ProfileFieldPreviousValues>,
     Fragmentable {
-  node: <T = ProfileFieldPromise>() => T;
-  cursor: () => Promise<String>;
+  id: () => Promise<ID_Output>;
+  value: () => Promise<String>;
+  type: () => Promise<ProfileFieldType>;
+  privacy: () => Promise<ProfileFieldPrivacy>;
+  preferredContact: () => Promise<Boolean>;
 }
 
-export interface ProfileFieldEdgeSubscription
-  extends Promise<AsyncIterator<ProfileFieldEdge>>,
+export interface ProfileFieldPreviousValuesSubscription
+  extends Promise<AsyncIterator<ProfileFieldPreviousValues>>,
     Fragmentable {
-  node: <T = ProfileFieldSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  value: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<ProfileFieldType>>;
+  privacy: () => Promise<AsyncIterator<ProfileFieldPrivacy>>;
+  preferredContact: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface AggregateProfileField {
-  count: Int;
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
 }
 
-export interface AggregateProfileFieldPromise
-  extends Promise<AggregateProfileField>,
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
     Fragmentable {
-  count: () => Promise<Int>;
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
 }
 
-export interface AggregateProfileFieldSubscription
-  extends Promise<AsyncIterator<AggregateProfileField>>,
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  authId: String;
+  name?: String;
+  picture?: String;
+  birthdate?: String;
+  gender?: GenderType;
+  industry?: String;
+  jobtitle?: String;
+  bio?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
+  birthdate: () => Promise<String>;
+  gender: () => Promise<GenderType>;
+  industry: () => Promise<String>;
+  jobtitle: () => Promise<String>;
+  bio: () => Promise<String>;
+  profile: <T = FragmentableArray<ProfileField>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  authId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+  birthdate: () => Promise<AsyncIterator<String>>;
+  gender: () => Promise<AsyncIterator<GenderType>>;
+  industry: () => Promise<AsyncIterator<String>>;
+  jobtitle: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+  profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
+  birthdate: () => Promise<String>;
+  gender: () => Promise<GenderType>;
+  industry: () => Promise<String>;
+  jobtitle: () => Promise<String>;
+  bio: () => Promise<String>;
+  profile: <T = FragmentableArray<ProfileField>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserConnection {
@@ -761,124 +1004,12 @@ export interface AggregateUserSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface BatchPayload {
-  count: Long;
-}
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface ProfileFieldSubscriptionPayload {
-  mutation: MutationType;
-  node: ProfileField;
-  updatedFields: String[];
-  previousValues: ProfileFieldPreviousValues;
-}
-
-export interface ProfileFieldSubscriptionPayloadPromise
-  extends Promise<ProfileFieldSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ProfileFieldPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ProfileFieldPreviousValuesPromise>() => T;
-}
-
-export interface ProfileFieldSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ProfileFieldSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ProfileFieldSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ProfileFieldPreviousValuesSubscription>() => T;
-}
-
-export interface ProfileFieldPreviousValues {
-  id: ID_Output;
-  value: String;
-  type: ProfileFieldType;
-  privacy: ProfileFieldPrivacy;
-  preferredContact?: Boolean;
-}
-
-export interface ProfileFieldPreviousValuesPromise
-  extends Promise<ProfileFieldPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  value: () => Promise<String>;
-  type: () => Promise<ProfileFieldType>;
-  privacy: () => Promise<ProfileFieldPrivacy>;
-  preferredContact: () => Promise<Boolean>;
-}
-
-export interface ProfileFieldPreviousValuesSubscription
-  extends Promise<AsyncIterator<ProfileFieldPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  value: () => Promise<AsyncIterator<String>>;
-  type: () => Promise<AsyncIterator<ProfileFieldType>>;
-  privacy: () => Promise<AsyncIterator<ProfileFieldPrivacy>>;
-  preferredContact: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  authId: String;
-  name?: String;
-  picture?: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  authId: () => Promise<String>;
-  name: () => Promise<String>;
-  picture: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  authId: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  picture: () => Promise<AsyncIterator<String>>;
-}
+export type Long = string;
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -887,21 +1018,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
 
-export type Long = string;
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /**
  * Model Metadata
@@ -910,6 +1034,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "GenderType",
     embedded: false
   },
   {

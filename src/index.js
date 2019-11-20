@@ -38,18 +38,15 @@ const typeDefs = require('./schema');
 const { prisma } = require('./prisma/generated/prisma-client');
 
 // Fetch existing user or create a new one if none exist
-async function getUser(token) {
+function getUser(token) {
   return new Promise((resolve, reject) => {
     if (!token || token === '') resolve(null);
     jwt.verify(token, getKey, options, async (err, decoded) => {
       if (err) reject(err);
       try {
         const authId = decoded.sub.split('|')[1];
-        resolve(
-          (await prisma.$exists.user({ authId }))
-            ? await prisma.user({ where: { authId } })
-            : await prisma.createUser({ authId })
-        );
+        const user = await prisma.user({ authId });
+        resolve(user);
       } catch (error) {
         reject(error);
       }
@@ -62,8 +59,8 @@ async function getUser(token) {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({
-    user: getUser(req.headers.authorization),
+  context: async ({ req }) => ({
+    user: await getUser(req.headers.authorization),
     prisma
   }),
   engine: {

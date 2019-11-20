@@ -13,12 +13,23 @@ const typeDefs = gql`
     sub: String!
     name: String
     picture: String
+    birthdate: String
+    gender: GenderType
+    industry: String
+    jobtitle: String
+    bio: String
     email: String
   }
 
   input UpdateUserInput {
     name: String
     picture: String
+    birthdate: String
+    gender: GenderType
+    industry: String
+    jobtitle: String
+    bio: String
+    email: String
   }
 
   input CreateProfileFieldInput {
@@ -26,6 +37,7 @@ const typeDefs = gql`
     authId: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
+    preferredContact: Boolean
   }
 
   interface MutationResponse {

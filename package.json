@@ -6,9 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "server": "nodemon src/index.js",
-    "deploy": "cd src/prisma && prisma deploy",
-    "dd": "docker-compose -f src/prisma/docker-compose.yml down",
-    "du": "docker-compose -f src/prisma/docker-compose.yml up -d"
+    "deploy": "cd src/prisma && prisma deploy"
   },
   "repository": {
     "type": "git",
