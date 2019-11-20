@@ -59,8 +59,8 @@ function getUser(token) {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({ req }) => ({
-    user: getUser(req.headers.authorization),
+  context: async ({ req }) => ({
+    user: await getUser(req.headers.authorization),
     prisma
   }),
   engine: {
