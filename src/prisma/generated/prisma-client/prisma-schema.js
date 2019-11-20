@@ -15,6 +15,12 @@ type BatchPayload {
   count: Long!
 }
 
+enum GenderType {
+  MALE
+  FEMALE
+  NONBINARY
+}
+
 scalar Long
 
 type Mutation {
@@ -184,11 +190,6 @@ enum ProfileFieldType {
   EMAIL
   PHONE
   SOCIAL
-  AGE
-  GENDER
-  INDUSTRY
-  JOBTITLE
-  BIO
 }
 
 input ProfileFieldUpdateInput {
@@ -317,6 +318,11 @@ type User {
   authId: String!
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
 }
 
@@ -331,6 +337,11 @@ input UserCreateInput {
   authId: String!
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
   profile: ProfileFieldCreateManyWithoutUserInput
 }
 
@@ -344,6 +355,11 @@ input UserCreateWithoutProfileInput {
   authId: String!
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
 }
 
 type UserEdge {
@@ -360,6 +376,16 @@ enum UserOrderByInput {
   name_DESC
   picture_ASC
   picture_DESC
+  birthdate_ASC
+  birthdate_DESC
+  gender_ASC
+  gender_DESC
+  industry_ASC
+  industry_DESC
+  jobtitle_ASC
+  jobtitle_DESC
+  bio_ASC
+  bio_DESC
 }
 
 type UserPreviousValues {
@@ -367,6 +393,11 @@ type UserPreviousValues {
   authId: String!
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
 }
 
 type UserSubscriptionPayload {
@@ -391,6 +422,11 @@ input UserUpdateInput {
   authId: String
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
   profile: ProfileFieldUpdateManyWithoutUserInput
 }
 
@@ -398,6 +434,11 @@ input UserUpdateManyMutationInput {
   authId: String
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
 }
 
 input UserUpdateOneRequiredWithoutProfileInput {
@@ -411,6 +452,11 @@ input UserUpdateWithoutProfileDataInput {
   authId: String
   name: String
   picture: String
+  birthdate: String
+  gender: GenderType
+  industry: String
+  jobtitle: String
+  bio: String
 }
 
 input UserUpsertWithoutProfileInput {
@@ -475,6 +521,66 @@ input UserWhereInput {
   picture_not_starts_with: String
   picture_ends_with: String
   picture_not_ends_with: String
+  birthdate: String
+  birthdate_not: String
+  birthdate_in: [String!]
+  birthdate_not_in: [String!]
+  birthdate_lt: String
+  birthdate_lte: String
+  birthdate_gt: String
+  birthdate_gte: String
+  birthdate_contains: String
+  birthdate_not_contains: String
+  birthdate_starts_with: String
+  birthdate_not_starts_with: String
+  birthdate_ends_with: String
+  birthdate_not_ends_with: String
+  gender: GenderType
+  gender_not: GenderType
+  gender_in: [GenderType!]
+  gender_not_in: [GenderType!]
+  industry: String
+  industry_not: String
+  industry_in: [String!]
+  industry_not_in: [String!]
+  industry_lt: String
+  industry_lte: String
+  industry_gt: String
+  industry_gte: String
+  industry_contains: String
+  industry_not_contains: String
+  industry_starts_with: String
+  industry_not_starts_with: String
+  industry_ends_with: String
+  industry_not_ends_with: String
+  jobtitle: String
+  jobtitle_not: String
+  jobtitle_in: [String!]
+  jobtitle_not_in: [String!]
+  jobtitle_lt: String
+  jobtitle_lte: String
+  jobtitle_gt: String
+  jobtitle_gte: String
+  jobtitle_contains: String
+  jobtitle_not_contains: String
+  jobtitle_starts_with: String
+  jobtitle_not_starts_with: String
+  jobtitle_ends_with: String
+  jobtitle_not_ends_with: String
+  bio: String
+  bio_not: String
+  bio_in: [String!]
+  bio_not_in: [String!]
+  bio_lt: String
+  bio_lte: String
+  bio_gt: String
+  bio_gte: String
+  bio_contains: String
+  bio_not_contains: String
+  bio_starts_with: String
+  bio_not_starts_with: String
+  bio_ends_with: String
+  bio_not_ends_with: String
   profile_every: ProfileFieldWhereInput
   profile_some: ProfileFieldWhereInput
   profile_none: ProfileFieldWhereInput

@@ -1,4 +1,4 @@
-endpoint: https://lambda-swaap-af041a92a5.herokuapp.com/prisma-swaap/dev
+endpoint: https://lambda-swaap-d65ae6a665.herokuapp.com/swaap/dev
 datamodel: datamodel.prisma
 
 generate:
