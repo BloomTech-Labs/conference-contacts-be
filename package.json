@@ -31,9 +31,11 @@
   },
   "devDependencies": {
     "apollo-server-testing": "^2.9.8",
+    "axios": "^0.19.0",
     "graphql-tag": "^2.10.1",
     "jest": "^24.9.0",
     "nodemon": "^1.19.4",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "xmlhttprequest": "^1.8.0"
   }
 }
