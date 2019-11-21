@@ -54,15 +54,19 @@ function getUser(token) {
   });
 }
 
+async function context({ req }) {
+  return {
+    user: await getUser(req.headers.authorization),
+    prisma
+  };
+}
+
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => ({
-    user: await getUser(req.headers.authorization),
-    prisma
-  }),
+  context,
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
     schemaTag: process.env.ENGINE_SCHEMA_TAG
@@ -70,6 +74,18 @@ const server = new ApolloServer({
 });
 
 // The `listen` method launches a web server.
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+// Start our server if we're not in a test env.
+// if we're in a test env, we'll manually start it in a test
+if (process.env.NODE_ENV !== 'test')
+  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
+
+module.exports = {
+  context,
+  typeDefs,
+  resolvers,
+  ApolloServer,
+  prisma,
+  server
+};
