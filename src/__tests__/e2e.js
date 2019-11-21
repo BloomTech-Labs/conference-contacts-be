@@ -31,8 +31,8 @@ describe('Server - e2e', () => {
   it('gets user profile', async () => {
     const res = await toPromise(
       graphql({
-        query: GET_USER,
-      }),
+        query: GET_USER
+      })
     );
 
     expect(res).toMatchSnapshot();

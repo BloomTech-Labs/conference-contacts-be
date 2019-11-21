@@ -15,6 +15,7 @@ const {
 /**
  * Integration testing utils
  */
+
 const constructTestServer = ({ context = defaultContext } = {}) => {
   const server = new ApolloServer({
     typeDefs,

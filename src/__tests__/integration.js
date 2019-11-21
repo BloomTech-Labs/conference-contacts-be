@@ -47,17 +47,18 @@ const mockUserResponse = {
 describe('Queries', () => {
   it('fetches list of users', async () => {
     // create an instance of ApolloServer that mocks out context, while reusing
-    // existing dataSources, resolvers, and typeDefs.
-    // This function returns the server instance as well as our dataSource
-    // instances, so we can overwrite the underlying fetchers
+    // existing resolvers and typeDefs.
+    // This function returns the server instance as well as our prisma
+    // instance, so we can overwrite the underlying fetchers
     const { server, prisma } = constructTestServer({
       context: () => ({
         user: { name: 'Tyler Quinn', email: 'nicetry@gmail.com' }
       })
     });
-    // mock the datasources' underlying fetch methods, whether that's a REST
-    // lookup in the RESTDataSource or the store query in the Sequelize datasource
+
+    // mock prisma's underlying user lookup method
     prisma.user = jest.fn(() => mockUserResponse);
+
     // use our test server as input to the createTestClient fn
     // This will give us an interface, similar to apolloClient.query
     // to run queries against our instance of ApolloServer
