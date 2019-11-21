@@ -5,9 +5,9 @@ const url = `https://lambda-labs-swaap-staging.herokuapp.com/`;
 const request = require('supertest')(url);
 
 describe('GraphQL', () => {
-    it('Returns user with id = 10', (done) => {
+    it('Returns user with id = 1', (done) => {
         request.post('/graphql')
-        .send({ query: '{ user(id: 10) { id name username email } }'})
+        .send({ query: '{ user(id: 1) { id name username email } }'})
         .expect(200)
         .end((err,res) => {
             // res will contain array with one user
@@ -27,8 +27,8 @@ describe('GraphQL', () => {
         .end((err, res) => {
             // res will contain array of all users
             if (err) return done(err);
-            // assume there are a 100 users in the database
-            res.body.user.should.have.lengthOf(100);
+            // assume there are a 10 users in the database
+            res.body.user.should.have.lengthOf(10);
         })  
     })
 });
