@@ -8,7 +8,8 @@ const {
   context: defaultContext,
   typeDefs,
   resolvers,
-  ApolloServer
+  ApolloServer,
+  prisma
 } = require('../');
 
 /**
@@ -18,10 +19,11 @@ const constructTestServer = ({ context = defaultContext } = {}) => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context
+    context,
+    engine: false
   });
 
-  return { server };
+  return { server, prisma };
 };
 
 module.exports.constructTestServer = constructTestServer;

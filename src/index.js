@@ -58,7 +58,7 @@ async function context({ req }) {
   return {
     user: await getUser(req.headers.authorization),
     prisma
-  }
+  };
 }
 
 // The ApolloServer constructor requires two parameters: your schema
@@ -74,9 +74,12 @@ const server = new ApolloServer({
 });
 
 // The `listen` method launches a web server.
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+// Start our server if we're not in a test env.
+// if we're in a test env, we'll manually start it in a test
+if (process.env.NODE_ENV !== 'test')
+  server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => {
+    console.log(`🚀  Server ready at ${url}`);
+  });
 
 module.exports = {
   context,
@@ -84,5 +87,5 @@ module.exports = {
   resolvers,
   ApolloServer,
   prisma,
-  server,
+  server
 };
