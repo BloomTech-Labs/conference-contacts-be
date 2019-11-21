@@ -1,37 +1,34 @@
-const { createTestClient } = require('apollo-server-testing');
-const gql = require('graphql-tag');
+const chai = require('chai');
 
+const expect = chai.expect;
+const url = `https://lambda-labs-swaap-staging.herokuapp.com/`;
+const request = require('supertest')(url);
 
-const LOGIN = gql`
-  mutation login($email: String!) {
-    login(email: $email)
-  }
-`;
+describe('GraphQL', () => {
+    it('Returns user with id = 10', (done) => {
+        request.post('/graphql')
+        .send({ query: '{ user(id: 10) { id name username email } }'})
+        .expect(200)
+        .end((err,res) => {
+            // res will contain array with one user
+            if (err) return done(err);
+            res.body.user.should.have.property('id')
+            res.body.user.should.have.property('name')
+            res.body.user.should.have.property('username')
+            res.body.user.should.have.property('email')
+            done();
+        })
+    })
 
-it('fetches user info', async () => {
-  const userAPI = new UserAPI({ store });
-  //const launchAPI = new LaunchAPI();
-
-  // create a test server to test against, using our production typeDefs,
-  // resolvers, and dataSources.
-  const server = new ApolloServer({
-    typeDefs,
-    resolvers,
-   // dataSources: () => ({ userAPI, launchAPI }),
-    context: () => ({ user: { id: 1, email: 'a@a.a' } }),
-  });
-
-  // mock the dataSource's underlying fetch methods
-  //launchAPI.get = jest.fn(() => [mockLaunchResponse]);
-  userAPI.store = mockStore;
-  userAPI.store.trips.findAll.mockReturnValueOnce([
-    { dataValues: { launchId: 1 } },
-  ]);
-
-  // use the test server to create a query function
-  const { query } = createTestClient(server);
-
-  // run query against the server and snapshot the output
-  const res = await query({ query: LOGIN, variables: { id: 1 } });
-  expect(res).toMatchSnapshot();
+    it('Returns all users', (done) => {
+        request.post('/graphql')
+        .send({ query: '{ user { id name username email } }' })
+        .expect(200)
+        .end((err, res) => {
+            // res will contain array of all users
+            if (err) return done(err);
+            // assume there are a 100 users in the database
+            res.body.user.should.have.lengthOf(100);
+        })  
+    })
 });
