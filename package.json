@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/Lambda-School-Labs/conference-contacts-be#readme",
   "dependencies": {
-    "apollo-server": "^2.9.7",
+    "apollo-server": "^2.9.12",
     "dotenv": "^8.2.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
@@ -31,10 +31,10 @@
   "devDependencies": {
     "apollo-link": "^1.2.13",
     "apollo-link-http": "^1.5.16",
-    "apollo-server-testing": "^2.9.9",
+    "apollo-server-testing": "^2.9.12",
     "jest": "^24.9.0",
     "node-fetch": "^2.6.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^2.0.1"
   },
   "jest": {
     "testPathIgnorePatterns": [
