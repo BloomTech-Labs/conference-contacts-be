@@ -34,6 +34,9 @@ const typeDefs = require('./schema');
 // Prisma allows us to interact with our database
 const { prisma } = require('./prisma/generated/prisma-client');
 
+// set up the data source our resolvers need
+const dataSources = () => ({ prisma });
+
 // Fetch existing user or create a new one if none exist
 function getUser(token) {
   return new Promise((resolve, reject) => {
@@ -51,18 +54,17 @@ function getUser(token) {
   });
 }
 
-async function context({ req }) {
-  return {
-    user: await getUser(req.headers.authorization),
-    prisma
-  };
-}
+// the function that sets up the global context for each resolver, using the req
+const context = async ({ req }) => ({
+  user: await getUser(req.headers.authorization)
+});
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  dataSources,
   context,
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
@@ -79,6 +81,7 @@ if (process.env.NODE_ENV !== 'test')
   });
 
 module.exports = {
+  dataSources,
   context,
   typeDefs,
   resolvers,

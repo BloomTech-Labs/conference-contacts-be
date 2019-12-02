@@ -23,26 +23,23 @@ const GET_USER = gql`
 `;
 
 const mockUserResponse = {
-  data: {
-    user: {
-      name: 'Tyler Quinn',
-      picture: 'quinn.png',
-      birthdate: '2/5/1995',
-      gender: 'NONBINARY',
-      industry: 'Development',
-      jobtitle: 'Software Engineer',
-      bio: 'I love testing!!!!!!',
-      profile: [
-        {
-          value: 'nicetry@gmail.com',
-          type: 'EMAIL',
-          privacy: 'CONNECTED',
-          preferredContact: true
-        }
-      ]
-    }
-  }
+  name: 'Tyler Quinn',
+  picture: 'quinn.png',
+  birthdate: '2/5/1995',
+  gender: 'NONBINARY',
+  industry: 'Development',
+  jobtitle: 'Software Engineer',
+  bio: 'I love testing!!!!!!'
 };
+
+const mockProfileResponse = [
+  {
+    value: 'nicetry@gmail.com',
+    type: 'EMAIL',
+    privacy: 'CONNECTED',
+    preferredContact: true
+  }
+];
 
 describe('Queries', () => {
   it('fetches list of users', async () => {
@@ -58,6 +55,7 @@ describe('Queries', () => {
 
     // mock prisma's underlying user lookup method
     prisma.user = jest.fn(() => mockUserResponse);
+    prisma.user().profile = jest.fn(() => mockProfileResponse);
 
     // use our test server as input to the createTestClient fn
     // This will give us an interface, similar to apolloClient.query
