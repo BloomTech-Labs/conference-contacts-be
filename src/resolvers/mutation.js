@@ -12,7 +12,7 @@ const mutationError = error => ({
 });
 
 const Mutation = {
-  async createUser(parent, { data }, { prisma }, info) {
+  async createUser(parent, { data }, { dataSources: { prisma } }, info) {
     try {
       const { sub, email, ...fields } = data;
       const authId = sub.split('|')[1];
@@ -36,7 +36,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async updateUser(parent, { id, data }, { prisma }, info) {
+  async updateUser(parent, { id, data }, { dataSources: { prisma } }, info) {
     try {
       const user = await prisma.updateUser({ data, where: { id } });
       return mutationSuccess(200, 'Update successful!', { user });
@@ -44,7 +44,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async deleteUser(parent, { id }, { prisma }, info) {
+  async deleteUser(parent, { id }, { dataSources: { prisma } }, info) {
     try {
       const user = await prisma.deleteUser({ id });
       return mutationSuccess(204, 'User deleted successfully.', { user });
@@ -52,7 +52,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async createProfileField(parent, { data }, { prisma }, info) {
+  async createProfileField(parent, { data }, { dataSources: { prisma } }, info) {
     try {
       const { value, type, privacy, authId } = data;
       const profileField = await prisma.createProfileField({
@@ -68,7 +68,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async deleteProfileField(parent, { id }, { prisma }, info) {
+  async deleteProfileField(parent, { id }, { dataSources: { prisma } }, info) {
     try {
       const profileField = await prisma.deleteProfileField({ id });
       return mutationSuccess(204, 'User deleted successfully.', {

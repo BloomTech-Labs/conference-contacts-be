@@ -1,5 +1,5 @@
 const User = {
-  profile({ id }, args, { prisma }, info) {
+  profile({ id }, args, { dataSources: { prisma } }, info) {
     return prisma.user({ id }).profile();
   }
 };
