@@ -1,6 +1,3 @@
-// Load environment variables
-require('dotenv').config();
-
 // Apollo Server
 const { ApolloServer } = require('apollo-server');
 

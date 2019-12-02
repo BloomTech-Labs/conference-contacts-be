@@ -4,10 +4,10 @@
   "description": "🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --watch",
-    "start": "node src/index.js",
-    "server": "nodemon src/index.js",
-    "deploy": "cd src/prisma && prisma deploy"
+    "test": "dotenv jest --watch",
+    "start": "dotenv node src/index.js",
+    "server": "dotenv nodemon src/index.js",
+    "deploy": "cd src/prisma && dotenv -e ../../.env prisma deploy"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   "homepage": "https://github.com/Lambda-School-Labs/conference-contacts-be#readme",
   "dependencies": {
     "apollo-server": "^2.9.12",
-    "dotenv": "^8.2.0",
+    "dotenv-cli": "^3.1.0",
     "graphql": "^14.5.8",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^1.6.0",

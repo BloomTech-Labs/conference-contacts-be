@@ -34,8 +34,6 @@ module.exports.constructTestServer = constructTestServer;
  */
 
 const startTestServer = async server => {
-  require('dotenv').config();
-
   const httpServer = await server.listen({ port: 0 });
 
   const link = new HttpLink({
