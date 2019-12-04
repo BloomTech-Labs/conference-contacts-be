@@ -3,8 +3,7 @@ const { gql } = require('apollo-server');
 const typeDefs = gql`
   type Mutation {
     createUser(data: CreateUserInput!): UserMutationResponse!
-    updateUser(id: ID!, data: UpdateUserInput!): UserMutationResponse
-    deleteUser(id: ID!): UserMutationResponse
+    updateUser(data: UpdateUserInput!): UserMutationResponse
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
     deleteProfileField(id: ID!): ProfileMutationResponse
   }
