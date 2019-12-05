@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Mutation {
     createUser(data: CreateUserInput!): UserMutationResponse!
     updateUser(data: UpdateUserInput!): UserMutationResponse
+    deleteUser: UserMutationResponse
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
     deleteProfileField(id: ID!): ProfileMutationResponse
   }

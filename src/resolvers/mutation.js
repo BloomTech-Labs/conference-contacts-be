@@ -30,16 +30,27 @@ const Mutation = {
         return mutationSuccess(201, 'User creation successful!', { user });
       } else {
         const user = await prisma.user({ authId });
-        return mutationSuccess(200, 'User was found.', { user });
+        return mutationSuccess(409, 'User already exists.', { user });
       }
     } catch (error) {
       return mutationError(error);
     }
   },
-  async updateUser(parent, { data }, { dataSources: { prisma, user } }, info) {
+  async updateUser(parent, { data }, { dataSources: { prisma }, user }, info) {
     try {
-      const user = await prisma.updateUser({ data, where: { id: user.id } });
-      return mutationSuccess(200, 'Update successful!', { user });
+      const updatedUser = await prisma.updateUser({
+        data,
+        where: { id: user.id }
+      });
+      return mutationSuccess(200, 'Update successful!', { user: updatedUser });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async deleteUser(parent, args, { dataSources: { prisma }, user }, info) {
+    try {
+      const user = await prisma.deleteUser({ id: user.id });
+      return mutationSuccess(204, 'Profile deletion was successful.', { user });
     } catch (error) {
       return mutationError(error);
     }
