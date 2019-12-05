@@ -55,7 +55,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async createProfileField(parent, { data }, { dataSources: { prisma, user } }, info) {
+  async createProfileField(parent, { data }, { dataSources: { prisma }, user }, info) {
     try {
       const { value, type, privacy, preferredContact } = data;
       const profileField = await prisma.createProfileField({

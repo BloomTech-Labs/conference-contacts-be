@@ -34,7 +34,6 @@ const typeDefs = gql`
 
   input CreateProfileFieldInput {
     value: String!
-    authId: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
     preferredContact: Boolean
