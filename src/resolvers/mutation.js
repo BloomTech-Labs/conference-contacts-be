@@ -61,8 +61,15 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async deleteProfileField(parent, { id }, { dataSources: { prisma } }, info) {
+  async deleteProfileField(parent, { id }, { dataSources: { prisma }, user }, info) {
     try {
+      const fieldExists = await prisma.$exists.profileField({
+        id,
+        user: { id: user.id }
+      });
+
+      if (!fieldExists) return mutationError('Nice try, mister.');
+
       const profileField = await prisma.deleteProfileField({ id });
       return mutationSuccess(204, 'User deleted successfully.', {
         profileField
