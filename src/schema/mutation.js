@@ -2,10 +2,25 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Mutation {
+    """
+    Creates a new user.
+    """
     createUser(data: CreateUserInput!): UserMutationResponse!
+    """
+    Updates information for the logged in user.
+    """
     updateUser(data: UpdateUserInput!): UserMutationResponse
+    """
+    Deletes the currently logged in user.
+    """
     deleteUser: UserMutationResponse
+    """
+    Creates a profile field for the logged in user.
+    """
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
+    """
+    Deletes a user's profile field (users can only delete their _own_ profile fields)
+    """
     deleteProfileField(id: ID!): ProfileMutationResponse
   }
 

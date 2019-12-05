@@ -65,7 +65,7 @@ const Mutation = {
         preferredContact,
         user: { connect: { id: user.id } }
       });
-      return mutationSuccess(201, 'Profile fields created successfully!', {
+      return mutationSuccess(201, 'Profile field created successfully!', {
         profileField
       });
     } catch (error) {
@@ -82,7 +82,7 @@ const Mutation = {
       if (!fieldExists) return mutationError('Nice try, mister.');
 
       const profileField = await prisma.deleteProfileField({ id });
-      return mutationSuccess(204, 'User deleted successfully.', {
+      return mutationSuccess(204, 'User field deleted successfully.', {
         profileField
       });
     } catch (error) {

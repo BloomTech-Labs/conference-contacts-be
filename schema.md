@@ -44,12 +44,20 @@
 <tr>
 <td colspan="2" valign="top"><strong>users</strong></td>
 <td valign="top">[<a href="#user">User</a>]!</td>
-<td></td>
+<td>
+
+Returns all users; this query is temporary.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>user</strong></td>
 <td valign="top"><a href="#user">User</a></td>
-<td></td>
+<td>
+
+Returns info for the logged in user.
+
+</td>
 </tr>
 </tbody>
 </table>
@@ -68,7 +76,11 @@
 <tr>
 <td colspan="2" valign="top"><strong>createUser</strong></td>
 <td valign="top"><a href="#usermutationresponse">UserMutationResponse</a>!</td>
-<td></td>
+<td>
+
+Creates a new user.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">data</td>
@@ -78,12 +90,11 @@
 <tr>
 <td colspan="2" valign="top"><strong>updateUser</strong></td>
 <td valign="top"><a href="#usermutationresponse">UserMutationResponse</a></td>
-<td></td>
-</tr>
-<tr>
-<td colspan="2" align="right" valign="top">id</td>
-<td valign="top"><a href="#id">ID</a>!</td>
-<td></td>
+<td>
+
+Updates information for the logged in user.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">data</td>
@@ -93,17 +104,20 @@
 <tr>
 <td colspan="2" valign="top"><strong>deleteUser</strong></td>
 <td valign="top"><a href="#usermutationresponse">UserMutationResponse</a></td>
-<td></td>
-</tr>
-<tr>
-<td colspan="2" align="right" valign="top">id</td>
-<td valign="top"><a href="#id">ID</a>!</td>
-<td></td>
+<td>
+
+Deletes the currently logged in user.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>createProfileField</strong></td>
 <td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
-<td></td>
+<td>
+
+Creates a profile field for the logged in user.
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">data</td>
@@ -113,7 +127,11 @@
 <tr>
 <td colspan="2" valign="top"><strong>deleteProfileField</strong></td>
 <td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
-<td></td>
+<td>
+
+Deletes a user's profile field (users can only delete their _own_ profile fields)
+
+</td>
 </tr>
 <tr>
 <td colspan="2" align="right" valign="top">id</td>
@@ -320,11 +338,6 @@
 <tbody>
 <tr>
 <td colspan="2" valign="top"><strong>value</strong></td>
-<td valign="top"><a href="#string">String</a>!</td>
-<td></td>
-</tr>
-<tr>
-<td colspan="2" valign="top"><strong>authId</strong></td>
 <td valign="top"><a href="#string">String</a>!</td>
 <td></td>
 </tr>
