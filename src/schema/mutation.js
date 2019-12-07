@@ -25,7 +25,6 @@ const typeDefs = gql`
   }
 
   input CreateUserInput {
-    sub: String!
     name: String
     picture: String
     birthdate: String
