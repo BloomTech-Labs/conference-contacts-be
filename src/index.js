@@ -46,7 +46,7 @@ function getUser(token) {
       try {
         const authId = decoded.sub.split('|')[1];
         const user = await prisma.user({ authId });
-        resolve(user);
+        resolve({decoded, user});
       } catch (error) {
         reject(error);
       }
@@ -56,7 +56,7 @@ function getUser(token) {
 
 // the function that sets up the global context for each resolver, using the req
 const context = async ({ req }) => ({
-  user: await getUser(req.headers.authorization)
+  ...await getUser(req.headers.authorization)
 });
 
 // The ApolloServer constructor requires two parameters: your schema

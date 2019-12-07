@@ -12,12 +12,12 @@ const mutationError = error => ({
 });
 
 const Mutation = {
-  async createUser(parent, { data }, { dataSources: { prisma } }, info) {
+  async createUser(parent, { data }, { dataSources: { prisma }, decoded }, info) {
     try {
-      const { sub, email, ...fields } = data;
-      const authId = sub.split('|')[1];
+      const authId = decoded.sub.split('|')[1];
       const userExists = await prisma.$exists.user({ authId });
       if (!userExists) {
+        const { email, ...fields } = data;
         const user = await prisma.createUser({ authId, ...fields });
         if (email)
           await prisma.createProfileField({
