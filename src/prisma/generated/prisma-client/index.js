@@ -28,7 +28,7 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://lambda-swaap-d65ae6a665.herokuapp.com/swaap/${
+  endpoint: `https://lambda-swaap-b5a9ceec8c.herokuapp.com/swaap/${
     process.env["SERVICE_STAGE"]
   }`
 });
