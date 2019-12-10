@@ -19,6 +19,10 @@ const typeDefs = gql`
     """
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
     """
+    Updates information for a specific profile field.
+    """
+    updateProfileField(id: ID!, data: UpdateProfileFieldInput!): ProfileMutationResponse
+    """
     Deletes a user's profile field (users can only delete their _own_ profile fields)
     """
     deleteProfileField(id: ID!): ProfileMutationResponse
@@ -50,6 +54,13 @@ const typeDefs = gql`
     value: String!
     type: ProfileFieldType!
     privacy: ProfileFieldPrivacy!
+    preferredContact: Boolean
+  }
+
+  input UpdateProfileFieldInput {
+    value: String
+    type: ProfileFieldType
+    privacy: ProfileFieldPrivacy
     preferredContact: Boolean
   }
 
