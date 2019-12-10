@@ -32,7 +32,11 @@ const typeDefs = gql`
   enum ProfileFieldType {
     EMAIL
     PHONE
-    SOCIAL
+    SMS
+    INSTAGRAM
+    FACEBOOK
+    LINKEDIN
+    TWITTER
   }
 
   enum ProfileFieldPrivacy {
