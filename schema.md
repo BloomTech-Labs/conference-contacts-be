@@ -13,6 +13,7 @@
   * [Inputs](#inputs)
     * [CreateProfileFieldInput](#createprofilefieldinput)
     * [CreateUserInput](#createuserinput)
+    * [UpdateProfileFieldInput](#updateprofilefieldinput)
     * [UpdateUserInput](#updateuserinput)
   * [Enums](#enums)
     * [CacheControlScope](#cachecontrolscope)
@@ -122,6 +123,25 @@ Creates a profile field for the logged in user.
 <tr>
 <td colspan="2" align="right" valign="top">data</td>
 <td valign="top"><a href="#createprofilefieldinput">CreateProfileFieldInput</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>updateProfileField</strong></td>
+<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
+<td>
+
+Updates information for a specific profile field.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">data</td>
+<td valign="top"><a href="#updateprofilefieldinput">UpdateProfileFieldInput</a>!</td>
 <td></td>
 </tr>
 <tr>
@@ -371,11 +391,6 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 </thead>
 <tbody>
 <tr>
-<td colspan="2" valign="top"><strong>sub</strong></td>
-<td valign="top"><a href="#string">String</a>!</td>
-<td></td>
-</tr>
-<tr>
 <td colspan="2" valign="top"><strong>name</strong></td>
 <td valign="top"><a href="#string">String</a></td>
 <td></td>
@@ -413,6 +428,40 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 <tr>
 <td colspan="2" valign="top"><strong>email</strong></td>
 <td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+### UpdateProfileFieldInput
+
+<table>
+<thead>
+<tr>
+<th colspan="2" align="left">Field</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>value</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>type</strong></td>
+<td valign="top"><a href="#profilefieldtype">ProfileFieldType</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>privacy</strong></td>
+<td valign="top"><a href="#profilefieldprivacy">ProfileFieldPrivacy</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>preferredContact</strong></td>
+<td valign="top"><a href="#boolean">Boolean</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -556,7 +605,23 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 <td></td>
 </tr>
 <tr>
-<td valign="top"><strong>SOCIAL</strong></td>
+<td valign="top"><strong>SMS</strong></td>
+<td></td>
+</tr>
+<tr>
+<td valign="top"><strong>INSTAGRAM</strong></td>
+<td></td>
+</tr>
+<tr>
+<td valign="top"><strong>FACEBOOK</strong></td>
+<td></td>
+</tr>
+<tr>
+<td valign="top"><strong>LINKEDIN</strong></td>
+<td></td>
+</tr>
+<tr>
+<td valign="top"><strong>TWITTER</strong></td>
 <td></td>
 </tr>
 </tbody>
