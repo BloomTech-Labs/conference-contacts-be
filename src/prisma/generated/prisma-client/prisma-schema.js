@@ -15,12 +15,6 @@ type BatchPayload {
   count: Long!
 }
 
-enum GenderType {
-  MALE
-  FEMALE
-  NONBINARY
-}
-
 scalar Long
 
 type Mutation {
@@ -323,7 +317,7 @@ type User {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -342,7 +336,7 @@ input UserCreateInput {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -360,7 +354,7 @@ input UserCreateWithoutProfileInput {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -382,8 +376,8 @@ enum UserOrderByInput {
   picture_DESC
   birthdate_ASC
   birthdate_DESC
-  gender_ASC
-  gender_DESC
+  location_ASC
+  location_DESC
   industry_ASC
   industry_DESC
   jobtitle_ASC
@@ -398,7 +392,7 @@ type UserPreviousValues {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -427,7 +421,7 @@ input UserUpdateInput {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -439,7 +433,7 @@ input UserUpdateManyMutationInput {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -457,7 +451,7 @@ input UserUpdateWithoutProfileDataInput {
   name: String
   picture: String
   birthdate: String
-  gender: GenderType
+  location: String
   industry: String
   jobtitle: String
   bio: String
@@ -539,10 +533,20 @@ input UserWhereInput {
   birthdate_not_starts_with: String
   birthdate_ends_with: String
   birthdate_not_ends_with: String
-  gender: GenderType
-  gender_not: GenderType
-  gender_in: [GenderType!]
-  gender_not_in: [GenderType!]
+  location: String
+  location_not: String
+  location_in: [String!]
+  location_not_in: [String!]
+  location_lt: String
+  location_lte: String
+  location_gt: String
+  location_gte: String
+  location_contains: String
+  location_not_contains: String
+  location_starts_with: String
+  location_not_starts_with: String
+  location_ends_with: String
+  location_not_ends_with: String
   industry: String
   industry_not: String
   industry_in: [String!]

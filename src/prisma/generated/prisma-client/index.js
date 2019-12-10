@@ -9,10 +9,6 @@ var models = [
     embedded: false
   },
   {
-    name: "GenderType",
-    embedded: false
-  },
-  {
     name: "ProfileField",
     embedded: false
   },
