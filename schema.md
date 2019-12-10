@@ -17,7 +17,6 @@
     * [UpdateUserInput](#updateuserinput)
   * [Enums](#enums)
     * [CacheControlScope](#cachecontrolscope)
-    * [GenderType](#gendertype)
     * [ProfileFieldPrivacy](#profilefieldprivacy)
     * [ProfileFieldType](#profilefieldtype)
   * [Scalars](#scalars)
@@ -281,8 +280,8 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>gender</strong></td>
-<td valign="top"><a href="#gendertype">GenderType</a></td>
+<td colspan="2" valign="top"><strong>location</strong></td>
+<td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
 <tr>
@@ -406,8 +405,8 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>gender</strong></td>
-<td valign="top"><a href="#gendertype">GenderType</a></td>
+<td colspan="2" valign="top"><strong>location</strong></td>
+<td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
 <tr>
@@ -494,8 +493,8 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>gender</strong></td>
-<td valign="top"><a href="#gendertype">GenderType</a></td>
+<td colspan="2" valign="top"><strong>location</strong></td>
+<td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
 <tr>
@@ -537,29 +536,6 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 </tr>
 <tr>
 <td valign="top"><strong>PRIVATE</strong></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-
-### GenderType
-
-<table>
-<thead>
-<th align="left">Value</th>
-<th align="left">Description</th>
-</thead>
-<tbody>
-<tr>
-<td valign="top"><strong>MALE</strong></td>
-<td></td>
-</tr>
-<tr>
-<td valign="top"><strong>FEMALE</strong></td>
-<td></td>
-</tr>
-<tr>
-<td valign="top"><strong>NONBINARY</strong></td>
 <td></td>
 </tr>
 </tbody>
