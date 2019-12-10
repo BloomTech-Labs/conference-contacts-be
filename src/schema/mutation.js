@@ -32,7 +32,7 @@ const typeDefs = gql`
     name: String
     picture: String
     birthdate: String
-    gender: GenderType
+    location: String
     industry: String
     jobtitle: String
     bio: String
@@ -43,7 +43,7 @@ const typeDefs = gql`
     name: String
     picture: String
     birthdate: String
-    gender: GenderType
+    location: String
     industry: String
     jobtitle: String
     bio: String

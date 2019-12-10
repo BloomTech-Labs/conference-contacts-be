@@ -7,17 +7,11 @@ const typeDefs = gql`
     name: String
     picture: String
     birthdate: String
-    gender: GenderType
+    location: String
     industry: String
     jobtitle: String
     bio: String
     profile: [ProfileField]!
-  }
-
-  enum GenderType {
-    MALE
-    FEMALE
-    NONBINARY
   }
 
   type ProfileField {

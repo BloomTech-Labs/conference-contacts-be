@@ -157,8 +157,6 @@ export type ProfileFieldType =
 
 export type ProfileFieldPrivacy = "PUBLIC" | "PRIVATE" | "CONNECTED";
 
-export type GenderType = "MALE" | "FEMALE" | "NONBINARY";
-
 export type ProfileFieldOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -182,8 +180,8 @@ export type UserOrderByInput =
   | "picture_DESC"
   | "birthdate_ASC"
   | "birthdate_DESC"
-  | "gender_ASC"
-  | "gender_DESC"
+  | "location_ASC"
+  | "location_DESC"
   | "industry_ASC"
   | "industry_DESC"
   | "jobtitle_ASC"
@@ -283,10 +281,20 @@ export interface UserWhereInput {
   birthdate_not_starts_with?: Maybe<String>;
   birthdate_ends_with?: Maybe<String>;
   birthdate_not_ends_with?: Maybe<String>;
-  gender?: Maybe<GenderType>;
-  gender_not?: Maybe<GenderType>;
-  gender_in?: Maybe<GenderType[] | GenderType>;
-  gender_not_in?: Maybe<GenderType[] | GenderType>;
+  location?: Maybe<String>;
+  location_not?: Maybe<String>;
+  location_in?: Maybe<String[] | String>;
+  location_not_in?: Maybe<String[] | String>;
+  location_lt?: Maybe<String>;
+  location_lte?: Maybe<String>;
+  location_gt?: Maybe<String>;
+  location_gte?: Maybe<String>;
+  location_contains?: Maybe<String>;
+  location_not_contains?: Maybe<String>;
+  location_starts_with?: Maybe<String>;
+  location_not_starts_with?: Maybe<String>;
+  location_ends_with?: Maybe<String>;
+  location_not_ends_with?: Maybe<String>;
   industry?: Maybe<String>;
   industry_not?: Maybe<String>;
   industry_in?: Maybe<String[] | String>;
@@ -383,7 +391,7 @@ export interface UserCreateWithoutProfileInput {
   name?: Maybe<String>;
   picture?: Maybe<String>;
   birthdate?: Maybe<String>;
-  gender?: Maybe<GenderType>;
+  location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
   bio?: Maybe<String>;
@@ -448,7 +456,7 @@ export interface UserUpdateWithoutProfileDataInput {
   name?: Maybe<String>;
   picture?: Maybe<String>;
   birthdate?: Maybe<String>;
-  gender?: Maybe<GenderType>;
+  location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
   bio?: Maybe<String>;
@@ -481,7 +489,7 @@ export interface UserCreateInput {
   name?: Maybe<String>;
   picture?: Maybe<String>;
   birthdate?: Maybe<String>;
-  gender?: Maybe<GenderType>;
+  location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
   bio?: Maybe<String>;
@@ -501,7 +509,7 @@ export interface UserUpdateInput {
   name?: Maybe<String>;
   picture?: Maybe<String>;
   birthdate?: Maybe<String>;
-  gender?: Maybe<GenderType>;
+  location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
   bio?: Maybe<String>;
@@ -558,7 +566,7 @@ export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
   picture?: Maybe<String>;
   birthdate?: Maybe<String>;
-  gender?: Maybe<GenderType>;
+  location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
   bio?: Maybe<String>;
@@ -646,7 +654,7 @@ export interface UserPreviousValues {
   name?: String;
   picture?: String;
   birthdate?: String;
-  gender?: GenderType;
+  location?: String;
   industry?: String;
   jobtitle?: String;
   bio?: String;
@@ -660,7 +668,7 @@ export interface UserPreviousValuesPromise
   name: () => Promise<String>;
   picture: () => Promise<String>;
   birthdate: () => Promise<String>;
-  gender: () => Promise<GenderType>;
+  location: () => Promise<String>;
   industry: () => Promise<String>;
   jobtitle: () => Promise<String>;
   bio: () => Promise<String>;
@@ -674,7 +682,7 @@ export interface UserPreviousValuesSubscription
   name: () => Promise<AsyncIterator<String>>;
   picture: () => Promise<AsyncIterator<String>>;
   birthdate: () => Promise<AsyncIterator<String>>;
-  gender: () => Promise<AsyncIterator<GenderType>>;
+  location: () => Promise<AsyncIterator<String>>;
   industry: () => Promise<AsyncIterator<String>>;
   jobtitle: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
@@ -884,7 +892,7 @@ export interface User {
   name?: String;
   picture?: String;
   birthdate?: String;
-  gender?: GenderType;
+  location?: String;
   industry?: String;
   jobtitle?: String;
   bio?: String;
@@ -896,7 +904,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   name: () => Promise<String>;
   picture: () => Promise<String>;
   birthdate: () => Promise<String>;
-  gender: () => Promise<GenderType>;
+  location: () => Promise<String>;
   industry: () => Promise<String>;
   jobtitle: () => Promise<String>;
   bio: () => Promise<String>;
@@ -919,7 +927,7 @@ export interface UserSubscription
   name: () => Promise<AsyncIterator<String>>;
   picture: () => Promise<AsyncIterator<String>>;
   birthdate: () => Promise<AsyncIterator<String>>;
-  gender: () => Promise<AsyncIterator<GenderType>>;
+  location: () => Promise<AsyncIterator<String>>;
   industry: () => Promise<AsyncIterator<String>>;
   jobtitle: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
@@ -942,7 +950,7 @@ export interface UserNullablePromise
   name: () => Promise<String>;
   picture: () => Promise<String>;
   birthdate: () => Promise<String>;
-  gender: () => Promise<GenderType>;
+  location: () => Promise<String>;
   industry: () => Promise<String>;
   jobtitle: () => Promise<String>;
   bio: () => Promise<String>;
@@ -1041,10 +1049,6 @@ export type String = string;
 export const models: Model[] = [
   {
     name: "User",
-    embedded: false
-  },
-  {
-    name: "GenderType",
     embedded: false
   },
   {
