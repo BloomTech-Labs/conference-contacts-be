@@ -19,13 +19,25 @@ const typeDefs = gql`
     """
     createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
     """
+    Create multiple profile fields.
+    """
+    createProfileFields(data: [CreateProfileFieldInput]!): ProfileMutationsResponse
+    """
     Updates information for a specific profile field.
     """
     updateProfileField(id: ID!, data: UpdateProfileFieldInput!): ProfileMutationResponse
     """
+    Updates multiple profile fields.
+    """
+    updateProfileFields(data: [UpdateProfileFieldsInput]!): ProfileMutationsResponse
+    """
     Deletes a user's profile field (users can only delete their _own_ profile fields)
     """
     deleteProfileField(id: ID!): ProfileMutationResponse
+    """
+    Deletes multiple profile fields.
+    """
+    deleteProfileFields(ids: [ID]!): ProfileMutationsResponse
   }
 
   input CreateUserInput {
@@ -64,6 +76,14 @@ const typeDefs = gql`
     preferredContact: Boolean
   }
 
+  input UpdateProfileFieldsInput {
+    id: ID!
+    value: String
+    type: ProfileFieldType
+    privacy: ProfileFieldPrivacy
+    preferredContact: Boolean
+  }
+
   interface MutationResponse {
     """
     A number that represents the status of the data transfer. Think of it like an HTTP status code.
@@ -91,6 +111,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     profileField: ProfileField!
+  }
+
+  type ProfileMutationsResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    profileFields: [ProfileField]!
   }
 `;
 
