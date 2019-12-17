@@ -42,6 +42,18 @@ const typeDefs = gql`
     Creates a QRCode entry for a user.
     """
     createQRCode(label: String!): QRCodeResponse
+    """
+    Creates a connection request to the specified user.
+    """
+    createConnection(userID: ID!): ConnectionResponse
+    """
+    Updates a connection status.
+    """
+    updateConnection(id: ID!, status: ConnectionStatus!): ConnectionResponse
+    """
+    Deletes a connection entirely.
+    """
+    deleteConnection(id: ID!): ConnectionResponse
   }
 
   input CreateUserInput {
@@ -51,6 +63,7 @@ const typeDefs = gql`
     location: String
     industry: String
     jobtitle: String
+    tagline: String
     bio: String
     email: String
   }
@@ -62,6 +75,7 @@ const typeDefs = gql`
     location: String
     industry: String
     jobtitle: String
+    tagline: String
     bio: String
     email: String
   }
@@ -129,6 +143,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     qrcode: QRCode!
+  }
+
+  type ConnectionResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    connection: Connection!
   }
 `;
 

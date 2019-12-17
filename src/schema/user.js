@@ -10,9 +10,12 @@ const typeDefs = gql`
     location: String
     industry: String
     jobtitle: String
+    tagline: String
     bio: String
     profile: [ProfileField]!
     qrcodes: [QRCode]!
+    sentConnections: [Connection]!
+    receivedConnections: [Connection]!
   }
 
   type ProfileField {
@@ -45,6 +48,19 @@ const typeDefs = gql`
     label: String
     scans: Int
     user: User
+  }
+
+  type Connection {
+    id: ID!
+    sender: User
+    receiver: User
+    status: ConnectionStatus
+  }
+
+  enum ConnectionStatus {
+    PENDING
+    CONNECTED
+    BLOCKED
   }
 `;
 
