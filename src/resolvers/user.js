@@ -4,6 +4,12 @@ const User = {
   },
   qrcodes({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).qrcodes();
+  },
+  sentConnections({ id }, _, { dataSources: { prisma } }) {
+    return prisma.user({ id }).sentConnections();
+  },
+  receivedConnections({ id }, _, { dataSources: { prisma } }) {
+    return prisma.user({ id }).receivedConnections();
   }
 };
 

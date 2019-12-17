@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  connection: (where?: ConnectionWhereInput) => Promise<boolean>;
   profileField: (where?: ProfileFieldWhereInput) => Promise<boolean>;
   qRCode: (where?: QRCodeWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -40,6 +41,25 @@ export interface Prisma {
    * Queries
    */
 
+  connection: (where: ConnectionWhereUniqueInput) => ConnectionNullablePromise;
+  connections: (args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Connection>;
+  connectionsConnection: (args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ConnectionConnectionPromise;
   profileField: (
     where: ProfileFieldWhereUniqueInput
   ) => ProfileFieldNullablePromise;
@@ -105,6 +125,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createConnection: (data: ConnectionCreateInput) => ConnectionPromise;
+  updateConnection: (args: {
+    data: ConnectionUpdateInput;
+    where: ConnectionWhereUniqueInput;
+  }) => ConnectionPromise;
+  updateManyConnections: (args: {
+    data: ConnectionUpdateManyMutationInput;
+    where?: ConnectionWhereInput;
+  }) => BatchPayloadPromise;
+  upsertConnection: (args: {
+    where: ConnectionWhereUniqueInput;
+    create: ConnectionCreateInput;
+    update: ConnectionUpdateInput;
+  }) => ConnectionPromise;
+  deleteConnection: (where: ConnectionWhereUniqueInput) => ConnectionPromise;
+  deleteManyConnections: (where?: ConnectionWhereInput) => BatchPayloadPromise;
   createProfileField: (data: ProfileFieldCreateInput) => ProfileFieldPromise;
   updateProfileField: (args: {
     data: ProfileFieldUpdateInput;
@@ -166,6 +202,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  connection: (
+    where?: ConnectionSubscriptionWhereInput
+  ) => ConnectionSubscriptionPayloadSubscription;
   profileField: (
     where?: ProfileFieldSubscriptionWhereInput
   ) => ProfileFieldSubscriptionPayloadSubscription;
@@ -184,6 +223,8 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type ConnectionStatus = "PENDING" | "CONNECTED" | "BLOCKED";
 
 export type ProfileFieldType =
   | "EMAIL"
@@ -216,6 +257,12 @@ export type QRCodeOrderByInput =
   | "scans_ASC"
   | "scans_DESC";
 
+export type ConnectionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "status_ASC"
+  | "status_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -233,12 +280,14 @@ export type UserOrderByInput =
   | "industry_DESC"
   | "jobtitle_ASC"
   | "jobtitle_DESC"
+  | "tagline_ASC"
+  | "tagline_DESC"
   | "bio_ASC"
   | "bio_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type ProfileFieldWhereUniqueInput = AtLeastOne<{
+export type ConnectionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -400,6 +449,20 @@ export interface UserWhereInput {
   jobtitle_not_starts_with?: Maybe<String>;
   jobtitle_ends_with?: Maybe<String>;
   jobtitle_not_ends_with?: Maybe<String>;
+  tagline?: Maybe<String>;
+  tagline_not?: Maybe<String>;
+  tagline_in?: Maybe<String[] | String>;
+  tagline_not_in?: Maybe<String[] | String>;
+  tagline_lt?: Maybe<String>;
+  tagline_lte?: Maybe<String>;
+  tagline_gt?: Maybe<String>;
+  tagline_gte?: Maybe<String>;
+  tagline_contains?: Maybe<String>;
+  tagline_not_contains?: Maybe<String>;
+  tagline_starts_with?: Maybe<String>;
+  tagline_not_starts_with?: Maybe<String>;
+  tagline_ends_with?: Maybe<String>;
+  tagline_not_ends_with?: Maybe<String>;
   bio?: Maybe<String>;
   bio_not?: Maybe<String>;
   bio_in?: Maybe<String[] | String>;
@@ -420,6 +483,12 @@ export interface UserWhereInput {
   qrcodes_every?: Maybe<QRCodeWhereInput>;
   qrcodes_some?: Maybe<QRCodeWhereInput>;
   qrcodes_none?: Maybe<QRCodeWhereInput>;
+  sentConnections_every?: Maybe<ConnectionWhereInput>;
+  sentConnections_some?: Maybe<ConnectionWhereInput>;
+  sentConnections_none?: Maybe<ConnectionWhereInput>;
+  receivedConnections_every?: Maybe<ConnectionWhereInput>;
+  receivedConnections_some?: Maybe<ConnectionWhereInput>;
+  receivedConnections_none?: Maybe<ConnectionWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -468,118 +537,7 @@ export interface QRCodeWhereInput {
   NOT?: Maybe<QRCodeWhereInput[] | QRCodeWhereInput>;
 }
 
-export type QRCodeWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-  authId?: Maybe<String>;
-}>;
-
-export interface ProfileFieldCreateInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneWithoutProfileInput;
-  value: String;
-  type: ProfileFieldType;
-  privacy: ProfileFieldPrivacy;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserCreateOneWithoutProfileInput {
-  create?: Maybe<UserCreateWithoutProfileInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutProfileInput {
-  id?: Maybe<ID_Input>;
-  authId: String;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-  birthdate?: Maybe<String>;
-  location?: Maybe<String>;
-  industry?: Maybe<String>;
-  jobtitle?: Maybe<String>;
-  bio?: Maybe<String>;
-  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
-}
-
-export interface QRCodeCreateManyWithoutUserInput {
-  create?: Maybe<QRCodeCreateWithoutUserInput[] | QRCodeCreateWithoutUserInput>;
-  connect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
-}
-
-export interface QRCodeCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  label?: Maybe<String>;
-  scans?: Maybe<Int>;
-}
-
-export interface ProfileFieldUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredWithoutProfileInput>;
-  value?: Maybe<String>;
-  type?: Maybe<ProfileFieldType>;
-  privacy?: Maybe<ProfileFieldPrivacy>;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface UserUpdateOneRequiredWithoutProfileInput {
-  create?: Maybe<UserCreateWithoutProfileInput>;
-  update?: Maybe<UserUpdateWithoutProfileDataInput>;
-  upsert?: Maybe<UserUpsertWithoutProfileInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface UserUpdateWithoutProfileDataInput {
-  authId?: Maybe<String>;
-  name?: Maybe<String>;
-  picture?: Maybe<String>;
-  birthdate?: Maybe<String>;
-  location?: Maybe<String>;
-  industry?: Maybe<String>;
-  jobtitle?: Maybe<String>;
-  bio?: Maybe<String>;
-  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
-}
-
-export interface QRCodeUpdateManyWithoutUserInput {
-  create?: Maybe<QRCodeCreateWithoutUserInput[] | QRCodeCreateWithoutUserInput>;
-  delete?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
-  connect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
-  set?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
-  disconnect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
-  update?: Maybe<
-    | QRCodeUpdateWithWhereUniqueWithoutUserInput[]
-    | QRCodeUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | QRCodeUpsertWithWhereUniqueWithoutUserInput[]
-    | QRCodeUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
-  updateMany?: Maybe<
-    | QRCodeUpdateManyWithWhereNestedInput[]
-    | QRCodeUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface QRCodeUpdateWithWhereUniqueWithoutUserInput {
-  where: QRCodeWhereUniqueInput;
-  data: QRCodeUpdateWithoutUserDataInput;
-}
-
-export interface QRCodeUpdateWithoutUserDataInput {
-  label?: Maybe<String>;
-  scans?: Maybe<Int>;
-}
-
-export interface QRCodeUpsertWithWhereUniqueWithoutUserInput {
-  where: QRCodeWhereUniqueInput;
-  update: QRCodeUpdateWithoutUserDataInput;
-  create: QRCodeCreateWithoutUserInput;
-}
-
-export interface QRCodeScalarWhereInput {
+export interface ConnectionWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -594,68 +552,43 @@ export interface QRCodeScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  label?: Maybe<String>;
-  label_not?: Maybe<String>;
-  label_in?: Maybe<String[] | String>;
-  label_not_in?: Maybe<String[] | String>;
-  label_lt?: Maybe<String>;
-  label_lte?: Maybe<String>;
-  label_gt?: Maybe<String>;
-  label_gte?: Maybe<String>;
-  label_contains?: Maybe<String>;
-  label_not_contains?: Maybe<String>;
-  label_starts_with?: Maybe<String>;
-  label_not_starts_with?: Maybe<String>;
-  label_ends_with?: Maybe<String>;
-  label_not_ends_with?: Maybe<String>;
-  scans?: Maybe<Int>;
-  scans_not?: Maybe<Int>;
-  scans_in?: Maybe<Int[] | Int>;
-  scans_not_in?: Maybe<Int[] | Int>;
-  scans_lt?: Maybe<Int>;
-  scans_lte?: Maybe<Int>;
-  scans_gt?: Maybe<Int>;
-  scans_gte?: Maybe<Int>;
-  AND?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
-  OR?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
-  NOT?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
+  sender?: Maybe<UserWhereInput>;
+  receiver?: Maybe<UserWhereInput>;
+  status?: Maybe<ConnectionStatus>;
+  status_not?: Maybe<ConnectionStatus>;
+  status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  AND?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
+  OR?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
+  NOT?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
 }
 
-export interface QRCodeUpdateManyWithWhereNestedInput {
-  where: QRCodeScalarWhereInput;
-  data: QRCodeUpdateManyDataInput;
-}
+export type ProfileFieldWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
-export interface QRCodeUpdateManyDataInput {
-  label?: Maybe<String>;
-  scans?: Maybe<Int>;
-}
+export type QRCodeWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
-export interface UserUpsertWithoutProfileInput {
-  update: UserUpdateWithoutProfileDataInput;
-  create: UserCreateWithoutProfileInput;
-}
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  authId?: Maybe<String>;
+}>;
 
-export interface ProfileFieldUpdateManyMutationInput {
-  value?: Maybe<String>;
-  type?: Maybe<ProfileFieldType>;
-  privacy?: Maybe<ProfileFieldPrivacy>;
-  preferredContact?: Maybe<Boolean>;
-}
-
-export interface QRCodeCreateInput {
+export interface ConnectionCreateInput {
   id?: Maybe<ID_Input>;
-  label?: Maybe<String>;
-  scans?: Maybe<Int>;
-  user?: Maybe<UserCreateOneWithoutQrcodesInput>;
+  sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
+  receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
 }
 
-export interface UserCreateOneWithoutQrcodesInput {
-  create?: Maybe<UserCreateWithoutQrcodesInput>;
+export interface UserCreateOneWithoutSentConnectionsInput {
+  create?: Maybe<UserCreateWithoutSentConnectionsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutQrcodesInput {
+export interface UserCreateWithoutSentConnectionsInput {
   id?: Maybe<ID_Input>;
   authId: String;
   name?: Maybe<String>;
@@ -664,8 +597,11 @@ export interface UserCreateWithoutQrcodesInput {
   location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
   bio?: Maybe<String>;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
 }
 
 export interface ProfileFieldCreateManyWithoutUserInput {
@@ -685,22 +621,81 @@ export interface ProfileFieldCreateWithoutUserInput {
   preferredContact?: Maybe<Boolean>;
 }
 
-export interface QRCodeUpdateInput {
-  label?: Maybe<String>;
-  scans?: Maybe<Int>;
-  user?: Maybe<UserUpdateOneWithoutQrcodesInput>;
+export interface QRCodeCreateManyWithoutUserInput {
+  create?: Maybe<QRCodeCreateWithoutUserInput[] | QRCodeCreateWithoutUserInput>;
+  connect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
 }
 
-export interface UserUpdateOneWithoutQrcodesInput {
-  create?: Maybe<UserCreateWithoutQrcodesInput>;
-  update?: Maybe<UserUpdateWithoutQrcodesDataInput>;
-  upsert?: Maybe<UserUpsertWithoutQrcodesInput>;
+export interface QRCodeCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  label?: Maybe<String>;
+  scans?: Maybe<Int>;
+}
+
+export interface ConnectionCreateManyWithoutReceiverInput {
+  create?: Maybe<
+    | ConnectionCreateWithoutReceiverInput[]
+    | ConnectionCreateWithoutReceiverInput
+  >;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+}
+
+export interface ConnectionCreateWithoutReceiverInput {
+  id?: Maybe<ID_Input>;
+  sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface UserCreateOneWithoutReceivedConnectionsInput {
+  create?: Maybe<UserCreateWithoutReceivedConnectionsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutReceivedConnectionsInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+}
+
+export interface ConnectionCreateManyWithoutSenderInput {
+  create?: Maybe<
+    ConnectionCreateWithoutSenderInput[] | ConnectionCreateWithoutSenderInput
+  >;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+}
+
+export interface ConnectionCreateWithoutSenderInput {
+  id?: Maybe<ID_Input>;
+  receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface ConnectionUpdateInput {
+  sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
+  receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface UserUpdateOneWithoutSentConnectionsInput {
+  create?: Maybe<UserCreateWithoutSentConnectionsInput>;
+  update?: Maybe<UserUpdateWithoutSentConnectionsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutSentConnectionsInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutQrcodesDataInput {
+export interface UserUpdateWithoutSentConnectionsDataInput {
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -708,8 +703,11 @@ export interface UserUpdateWithoutQrcodesDataInput {
   location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
   bio?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
 }
 
 export interface ProfileFieldUpdateManyWithoutUserInput {
@@ -815,6 +813,375 @@ export interface ProfileFieldUpdateManyDataInput {
   preferredContact?: Maybe<Boolean>;
 }
 
+export interface QRCodeUpdateManyWithoutUserInput {
+  create?: Maybe<QRCodeCreateWithoutUserInput[] | QRCodeCreateWithoutUserInput>;
+  delete?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
+  connect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
+  set?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
+  disconnect?: Maybe<QRCodeWhereUniqueInput[] | QRCodeWhereUniqueInput>;
+  update?: Maybe<
+    | QRCodeUpdateWithWhereUniqueWithoutUserInput[]
+    | QRCodeUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | QRCodeUpsertWithWhereUniqueWithoutUserInput[]
+    | QRCodeUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
+  updateMany?: Maybe<
+    | QRCodeUpdateManyWithWhereNestedInput[]
+    | QRCodeUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface QRCodeUpdateWithWhereUniqueWithoutUserInput {
+  where: QRCodeWhereUniqueInput;
+  data: QRCodeUpdateWithoutUserDataInput;
+}
+
+export interface QRCodeUpdateWithoutUserDataInput {
+  label?: Maybe<String>;
+  scans?: Maybe<Int>;
+}
+
+export interface QRCodeUpsertWithWhereUniqueWithoutUserInput {
+  where: QRCodeWhereUniqueInput;
+  update: QRCodeUpdateWithoutUserDataInput;
+  create: QRCodeCreateWithoutUserInput;
+}
+
+export interface QRCodeScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  label?: Maybe<String>;
+  label_not?: Maybe<String>;
+  label_in?: Maybe<String[] | String>;
+  label_not_in?: Maybe<String[] | String>;
+  label_lt?: Maybe<String>;
+  label_lte?: Maybe<String>;
+  label_gt?: Maybe<String>;
+  label_gte?: Maybe<String>;
+  label_contains?: Maybe<String>;
+  label_not_contains?: Maybe<String>;
+  label_starts_with?: Maybe<String>;
+  label_not_starts_with?: Maybe<String>;
+  label_ends_with?: Maybe<String>;
+  label_not_ends_with?: Maybe<String>;
+  scans?: Maybe<Int>;
+  scans_not?: Maybe<Int>;
+  scans_in?: Maybe<Int[] | Int>;
+  scans_not_in?: Maybe<Int[] | Int>;
+  scans_lt?: Maybe<Int>;
+  scans_lte?: Maybe<Int>;
+  scans_gt?: Maybe<Int>;
+  scans_gte?: Maybe<Int>;
+  AND?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
+  OR?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
+  NOT?: Maybe<QRCodeScalarWhereInput[] | QRCodeScalarWhereInput>;
+}
+
+export interface QRCodeUpdateManyWithWhereNestedInput {
+  where: QRCodeScalarWhereInput;
+  data: QRCodeUpdateManyDataInput;
+}
+
+export interface QRCodeUpdateManyDataInput {
+  label?: Maybe<String>;
+  scans?: Maybe<Int>;
+}
+
+export interface ConnectionUpdateManyWithoutReceiverInput {
+  create?: Maybe<
+    | ConnectionCreateWithoutReceiverInput[]
+    | ConnectionCreateWithoutReceiverInput
+  >;
+  delete?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  set?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  disconnect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  update?: Maybe<
+    | ConnectionUpdateWithWhereUniqueWithoutReceiverInput[]
+    | ConnectionUpdateWithWhereUniqueWithoutReceiverInput
+  >;
+  upsert?: Maybe<
+    | ConnectionUpsertWithWhereUniqueWithoutReceiverInput[]
+    | ConnectionUpsertWithWhereUniqueWithoutReceiverInput
+  >;
+  deleteMany?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  updateMany?: Maybe<
+    | ConnectionUpdateManyWithWhereNestedInput[]
+    | ConnectionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
+  where: ConnectionWhereUniqueInput;
+  data: ConnectionUpdateWithoutReceiverDataInput;
+}
+
+export interface ConnectionUpdateWithoutReceiverDataInput {
+  sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
+  where: ConnectionWhereUniqueInput;
+  update: ConnectionUpdateWithoutReceiverDataInput;
+  create: ConnectionCreateWithoutReceiverInput;
+}
+
+export interface ConnectionScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<ConnectionStatus>;
+  status_not?: Maybe<ConnectionStatus>;
+  status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  AND?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  OR?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  NOT?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+}
+
+export interface ConnectionUpdateManyWithWhereNestedInput {
+  where: ConnectionScalarWhereInput;
+  data: ConnectionUpdateManyDataInput;
+}
+
+export interface ConnectionUpdateManyDataInput {
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface UserUpsertWithoutSentConnectionsInput {
+  update: UserUpdateWithoutSentConnectionsDataInput;
+  create: UserCreateWithoutSentConnectionsInput;
+}
+
+export interface UserUpdateOneWithoutReceivedConnectionsInput {
+  create?: Maybe<UserCreateWithoutReceivedConnectionsInput>;
+  update?: Maybe<UserUpdateWithoutReceivedConnectionsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutReceivedConnectionsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutReceivedConnectionsDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+}
+
+export interface ConnectionUpdateManyWithoutSenderInput {
+  create?: Maybe<
+    ConnectionCreateWithoutSenderInput[] | ConnectionCreateWithoutSenderInput
+  >;
+  delete?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  set?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  disconnect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  update?: Maybe<
+    | ConnectionUpdateWithWhereUniqueWithoutSenderInput[]
+    | ConnectionUpdateWithWhereUniqueWithoutSenderInput
+  >;
+  upsert?: Maybe<
+    | ConnectionUpsertWithWhereUniqueWithoutSenderInput[]
+    | ConnectionUpsertWithWhereUniqueWithoutSenderInput
+  >;
+  deleteMany?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  updateMany?: Maybe<
+    | ConnectionUpdateManyWithWhereNestedInput[]
+    | ConnectionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ConnectionUpdateWithWhereUniqueWithoutSenderInput {
+  where: ConnectionWhereUniqueInput;
+  data: ConnectionUpdateWithoutSenderDataInput;
+}
+
+export interface ConnectionUpdateWithoutSenderDataInput {
+  receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface ConnectionUpsertWithWhereUniqueWithoutSenderInput {
+  where: ConnectionWhereUniqueInput;
+  update: ConnectionUpdateWithoutSenderDataInput;
+  create: ConnectionCreateWithoutSenderInput;
+}
+
+export interface UserUpsertWithoutReceivedConnectionsInput {
+  update: UserUpdateWithoutReceivedConnectionsDataInput;
+  create: UserCreateWithoutReceivedConnectionsInput;
+}
+
+export interface ConnectionUpdateManyMutationInput {
+  status?: Maybe<ConnectionStatus>;
+}
+
+export interface ProfileFieldCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutProfileInput;
+  value: String;
+  type: ProfileFieldType;
+  privacy: ProfileFieldPrivacy;
+  preferredContact?: Maybe<Boolean>;
+}
+
+export interface UserCreateOneWithoutProfileInput {
+  create?: Maybe<UserCreateWithoutProfileInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutProfileInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+}
+
+export interface ProfileFieldUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutProfileInput>;
+  value?: Maybe<String>;
+  type?: Maybe<ProfileFieldType>;
+  privacy?: Maybe<ProfileFieldPrivacy>;
+  preferredContact?: Maybe<Boolean>;
+}
+
+export interface UserUpdateOneRequiredWithoutProfileInput {
+  create?: Maybe<UserCreateWithoutProfileInput>;
+  update?: Maybe<UserUpdateWithoutProfileDataInput>;
+  upsert?: Maybe<UserUpsertWithoutProfileInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutProfileDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+}
+
+export interface UserUpsertWithoutProfileInput {
+  update: UserUpdateWithoutProfileDataInput;
+  create: UserCreateWithoutProfileInput;
+}
+
+export interface ProfileFieldUpdateManyMutationInput {
+  value?: Maybe<String>;
+  type?: Maybe<ProfileFieldType>;
+  privacy?: Maybe<ProfileFieldPrivacy>;
+  preferredContact?: Maybe<Boolean>;
+}
+
+export interface QRCodeCreateInput {
+  id?: Maybe<ID_Input>;
+  label?: Maybe<String>;
+  scans?: Maybe<Int>;
+  user?: Maybe<UserCreateOneWithoutQrcodesInput>;
+}
+
+export interface UserCreateOneWithoutQrcodesInput {
+  create?: Maybe<UserCreateWithoutQrcodesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutQrcodesInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+}
+
+export interface QRCodeUpdateInput {
+  label?: Maybe<String>;
+  scans?: Maybe<Int>;
+  user?: Maybe<UserUpdateOneWithoutQrcodesInput>;
+}
+
+export interface UserUpdateOneWithoutQrcodesInput {
+  create?: Maybe<UserCreateWithoutQrcodesInput>;
+  update?: Maybe<UserUpdateWithoutQrcodesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutQrcodesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutQrcodesDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+}
+
 export interface UserUpsertWithoutQrcodesInput {
   update: UserUpdateWithoutQrcodesDataInput;
   create: UserCreateWithoutQrcodesInput;
@@ -834,9 +1201,12 @@ export interface UserCreateInput {
   location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
   bio?: Maybe<String>;
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
 }
 
 export interface UserUpdateInput {
@@ -847,9 +1217,12 @@ export interface UserUpdateInput {
   location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
   bio?: Maybe<String>;
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -860,7 +1233,25 @@ export interface UserUpdateManyMutationInput {
   location?: Maybe<String>;
   industry?: Maybe<String>;
   jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
   bio?: Maybe<String>;
+}
+
+export interface ConnectionSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ConnectionWhereInput>;
+  AND?: Maybe<
+    ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ConnectionSubscriptionWhereInput[] | ConnectionSubscriptionWhereInput
+  >;
 }
 
 export interface ProfileFieldSubscriptionWhereInput {
@@ -906,6 +1297,202 @@ export interface NodeNode {
   id: ID_Output;
 }
 
+export interface Connection {
+  id: ID_Output;
+  status?: ConnectionStatus;
+}
+
+export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  sender: <T = UserPromise>() => T;
+  receiver: <T = UserPromise>() => T;
+  status: () => Promise<ConnectionStatus>;
+}
+
+export interface ConnectionSubscription
+  extends Promise<AsyncIterator<Connection>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  sender: <T = UserSubscription>() => T;
+  receiver: <T = UserSubscription>() => T;
+  status: () => Promise<AsyncIterator<ConnectionStatus>>;
+}
+
+export interface ConnectionNullablePromise
+  extends Promise<Connection | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  sender: <T = UserPromise>() => T;
+  receiver: <T = UserPromise>() => T;
+  status: () => Promise<ConnectionStatus>;
+}
+
+export interface User {
+  id: ID_Output;
+  authId: String;
+  name?: String;
+  picture?: String;
+  birthdate?: String;
+  location?: String;
+  industry?: String;
+  jobtitle?: String;
+  tagline?: String;
+  bio?: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
+  birthdate: () => Promise<String>;
+  location: () => Promise<String>;
+  industry: () => Promise<String>;
+  jobtitle: () => Promise<String>;
+  tagline: () => Promise<String>;
+  bio: () => Promise<String>;
+  profile: <T = FragmentableArray<ProfileField>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  qrcodes: <T = FragmentableArray<QRCode>>(args?: {
+    where?: QRCodeWhereInput;
+    orderBy?: QRCodeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sentConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receivedConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  authId: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  picture: () => Promise<AsyncIterator<String>>;
+  birthdate: () => Promise<AsyncIterator<String>>;
+  location: () => Promise<AsyncIterator<String>>;
+  industry: () => Promise<AsyncIterator<String>>;
+  jobtitle: () => Promise<AsyncIterator<String>>;
+  tagline: () => Promise<AsyncIterator<String>>;
+  bio: () => Promise<AsyncIterator<String>>;
+  profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  qrcodes: <T = Promise<AsyncIterator<QRCodeSubscription>>>(args?: {
+    where?: QRCodeWhereInput;
+    orderBy?: QRCodeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sentConnections: <T = Promise<AsyncIterator<ConnectionSubscription>>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receivedConnections: <
+    T = Promise<AsyncIterator<ConnectionSubscription>>
+  >(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  authId: () => Promise<String>;
+  name: () => Promise<String>;
+  picture: () => Promise<String>;
+  birthdate: () => Promise<String>;
+  location: () => Promise<String>;
+  industry: () => Promise<String>;
+  jobtitle: () => Promise<String>;
+  tagline: () => Promise<String>;
+  bio: () => Promise<String>;
+  profile: <T = FragmentableArray<ProfileField>>(args?: {
+    where?: ProfileFieldWhereInput;
+    orderBy?: ProfileFieldOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  qrcodes: <T = FragmentableArray<QRCode>>(args?: {
+    where?: QRCodeWhereInput;
+    orderBy?: QRCodeOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  sentConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  receivedConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
 export interface ProfileField {
   id: ID_Output;
   value: String;
@@ -947,112 +1534,6 @@ export interface ProfileFieldNullablePromise
   preferredContact: () => Promise<Boolean>;
 }
 
-export interface User {
-  id: ID_Output;
-  authId: String;
-  name?: String;
-  picture?: String;
-  birthdate?: String;
-  location?: String;
-  industry?: String;
-  jobtitle?: String;
-  bio?: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  authId: () => Promise<String>;
-  name: () => Promise<String>;
-  picture: () => Promise<String>;
-  birthdate: () => Promise<String>;
-  location: () => Promise<String>;
-  industry: () => Promise<String>;
-  jobtitle: () => Promise<String>;
-  bio: () => Promise<String>;
-  profile: <T = FragmentableArray<ProfileField>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  qrcodes: <T = FragmentableArray<QRCode>>(args?: {
-    where?: QRCodeWhereInput;
-    orderBy?: QRCodeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  authId: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  picture: () => Promise<AsyncIterator<String>>;
-  birthdate: () => Promise<AsyncIterator<String>>;
-  location: () => Promise<AsyncIterator<String>>;
-  industry: () => Promise<AsyncIterator<String>>;
-  jobtitle: () => Promise<AsyncIterator<String>>;
-  bio: () => Promise<AsyncIterator<String>>;
-  profile: <T = Promise<AsyncIterator<ProfileFieldSubscription>>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  qrcodes: <T = Promise<AsyncIterator<QRCodeSubscription>>>(args?: {
-    where?: QRCodeWhereInput;
-    orderBy?: QRCodeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  authId: () => Promise<String>;
-  name: () => Promise<String>;
-  picture: () => Promise<String>;
-  birthdate: () => Promise<String>;
-  location: () => Promise<String>;
-  industry: () => Promise<String>;
-  jobtitle: () => Promise<String>;
-  bio: () => Promise<String>;
-  profile: <T = FragmentableArray<ProfileField>>(args?: {
-    where?: ProfileFieldWhereInput;
-    orderBy?: ProfileFieldOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  qrcodes: <T = FragmentableArray<QRCode>>(args?: {
-    where?: QRCodeWhereInput;
-    orderBy?: QRCodeOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
 export interface QRCode {
   id: ID_Output;
   label?: String;
@@ -1084,25 +1565,25 @@ export interface QRCodeNullablePromise
   user: <T = UserPromise>() => T;
 }
 
-export interface ProfileFieldConnection {
+export interface ConnectionConnection {
   pageInfo: PageInfo;
-  edges: ProfileFieldEdge[];
+  edges: ConnectionEdge[];
 }
 
-export interface ProfileFieldConnectionPromise
-  extends Promise<ProfileFieldConnection>,
+export interface ConnectionConnectionPromise
+  extends Promise<ConnectionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ProfileFieldEdge>>() => T;
-  aggregate: <T = AggregateProfileFieldPromise>() => T;
+  edges: <T = FragmentableArray<ConnectionEdge>>() => T;
+  aggregate: <T = AggregateConnectionPromise>() => T;
 }
 
-export interface ProfileFieldConnectionSubscription
-  extends Promise<AsyncIterator<ProfileFieldConnection>>,
+export interface ConnectionConnectionSubscription
+  extends Promise<AsyncIterator<ConnectionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ProfileFieldEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateProfileFieldSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ConnectionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateConnectionSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -1126,6 +1607,62 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ConnectionEdge {
+  node: Connection;
+  cursor: String;
+}
+
+export interface ConnectionEdgePromise
+  extends Promise<ConnectionEdge>,
+    Fragmentable {
+  node: <T = ConnectionPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ConnectionEdgeSubscription
+  extends Promise<AsyncIterator<ConnectionEdge>>,
+    Fragmentable {
+  node: <T = ConnectionSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateConnection {
+  count: Int;
+}
+
+export interface AggregateConnectionPromise
+  extends Promise<AggregateConnection>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateConnectionSubscription
+  extends Promise<AsyncIterator<AggregateConnection>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ProfileFieldConnection {
+  pageInfo: PageInfo;
+  edges: ProfileFieldEdge[];
+}
+
+export interface ProfileFieldConnectionPromise
+  extends Promise<ProfileFieldConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProfileFieldEdge>>() => T;
+  aggregate: <T = AggregateProfileFieldPromise>() => T;
+}
+
+export interface ProfileFieldConnectionSubscription
+  extends Promise<AsyncIterator<ProfileFieldConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProfileFieldEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProfileFieldSubscription>() => T;
 }
 
 export interface ProfileFieldEdge {
@@ -1287,6 +1824,50 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
+export interface ConnectionSubscriptionPayload {
+  mutation: MutationType;
+  node: Connection;
+  updatedFields: String[];
+  previousValues: ConnectionPreviousValues;
+}
+
+export interface ConnectionSubscriptionPayloadPromise
+  extends Promise<ConnectionSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ConnectionPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ConnectionPreviousValuesPromise>() => T;
+}
+
+export interface ConnectionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ConnectionSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ConnectionSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ConnectionPreviousValuesSubscription>() => T;
+}
+
+export interface ConnectionPreviousValues {
+  id: ID_Output;
+  status?: ConnectionStatus;
+}
+
+export interface ConnectionPreviousValuesPromise
+  extends Promise<ConnectionPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  status: () => Promise<ConnectionStatus>;
+}
+
+export interface ConnectionPreviousValuesSubscription
+  extends Promise<AsyncIterator<ConnectionPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<ConnectionStatus>>;
+}
+
 export interface ProfileFieldSubscriptionPayload {
   mutation: MutationType;
   node: ProfileField;
@@ -1421,6 +2002,7 @@ export interface UserPreviousValues {
   location?: String;
   industry?: String;
   jobtitle?: String;
+  tagline?: String;
   bio?: String;
 }
 
@@ -1435,6 +2017,7 @@ export interface UserPreviousValuesPromise
   location: () => Promise<String>;
   industry: () => Promise<String>;
   jobtitle: () => Promise<String>;
+  tagline: () => Promise<String>;
   bio: () => Promise<String>;
 }
 
@@ -1449,6 +2032,7 @@ export interface UserPreviousValuesSubscription
   location: () => Promise<AsyncIterator<String>>;
   industry: () => Promise<AsyncIterator<String>>;
   jobtitle: () => Promise<AsyncIterator<String>>;
+  tagline: () => Promise<AsyncIterator<String>>;
   bio: () => Promise<AsyncIterator<String>>;
 }
 
@@ -1498,6 +2082,14 @@ export const models: Model[] = [
   },
   {
     name: "QRCode",
+    embedded: false
+  },
+  {
+    name: "Connection",
+    embedded: false
+  },
+  {
+    name: "ConnectionStatus",
     embedded: false
   }
 ];

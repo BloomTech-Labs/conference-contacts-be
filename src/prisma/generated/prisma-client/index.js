@@ -23,6 +23,14 @@ var models = [
   {
     name: "QRCode",
     embedded: false
+  },
+  {
+    name: "Connection",
+    embedded: false
+  },
+  {
+    name: "ConnectionStatus",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
