@@ -9,6 +9,7 @@ type User {
   jobtitle: String
   bio: String
   profile: [ProfileField]!
+  qrcodes: [QRCode]!
 }
 
 type ProfileField {
@@ -34,4 +35,12 @@ enum ProfileFieldPrivacy {
   PUBLIC
   PRIVATE
   CONNECTED
+}
+
+# https://swaap.co/connect/:id
+type QRCode {
+  id: ID! @id
+  label: String
+  scans: Int @default(value: 0)
+  user: User
 }

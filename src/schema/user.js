@@ -12,6 +12,7 @@ const typeDefs = gql`
     jobtitle: String
     bio: String
     profile: [ProfileField]!
+    qrcodes: [QRCode]!
   }
 
   type ProfileField {
@@ -37,6 +38,13 @@ const typeDefs = gql`
     PUBLIC
     PRIVATE
     CONNECTED
+  }
+
+  type QRCode {
+    id: ID!
+    label: String
+    scans: Int
+    user: User
   }
 `;
 

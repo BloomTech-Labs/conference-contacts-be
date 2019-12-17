@@ -175,6 +175,17 @@ const Mutation = {
     } catch (error) {
       return mutationError(error);
     }
+  },
+  async createQRCode(_, { label }, { dataSources: { prisma }, user }) {
+    try {
+      const qrcode = await prisma.createQRCode({
+        label,
+        user: { connect: { id: user.id } }
+      });
+      return mutationSuccess(201, 'QRCode created successfully!', { qrcode });
+    } catch (error) {
+      return mutationError(error);
+    }
   }
 };
 
