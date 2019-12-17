@@ -1,6 +1,9 @@
 const User = {
-  profile({ id }, args, { dataSources: { prisma } }, info) {
+  profile({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).profile();
+  },
+  qrcodes({ id }, _, { dataSources: { prisma } }) {
+    return prisma.user({ id }).qrcodes();
   }
 };
 

@@ -38,6 +38,10 @@ const typeDefs = gql`
     Deletes multiple profile fields.
     """
     deleteProfileFields(ids: [ID]!): ProfileMutationsResponse
+    """
+    Creates a QRCode entry for a user.
+    """
+    createQRCode(label: String!): QRCodeResponse
   }
 
   input CreateUserInput {
@@ -118,6 +122,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     profileFields: [ProfileField]!
+  }
+
+  type QRCodeResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    qrcode: QRCode!
   }
 `;
 
