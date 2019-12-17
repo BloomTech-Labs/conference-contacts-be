@@ -3,7 +3,11 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateProfileField {
+/* GraphQL */ `type AggregateConnection {
+  count: Int!
+}
+
+type AggregateProfileField {
   count: Int!
 }
 
@@ -19,9 +23,227 @@ type BatchPayload {
   count: Long!
 }
 
+type Connection {
+  id: ID!
+  sender: User
+  receiver: User
+  status: ConnectionStatus
+}
+
+type ConnectionConnection {
+  pageInfo: PageInfo!
+  edges: [ConnectionEdge]!
+  aggregate: AggregateConnection!
+}
+
+input ConnectionCreateInput {
+  id: ID
+  sender: UserCreateOneWithoutSentConnectionsInput
+  receiver: UserCreateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+}
+
+input ConnectionCreateManyWithoutReceiverInput {
+  create: [ConnectionCreateWithoutReceiverInput!]
+  connect: [ConnectionWhereUniqueInput!]
+}
+
+input ConnectionCreateManyWithoutSenderInput {
+  create: [ConnectionCreateWithoutSenderInput!]
+  connect: [ConnectionWhereUniqueInput!]
+}
+
+input ConnectionCreateWithoutReceiverInput {
+  id: ID
+  sender: UserCreateOneWithoutSentConnectionsInput
+  status: ConnectionStatus
+}
+
+input ConnectionCreateWithoutSenderInput {
+  id: ID
+  receiver: UserCreateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+}
+
+type ConnectionEdge {
+  node: Connection!
+  cursor: String!
+}
+
+enum ConnectionOrderByInput {
+  id_ASC
+  id_DESC
+  status_ASC
+  status_DESC
+}
+
+type ConnectionPreviousValues {
+  id: ID!
+  status: ConnectionStatus
+}
+
+input ConnectionScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  status: ConnectionStatus
+  status_not: ConnectionStatus
+  status_in: [ConnectionStatus!]
+  status_not_in: [ConnectionStatus!]
+  AND: [ConnectionScalarWhereInput!]
+  OR: [ConnectionScalarWhereInput!]
+  NOT: [ConnectionScalarWhereInput!]
+}
+
+enum ConnectionStatus {
+  PENDING
+  CONNECTED
+  BLOCKED
+}
+
+type ConnectionSubscriptionPayload {
+  mutation: MutationType!
+  node: Connection
+  updatedFields: [String!]
+  previousValues: ConnectionPreviousValues
+}
+
+input ConnectionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ConnectionWhereInput
+  AND: [ConnectionSubscriptionWhereInput!]
+  OR: [ConnectionSubscriptionWhereInput!]
+  NOT: [ConnectionSubscriptionWhereInput!]
+}
+
+input ConnectionUpdateInput {
+  sender: UserUpdateOneWithoutSentConnectionsInput
+  receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+}
+
+input ConnectionUpdateManyDataInput {
+  status: ConnectionStatus
+}
+
+input ConnectionUpdateManyMutationInput {
+  status: ConnectionStatus
+}
+
+input ConnectionUpdateManyWithoutReceiverInput {
+  create: [ConnectionCreateWithoutReceiverInput!]
+  delete: [ConnectionWhereUniqueInput!]
+  connect: [ConnectionWhereUniqueInput!]
+  set: [ConnectionWhereUniqueInput!]
+  disconnect: [ConnectionWhereUniqueInput!]
+  update: [ConnectionUpdateWithWhereUniqueWithoutReceiverInput!]
+  upsert: [ConnectionUpsertWithWhereUniqueWithoutReceiverInput!]
+  deleteMany: [ConnectionScalarWhereInput!]
+  updateMany: [ConnectionUpdateManyWithWhereNestedInput!]
+}
+
+input ConnectionUpdateManyWithoutSenderInput {
+  create: [ConnectionCreateWithoutSenderInput!]
+  delete: [ConnectionWhereUniqueInput!]
+  connect: [ConnectionWhereUniqueInput!]
+  set: [ConnectionWhereUniqueInput!]
+  disconnect: [ConnectionWhereUniqueInput!]
+  update: [ConnectionUpdateWithWhereUniqueWithoutSenderInput!]
+  upsert: [ConnectionUpsertWithWhereUniqueWithoutSenderInput!]
+  deleteMany: [ConnectionScalarWhereInput!]
+  updateMany: [ConnectionUpdateManyWithWhereNestedInput!]
+}
+
+input ConnectionUpdateManyWithWhereNestedInput {
+  where: ConnectionScalarWhereInput!
+  data: ConnectionUpdateManyDataInput!
+}
+
+input ConnectionUpdateWithoutReceiverDataInput {
+  sender: UserUpdateOneWithoutSentConnectionsInput
+  status: ConnectionStatus
+}
+
+input ConnectionUpdateWithoutSenderDataInput {
+  receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+}
+
+input ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
+  where: ConnectionWhereUniqueInput!
+  data: ConnectionUpdateWithoutReceiverDataInput!
+}
+
+input ConnectionUpdateWithWhereUniqueWithoutSenderInput {
+  where: ConnectionWhereUniqueInput!
+  data: ConnectionUpdateWithoutSenderDataInput!
+}
+
+input ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
+  where: ConnectionWhereUniqueInput!
+  update: ConnectionUpdateWithoutReceiverDataInput!
+  create: ConnectionCreateWithoutReceiverInput!
+}
+
+input ConnectionUpsertWithWhereUniqueWithoutSenderInput {
+  where: ConnectionWhereUniqueInput!
+  update: ConnectionUpdateWithoutSenderDataInput!
+  create: ConnectionCreateWithoutSenderInput!
+}
+
+input ConnectionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  sender: UserWhereInput
+  receiver: UserWhereInput
+  status: ConnectionStatus
+  status_not: ConnectionStatus
+  status_in: [ConnectionStatus!]
+  status_not_in: [ConnectionStatus!]
+  AND: [ConnectionWhereInput!]
+  OR: [ConnectionWhereInput!]
+  NOT: [ConnectionWhereInput!]
+}
+
+input ConnectionWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
+  createConnection(data: ConnectionCreateInput!): Connection!
+  updateConnection(data: ConnectionUpdateInput!, where: ConnectionWhereUniqueInput!): Connection
+  updateManyConnections(data: ConnectionUpdateManyMutationInput!, where: ConnectionWhereInput): BatchPayload!
+  upsertConnection(where: ConnectionWhereUniqueInput!, create: ConnectionCreateInput!, update: ConnectionUpdateInput!): Connection!
+  deleteConnection(where: ConnectionWhereUniqueInput!): Connection
+  deleteManyConnections(where: ConnectionWhereInput): BatchPayload!
   createProfileField(data: ProfileFieldCreateInput!): ProfileField!
   updateProfileField(data: ProfileFieldUpdateInput!, where: ProfileFieldWhereUniqueInput!): ProfileField
   updateManyProfileFields(data: ProfileFieldUpdateManyMutationInput!, where: ProfileFieldWhereInput): BatchPayload!
@@ -514,6 +736,9 @@ input QRCodeWhereUniqueInput {
 }
 
 type Query {
+  connection(where: ConnectionWhereUniqueInput!): Connection
+  connections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection]!
+  connectionsConnection(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectionConnection!
   profileField(where: ProfileFieldWhereUniqueInput!): ProfileField
   profileFields(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField]!
   profileFieldsConnection(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileFieldConnection!
@@ -527,6 +752,7 @@ type Query {
 }
 
 type Subscription {
+  connection(where: ConnectionSubscriptionWhereInput): ConnectionSubscriptionPayload
   profileField(where: ProfileFieldSubscriptionWhereInput): ProfileFieldSubscriptionPayload
   qRCode(where: QRCodeSubscriptionWhereInput): QRCodeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -541,9 +767,12 @@ type User {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   profile(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField!]
   qrcodes(where: QRCodeWhereInput, orderBy: QRCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QRCode!]
+  sentConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
+  receivedConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
 }
 
 type UserConnection {
@@ -561,9 +790,12 @@ input UserCreateInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   profile: ProfileFieldCreateManyWithoutUserInput
   qrcodes: QRCodeCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
 }
 
 input UserCreateOneWithoutProfileInput {
@@ -576,6 +808,16 @@ input UserCreateOneWithoutQrcodesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutReceivedConnectionsInput {
+  create: UserCreateWithoutReceivedConnectionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutSentConnectionsInput {
+  create: UserCreateWithoutSentConnectionsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutProfileInput {
   id: ID
   authId: String!
@@ -585,8 +827,11 @@ input UserCreateWithoutProfileInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   qrcodes: QRCodeCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
 }
 
 input UserCreateWithoutQrcodesInput {
@@ -598,8 +843,43 @@ input UserCreateWithoutQrcodesInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   profile: ProfileFieldCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
+}
+
+input UserCreateWithoutReceivedConnectionsInput {
+  id: ID
+  authId: String!
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldCreateManyWithoutUserInput
+  qrcodes: QRCodeCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+}
+
+input UserCreateWithoutSentConnectionsInput {
+  id: ID
+  authId: String!
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldCreateManyWithoutUserInput
+  qrcodes: QRCodeCreateManyWithoutUserInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
 }
 
 type UserEdge {
@@ -624,6 +904,8 @@ enum UserOrderByInput {
   industry_DESC
   jobtitle_ASC
   jobtitle_DESC
+  tagline_ASC
+  tagline_DESC
   bio_ASC
   bio_DESC
 }
@@ -637,6 +919,7 @@ type UserPreviousValues {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
 }
 
@@ -666,9 +949,12 @@ input UserUpdateInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   profile: ProfileFieldUpdateManyWithoutUserInput
   qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
 }
 
 input UserUpdateManyMutationInput {
@@ -679,6 +965,7 @@ input UserUpdateManyMutationInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
 }
 
@@ -698,6 +985,24 @@ input UserUpdateOneWithoutQrcodesInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneWithoutReceivedConnectionsInput {
+  create: UserCreateWithoutReceivedConnectionsInput
+  update: UserUpdateWithoutReceivedConnectionsDataInput
+  upsert: UserUpsertWithoutReceivedConnectionsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutSentConnectionsInput {
+  create: UserCreateWithoutSentConnectionsInput
+  update: UserUpdateWithoutSentConnectionsDataInput
+  upsert: UserUpsertWithoutSentConnectionsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateWithoutProfileDataInput {
   authId: String
   name: String
@@ -706,8 +1011,11 @@ input UserUpdateWithoutProfileDataInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
 }
 
 input UserUpdateWithoutQrcodesDataInput {
@@ -718,8 +1026,41 @@ input UserUpdateWithoutQrcodesDataInput {
   location: String
   industry: String
   jobtitle: String
+  tagline: String
   bio: String
   profile: ProfileFieldUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+}
+
+input UserUpdateWithoutReceivedConnectionsDataInput {
+  authId: String
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
+  qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+}
+
+input UserUpdateWithoutSentConnectionsDataInput {
+  authId: String
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
+  qrcodes: QRCodeUpdateManyWithoutUserInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
 }
 
 input UserUpsertWithoutProfileInput {
@@ -730,6 +1071,16 @@ input UserUpsertWithoutProfileInput {
 input UserUpsertWithoutQrcodesInput {
   update: UserUpdateWithoutQrcodesDataInput!
   create: UserCreateWithoutQrcodesInput!
+}
+
+input UserUpsertWithoutReceivedConnectionsInput {
+  update: UserUpdateWithoutReceivedConnectionsDataInput!
+  create: UserCreateWithoutReceivedConnectionsInput!
+}
+
+input UserUpsertWithoutSentConnectionsInput {
+  update: UserUpdateWithoutSentConnectionsDataInput!
+  create: UserCreateWithoutSentConnectionsInput!
 }
 
 input UserWhereInput {
@@ -845,6 +1196,20 @@ input UserWhereInput {
   jobtitle_not_starts_with: String
   jobtitle_ends_with: String
   jobtitle_not_ends_with: String
+  tagline: String
+  tagline_not: String
+  tagline_in: [String!]
+  tagline_not_in: [String!]
+  tagline_lt: String
+  tagline_lte: String
+  tagline_gt: String
+  tagline_gte: String
+  tagline_contains: String
+  tagline_not_contains: String
+  tagline_starts_with: String
+  tagline_not_starts_with: String
+  tagline_ends_with: String
+  tagline_not_ends_with: String
   bio: String
   bio_not: String
   bio_in: [String!]
@@ -865,6 +1230,12 @@ input UserWhereInput {
   qrcodes_every: QRCodeWhereInput
   qrcodes_some: QRCodeWhereInput
   qrcodes_none: QRCodeWhereInput
+  sentConnections_every: ConnectionWhereInput
+  sentConnections_some: ConnectionWhereInput
+  sentConnections_none: ConnectionWhereInput
+  receivedConnections_every: ConnectionWhereInput
+  receivedConnections_some: ConnectionWhereInput
+  receivedConnections_none: ConnectionWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
