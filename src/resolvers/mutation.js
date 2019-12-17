@@ -1,3 +1,5 @@
+const { AuthenticationError, UserInputError } = require('apollo-server');
+
 const mutationSuccess = (code, message, fields) => ({
   code,
   message,
@@ -70,7 +72,7 @@ const Mutation = {
   },
   async createProfileFields(_, { data }, { dataSources: { prisma }, user }) {
     if (!Array.isArray(data))
-      return mutationError(`Expected data array, got ${typeof data}`);
+      throw new UserInputError(`Expected data array, got ${typeof data}`);
     try {
       const profileFields = [];
       for (const mutation of data) {
@@ -102,7 +104,7 @@ const Mutation = {
           profileField
         });
       } else {
-        return mutationError('You lack ownership of this field.');
+        throw new AuthenticationError('You lack ownership of this field.');
       }
     } catch (error) {
       return mutationError(error);
@@ -110,7 +112,7 @@ const Mutation = {
   },
   async updateProfileFields(_, { data }, { dataSources: { prisma }, user }) {
     if (!Array.isArray(data))
-      return mutationError(`Expected data array, got ${typeof data}`);
+      throw new UserInputError(`Expected data array, got ${typeof data}`);
     try {
       const profileFields = [];
       for (const mutation of data) {
@@ -126,7 +128,7 @@ const Mutation = {
           });
           profileFields.push(profileField);
         } else {
-          return mutationError('You lack ownership of this field.');
+          throw new AuthenticationError('You lack ownership of this field.');
         }
       }
       return mutationSuccess(200, 'Profile fields updated successfully!', {
@@ -143,7 +145,7 @@ const Mutation = {
         user: { id: user.id }
       });
 
-      if (!fieldExists) return mutationError('Nice try, mister.');
+      if (!fieldExists) throw new AuthenticationError('Nice try, mister.');
 
       const profileField = await prisma.deleteProfileField({ id });
       return mutationSuccess(204, 'User field deleted successfully.', {
@@ -155,7 +157,7 @@ const Mutation = {
   },
   async deleteProfileFields(_, { ids }, { dataSources: { prisma }, user }) {
     if (!Array.isArray(ids))
-      return mutationError(`Expected ids array, got ${typeof data}`);
+      throw new UserInputError(`Expected ids array, got ${typeof data}`);
     try {
       const profileFields = [];
       for (const id of ids) {
@@ -164,7 +166,7 @@ const Mutation = {
           user: { id: user.id }
         });
 
-        if (!fieldExists) return mutationError('Nice try, mister.');
+        if (!fieldExists) throw new AuthenticationError('Nice try, mister.');
 
         const profileField = await prisma.deleteProfileField({ id });
         profileFields.push(profileField);
@@ -183,6 +185,52 @@ const Mutation = {
         user: { connect: { id: user.id } }
       });
       return mutationSuccess(201, 'QRCode created successfully!', { qrcode });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async createConnection(_, { userID }, { dataSources: { prisma }, user }) {
+    try {
+      const connection = await prisma.createConnection({
+        sender: { connect: { id: user.id } },
+        receiver: { connect: { id: userID } }
+      });
+      return mutationSuccess(201, 'Connection created successfully!', {
+        connection
+      });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async updateConnection(_, { id, status }, { dataSources: { prisma }, user }) {
+    try {
+      const receiverId = await prisma.connection({ id }).receiver().id;
+      if (user.id !== receiverId)
+        throw new AuthenticationError(
+          'You cannot change a connection that does not belong to you.'
+        );
+      const connection = await prisma.updateConnection({
+        where: { id },
+        data: { status }
+      });
+      return mutationSuccess(200, 'Connection status updated successfully.', {
+        connection
+      });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async deleteConnection(_, { id }, { dataSources: { prisma }, user }) {
+    try {
+      const senderId = await prisma.connection({ id }).sender().id;
+      if (user.id !== senderId)
+        throw new AuthenticationError(
+          'You cannot delete a connection that does not belong to you.'
+        );
+      const connection = await prisma.deleteConnection({ id });
+      return mutationSuccess(204, 'Connection deleted successfully.', {
+        connection
+      });
     } catch (error) {
       return mutationError(error);
     }
