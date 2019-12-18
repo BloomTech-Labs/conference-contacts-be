@@ -1,6 +1,7 @@
 const Query = require('./query');
 const Mutation = require('./mutation');
 const User = require('./user');
+const QRCode = require('./qrcode');
 
 module.exports = {
   Query,
@@ -10,5 +11,6 @@ module.exports = {
       return null;
     }
   },
-  User
+  User,
+  QRCode
 };
