@@ -1,6 +1,27 @@
 const User = {
-  profile({ id }, _, { dataSources: { prisma } }) {
-    return prisma.user({ id }).profile();
+  async profile({ id }, _, { dataSources: { prisma }, user }) {
+    if (!user.id) return prisma.user({ id }).profile();
+
+    const [connection] = await prisma.connections({
+      where: {
+        sender: { id: user.id },
+        receiver: { id }
+      }
+    });
+
+    if (connection && connection.status === 'BLOCKED')
+      throw new Error("They don't like you.");
+
+    const filters = {
+      PENDING: field => field.privacy === 'PUBLIC',
+      CONNECTED: field => ['PUBLIC', 'CONNECTED'].includes(field.privacy)
+    };
+
+    const userProfile = await prisma.user({ id }).profile();
+
+    return connection
+      ? userProfile.filter(filters[connection.status])
+      : userProfile.filter(filters.PENDING);
   },
   qrcodes({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).qrcodes();
