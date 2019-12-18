@@ -16,6 +16,7 @@ const typeDefs = gql`
     qrcodes: [QRCode]!
     sentConnections: [Connection]!
     receivedConnections: [Connection]!
+    pendingConnections: [Connection]!
   }
 
   type ProfileField {
