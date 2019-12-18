@@ -9,7 +9,7 @@ const typeDefs = gql`
     """
     Returns info for the logged in user.
     """
-    user: User
+    user(id: ID): User
     """
     Returns a specific QR code by its ID.
     """
