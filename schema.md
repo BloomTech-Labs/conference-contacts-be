@@ -66,6 +66,25 @@ Returns info for the logged in user.
 
 </td>
 </tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>qrcode</strong></td>
+<td valign="top"><a href="#qrcode">QRCode</a></td>
+<td>
+
+Returns a specific QR code by its ID.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -606,6 +625,11 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>receivedConnections</strong></td>
+<td valign="top">[<a href="#connection">Connection</a>]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>pendingConnections</strong></td>
 <td valign="top">[<a href="#connection">Connection</a>]!</td>
 <td></td>
 </tr>
