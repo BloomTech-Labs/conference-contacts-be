@@ -218,8 +218,8 @@ const Mutation = {
   },
   async updateConnection(_, { id, status }, { dataSources: { prisma }, user }) {
     try {
-      const receiverId = await prisma.connection({ id }).receiver().id;
-      if (user.id !== receiverId)
+      const receiver = await prisma.connection({ id }).receiver();
+      if (user.id !== receiver.id)
         throw new AuthenticationError(
           'You cannot change a connection that does not belong to you.'
         );
@@ -236,13 +236,13 @@ const Mutation = {
   },
   async deleteConnection(_, { id }, { dataSources: { prisma }, user }) {
     try {
-      const connection = await prisma.connection({ id });
-      const senderId = await connection.sender().id;
-      const receiverId = await connection.receiver().id;
-      if (![senderId, receiverId].includes(user.id))
+      const sender = await prisma.connection({ id }).sender();
+      const receiver = await prisma.connection({ id }).receiver();
+      if (![sender.id, receiver.id].includes(user.id))
         throw new AuthenticationError(
           'You cannot delete a connection that does not belong to you.'
         );
+      const connection = await prisma.deleteConnection({ id });
       return mutationSuccess(204, 'Connection deleted successfully.', {
         connection
       });
