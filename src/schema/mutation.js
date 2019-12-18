@@ -9,51 +9,51 @@ const typeDefs = gql`
     """
     Updates information for the logged in user.
     """
-    updateUser(data: UpdateUserInput!): UserMutationResponse
+    updateUser(data: UpdateUserInput!): UserMutationResponse!
     """
     Deletes the currently logged in user.
     """
-    deleteUser: UserMutationResponse
+    deleteUser: UserMutationResponse!
     """
     Creates a profile field for the logged in user.
     """
-    createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse
+    createProfileField(data: CreateProfileFieldInput!): ProfileMutationResponse!
     """
     Create multiple profile fields.
     """
-    createProfileFields(data: [CreateProfileFieldInput]!): ProfileMutationsResponse
+    createProfileFields(data: [CreateProfileFieldInput]!): ProfileMutationsResponse!
     """
     Updates information for a specific profile field.
     """
-    updateProfileField(id: ID!, data: UpdateProfileFieldInput!): ProfileMutationResponse
+    updateProfileField(id: ID!, data: UpdateProfileFieldInput!): ProfileMutationResponse!
     """
     Updates multiple profile fields.
     """
-    updateProfileFields(data: [UpdateProfileFieldsInput]!): ProfileMutationsResponse
+    updateProfileFields(data: [UpdateProfileFieldsInput]!): ProfileMutationsResponse!
     """
     Deletes a user's profile field (users can only delete their _own_ profile fields)
     """
-    deleteProfileField(id: ID!): ProfileMutationResponse
+    deleteProfileField(id: ID!): ProfileMutationResponse!
     """
     Deletes multiple profile fields.
     """
-    deleteProfileFields(ids: [ID]!): ProfileMutationsResponse
+    deleteProfileFields(ids: [ID]!): ProfileMutationsResponse!
     """
     Creates a QRCode entry for a user.
     """
-    createQRCode(label: String!): QRCodeResponse
+    createQRCode(label: String!): QRCodeResponse!
     """
     Creates a connection request to the specified user.
     """
-    createConnection(userID: ID!): ConnectionResponse
+    createConnection(userID: ID!): ConnectionResponse!
     """
     Updates a connection status.
     """
-    updateConnection(id: ID!, status: ConnectionStatus!): ConnectionResponse
+    updateConnection(id: ID!, status: ConnectionStatus!): ConnectionResponse!
     """
     Deletes a connection entirely.
     """
-    deleteConnection(id: ID!): ConnectionResponse
+    deleteConnection(id: ID!): ConnectionResponse!
   }
 
   input CreateUserInput {
@@ -121,14 +121,14 @@ const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
-    user: User!
+    user: User
   }
 
   type ProfileMutationResponse implements MutationResponse {
     code: Int!
     success: Boolean!
     message: String!
-    profileField: ProfileField!
+    profileField: ProfileField
   }
 
   type ProfileMutationsResponse implements MutationResponse {
@@ -142,14 +142,14 @@ const typeDefs = gql`
     code: Int!
     success: Boolean!
     message: String!
-    qrcode: QRCode!
+    qrcode: QRCode
   }
 
   type ConnectionResponse implements MutationResponse {
     code: Int!
     success: Boolean!
     message: String!
-    connection: Connection!
+    connection: Connection
   }
 `;
 

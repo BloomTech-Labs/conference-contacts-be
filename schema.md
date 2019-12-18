@@ -62,7 +62,7 @@ Returns all users; this query is temporary.
 <td valign="top"><a href="#user">User</a></td>
 <td>
 
-Returns info for the logged in user.
+Returns info for the logged in user if no ID is provided, otherwise for a specific user.
 
 </td>
 </tr>
@@ -115,7 +115,7 @@ Creates a new user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>updateUser</strong></td>
-<td valign="top"><a href="#usermutationresponse">UserMutationResponse</a></td>
+<td valign="top"><a href="#usermutationresponse">UserMutationResponse</a>!</td>
 <td>
 
 Updates information for the logged in user.
@@ -129,7 +129,7 @@ Updates information for the logged in user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>deleteUser</strong></td>
-<td valign="top"><a href="#usermutationresponse">UserMutationResponse</a></td>
+<td valign="top"><a href="#usermutationresponse">UserMutationResponse</a>!</td>
 <td>
 
 Deletes the currently logged in user.
@@ -138,7 +138,7 @@ Deletes the currently logged in user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>createProfileField</strong></td>
-<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
+<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a>!</td>
 <td>
 
 Creates a profile field for the logged in user.
@@ -152,7 +152,7 @@ Creates a profile field for the logged in user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>createProfileFields</strong></td>
-<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a></td>
+<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a>!</td>
 <td>
 
 Create multiple profile fields.
@@ -166,7 +166,7 @@ Create multiple profile fields.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>updateProfileField</strong></td>
-<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
+<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a>!</td>
 <td>
 
 Updates information for a specific profile field.
@@ -185,7 +185,7 @@ Updates information for a specific profile field.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>updateProfileFields</strong></td>
-<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a></td>
+<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a>!</td>
 <td>
 
 Updates multiple profile fields.
@@ -199,7 +199,7 @@ Updates multiple profile fields.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>deleteProfileField</strong></td>
-<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a></td>
+<td valign="top"><a href="#profilemutationresponse">ProfileMutationResponse</a>!</td>
 <td>
 
 Deletes a user's profile field (users can only delete their _own_ profile fields)
@@ -213,7 +213,7 @@ Deletes a user's profile field (users can only delete their _own_ profile fields
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>deleteProfileFields</strong></td>
-<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a></td>
+<td valign="top"><a href="#profilemutationsresponse">ProfileMutationsResponse</a>!</td>
 <td>
 
 Deletes multiple profile fields.
@@ -227,7 +227,7 @@ Deletes multiple profile fields.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>createQRCode</strong></td>
-<td valign="top"><a href="#qrcoderesponse">QRCodeResponse</a></td>
+<td valign="top"><a href="#qrcoderesponse">QRCodeResponse</a>!</td>
 <td>
 
 Creates a QRCode entry for a user.
@@ -241,7 +241,7 @@ Creates a QRCode entry for a user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>createConnection</strong></td>
-<td valign="top"><a href="#connectionresponse">ConnectionResponse</a></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
 <td>
 
 Creates a connection request to the specified user.
@@ -255,7 +255,7 @@ Creates a connection request to the specified user.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>updateConnection</strong></td>
-<td valign="top"><a href="#connectionresponse">ConnectionResponse</a></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
 <td>
 
 Updates a connection status.
@@ -274,7 +274,7 @@ Updates a connection status.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>deleteConnection</strong></td>
-<td valign="top"><a href="#connectionresponse">ConnectionResponse</a></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
 <td>
 
 Deletes a connection entirely.
@@ -355,7 +355,7 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>connection</strong></td>
-<td valign="top"><a href="#connection">Connection</a>!</td>
+<td valign="top"><a href="#connection">Connection</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -435,7 +435,7 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>profileField</strong></td>
-<td valign="top"><a href="#profilefield">ProfileField</a>!</td>
+<td valign="top"><a href="#profilefield">ProfileField</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -540,7 +540,7 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>qrcode</strong></td>
-<td valign="top"><a href="#qrcode">QRCode</a>!</td>
+<td valign="top"><a href="#qrcode">QRCode</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -665,7 +665,7 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>user</strong></td>
-<td valign="top"><a href="#user">User</a>!</td>
+<td valign="top"><a href="#user">User</a></td>
 <td></td>
 </tr>
 </tbody>

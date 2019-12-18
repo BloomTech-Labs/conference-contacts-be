@@ -7,7 +7,7 @@ const typeDefs = gql`
     """
     users: [User]!
     """
-    Returns info for the logged in user.
+    Returns info for the logged in user if no ID is provided, otherwise for a specific user.
     """
     user(id: ID): User
     """
