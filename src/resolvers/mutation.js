@@ -191,6 +191,20 @@ const Mutation = {
   },
   async createConnection(_, { userID }, { dataSources: { prisma }, user }) {
     try {
+      // users should not be able to send a connection to themself
+      if (userID === user.id)
+        throw new UserInputError("You'll always have a friend in yourself... just not on here.");
+      // users should not be able to send a duplicate connection
+      const existingConnections = await prisma.connections({
+        where: {
+          sender: { id: user.id },
+          receiver: { id: userID }
+        }
+      });
+      if (existingConnections.length)
+        throw new UserInputError(
+          "You've already made a connection request to this user. Chill."
+        );
       const connection = await prisma.createConnection({
         sender: { connect: { id: user.id } },
         receiver: { connect: { id: userID } }
