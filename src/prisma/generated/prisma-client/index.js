@@ -31,6 +31,10 @@ var models = [
   {
     name: "ConnectionStatus",
     embedded: false
+  },
+  {
+    name: "Coordinates",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({

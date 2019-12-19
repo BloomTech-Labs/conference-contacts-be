@@ -53,10 +53,17 @@ type Connection {
   sender: User @relation(name: "SentConnections")
   receiver: User @relation(name: "ReceivedConnections")
   status: ConnectionStatus @default(value: PENDING)
+  coords: Coordinates
 }
 
 enum ConnectionStatus {
   PENDING
   CONNECTED
   BLOCKED
+}
+
+type Coordinates {
+  id: ID! @id
+  latitude: Float
+  longitude: Float
 }

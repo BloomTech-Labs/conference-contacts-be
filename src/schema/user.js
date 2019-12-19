@@ -56,12 +56,19 @@ const typeDefs = gql`
     sender: User
     receiver: User
     status: ConnectionStatus
+    coords: Coordinates
   }
 
   enum ConnectionStatus {
     PENDING
     CONNECTED
     BLOCKED
+  }
+
+  type Coordinates {
+    id: ID!
+    latitude: Float
+    longitude: Float
   }
 `;
 

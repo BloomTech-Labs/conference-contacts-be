@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateCoordinates {
+  count: Int!
+}
+
 type AggregateProfileField {
   count: Int!
 }
@@ -28,6 +32,7 @@ type Connection {
   sender: User
   receiver: User
   status: ConnectionStatus
+  coords: Coordinates
 }
 
 type ConnectionConnection {
@@ -41,6 +46,7 @@ input ConnectionCreateInput {
   sender: UserCreateOneWithoutSentConnectionsInput
   receiver: UserCreateOneWithoutReceivedConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesCreateOneInput
 }
 
 input ConnectionCreateManyWithoutReceiverInput {
@@ -57,12 +63,14 @@ input ConnectionCreateWithoutReceiverInput {
   id: ID
   sender: UserCreateOneWithoutSentConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesCreateOneInput
 }
 
 input ConnectionCreateWithoutSenderInput {
   id: ID
   receiver: UserCreateOneWithoutReceivedConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesCreateOneInput
 }
 
 type ConnectionEdge {
@@ -134,6 +142,7 @@ input ConnectionUpdateInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesUpdateOneInput
 }
 
 input ConnectionUpdateManyDataInput {
@@ -176,11 +185,13 @@ input ConnectionUpdateManyWithWhereNestedInput {
 input ConnectionUpdateWithoutReceiverDataInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesUpdateOneInput
 }
 
 input ConnectionUpdateWithoutSenderDataInput {
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
   status: ConnectionStatus
+  coords: CoordinatesUpdateOneInput
 }
 
 input ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
@@ -226,12 +237,143 @@ input ConnectionWhereInput {
   status_not: ConnectionStatus
   status_in: [ConnectionStatus!]
   status_not_in: [ConnectionStatus!]
+  coords: CoordinatesWhereInput
   AND: [ConnectionWhereInput!]
   OR: [ConnectionWhereInput!]
   NOT: [ConnectionWhereInput!]
 }
 
 input ConnectionWhereUniqueInput {
+  id: ID
+}
+
+type Coordinates {
+  id: ID!
+  latitude: Float
+  longitude: Float
+}
+
+type CoordinatesConnection {
+  pageInfo: PageInfo!
+  edges: [CoordinatesEdge]!
+  aggregate: AggregateCoordinates!
+}
+
+input CoordinatesCreateInput {
+  id: ID
+  latitude: Float
+  longitude: Float
+}
+
+input CoordinatesCreateOneInput {
+  create: CoordinatesCreateInput
+  connect: CoordinatesWhereUniqueInput
+}
+
+type CoordinatesEdge {
+  node: Coordinates!
+  cursor: String!
+}
+
+enum CoordinatesOrderByInput {
+  id_ASC
+  id_DESC
+  latitude_ASC
+  latitude_DESC
+  longitude_ASC
+  longitude_DESC
+}
+
+type CoordinatesPreviousValues {
+  id: ID!
+  latitude: Float
+  longitude: Float
+}
+
+type CoordinatesSubscriptionPayload {
+  mutation: MutationType!
+  node: Coordinates
+  updatedFields: [String!]
+  previousValues: CoordinatesPreviousValues
+}
+
+input CoordinatesSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CoordinatesWhereInput
+  AND: [CoordinatesSubscriptionWhereInput!]
+  OR: [CoordinatesSubscriptionWhereInput!]
+  NOT: [CoordinatesSubscriptionWhereInput!]
+}
+
+input CoordinatesUpdateDataInput {
+  latitude: Float
+  longitude: Float
+}
+
+input CoordinatesUpdateInput {
+  latitude: Float
+  longitude: Float
+}
+
+input CoordinatesUpdateManyMutationInput {
+  latitude: Float
+  longitude: Float
+}
+
+input CoordinatesUpdateOneInput {
+  create: CoordinatesCreateInput
+  update: CoordinatesUpdateDataInput
+  upsert: CoordinatesUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CoordinatesWhereUniqueInput
+}
+
+input CoordinatesUpsertNestedInput {
+  update: CoordinatesUpdateDataInput!
+  create: CoordinatesCreateInput!
+}
+
+input CoordinatesWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  latitude: Float
+  latitude_not: Float
+  latitude_in: [Float!]
+  latitude_not_in: [Float!]
+  latitude_lt: Float
+  latitude_lte: Float
+  latitude_gt: Float
+  latitude_gte: Float
+  longitude: Float
+  longitude_not: Float
+  longitude_in: [Float!]
+  longitude_not_in: [Float!]
+  longitude_lt: Float
+  longitude_lte: Float
+  longitude_gt: Float
+  longitude_gte: Float
+  AND: [CoordinatesWhereInput!]
+  OR: [CoordinatesWhereInput!]
+  NOT: [CoordinatesWhereInput!]
+}
+
+input CoordinatesWhereUniqueInput {
   id: ID
 }
 
@@ -244,6 +386,12 @@ type Mutation {
   upsertConnection(where: ConnectionWhereUniqueInput!, create: ConnectionCreateInput!, update: ConnectionUpdateInput!): Connection!
   deleteConnection(where: ConnectionWhereUniqueInput!): Connection
   deleteManyConnections(where: ConnectionWhereInput): BatchPayload!
+  createCoordinates(data: CoordinatesCreateInput!): Coordinates!
+  updateCoordinates(data: CoordinatesUpdateInput!, where: CoordinatesWhereUniqueInput!): Coordinates
+  updateManyCoordinateses(data: CoordinatesUpdateManyMutationInput!, where: CoordinatesWhereInput): BatchPayload!
+  upsertCoordinates(where: CoordinatesWhereUniqueInput!, create: CoordinatesCreateInput!, update: CoordinatesUpdateInput!): Coordinates!
+  deleteCoordinates(where: CoordinatesWhereUniqueInput!): Coordinates
+  deleteManyCoordinateses(where: CoordinatesWhereInput): BatchPayload!
   createProfileField(data: ProfileFieldCreateInput!): ProfileField!
   updateProfileField(data: ProfileFieldUpdateInput!, where: ProfileFieldWhereUniqueInput!): ProfileField
   updateManyProfileFields(data: ProfileFieldUpdateManyMutationInput!, where: ProfileFieldWhereInput): BatchPayload!
@@ -739,6 +887,9 @@ type Query {
   connection(where: ConnectionWhereUniqueInput!): Connection
   connections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection]!
   connectionsConnection(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectionConnection!
+  coordinates(where: CoordinatesWhereUniqueInput!): Coordinates
+  coordinateses(where: CoordinatesWhereInput, orderBy: CoordinatesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Coordinates]!
+  coordinatesesConnection(where: CoordinatesWhereInput, orderBy: CoordinatesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CoordinatesConnection!
   profileField(where: ProfileFieldWhereUniqueInput!): ProfileField
   profileFields(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField]!
   profileFieldsConnection(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileFieldConnection!
@@ -753,6 +904,7 @@ type Query {
 
 type Subscription {
   connection(where: ConnectionSubscriptionWhereInput): ConnectionSubscriptionPayload
+  coordinates(where: CoordinatesSubscriptionWhereInput): CoordinatesSubscriptionPayload
   profileField(where: ProfileFieldSubscriptionWhereInput): ProfileFieldSubscriptionPayload
   qRCode(where: QRCodeSubscriptionWhereInput): QRCodeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload

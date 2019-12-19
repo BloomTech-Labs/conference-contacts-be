@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   connection: (where?: ConnectionWhereInput) => Promise<boolean>;
+  coordinates: (where?: CoordinatesWhereInput) => Promise<boolean>;
   profileField: (where?: ProfileFieldWhereInput) => Promise<boolean>;
   qRCode: (where?: QRCodeWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -60,6 +61,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ConnectionConnectionPromise;
+  coordinates: (
+    where: CoordinatesWhereUniqueInput
+  ) => CoordinatesNullablePromise;
+  coordinateses: (args?: {
+    where?: CoordinatesWhereInput;
+    orderBy?: CoordinatesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Coordinates>;
+  coordinatesesConnection: (args?: {
+    where?: CoordinatesWhereInput;
+    orderBy?: CoordinatesOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => CoordinatesConnectionPromise;
   profileField: (
     where: ProfileFieldWhereUniqueInput
   ) => ProfileFieldNullablePromise;
@@ -141,6 +163,24 @@ export interface Prisma {
   }) => ConnectionPromise;
   deleteConnection: (where: ConnectionWhereUniqueInput) => ConnectionPromise;
   deleteManyConnections: (where?: ConnectionWhereInput) => BatchPayloadPromise;
+  createCoordinates: (data: CoordinatesCreateInput) => CoordinatesPromise;
+  updateCoordinates: (args: {
+    data: CoordinatesUpdateInput;
+    where: CoordinatesWhereUniqueInput;
+  }) => CoordinatesPromise;
+  updateManyCoordinateses: (args: {
+    data: CoordinatesUpdateManyMutationInput;
+    where?: CoordinatesWhereInput;
+  }) => BatchPayloadPromise;
+  upsertCoordinates: (args: {
+    where: CoordinatesWhereUniqueInput;
+    create: CoordinatesCreateInput;
+    update: CoordinatesUpdateInput;
+  }) => CoordinatesPromise;
+  deleteCoordinates: (where: CoordinatesWhereUniqueInput) => CoordinatesPromise;
+  deleteManyCoordinateses: (
+    where?: CoordinatesWhereInput
+  ) => BatchPayloadPromise;
   createProfileField: (data: ProfileFieldCreateInput) => ProfileFieldPromise;
   updateProfileField: (args: {
     data: ProfileFieldUpdateInput;
@@ -205,6 +245,9 @@ export interface Subscription {
   connection: (
     where?: ConnectionSubscriptionWhereInput
   ) => ConnectionSubscriptionPayloadSubscription;
+  coordinates: (
+    where?: CoordinatesSubscriptionWhereInput
+  ) => CoordinatesSubscriptionPayloadSubscription;
   profileField: (
     where?: ProfileFieldSubscriptionWhereInput
   ) => ProfileFieldSubscriptionPayloadSubscription;
@@ -262,6 +305,14 @@ export type ConnectionOrderByInput =
   | "id_DESC"
   | "status_ASC"
   | "status_DESC";
+
+export type CoordinatesOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "latitude_ASC"
+  | "latitude_DESC"
+  | "longitude_ASC"
+  | "longitude_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -558,10 +609,51 @@ export interface ConnectionWhereInput {
   status_not?: Maybe<ConnectionStatus>;
   status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
   status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  coords?: Maybe<CoordinatesWhereInput>;
   AND?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   OR?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   NOT?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
 }
+
+export interface CoordinatesWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  latitude?: Maybe<Float>;
+  latitude_not?: Maybe<Float>;
+  latitude_in?: Maybe<Float[] | Float>;
+  latitude_not_in?: Maybe<Float[] | Float>;
+  latitude_lt?: Maybe<Float>;
+  latitude_lte?: Maybe<Float>;
+  latitude_gt?: Maybe<Float>;
+  latitude_gte?: Maybe<Float>;
+  longitude?: Maybe<Float>;
+  longitude_not?: Maybe<Float>;
+  longitude_in?: Maybe<Float[] | Float>;
+  longitude_not_in?: Maybe<Float[] | Float>;
+  longitude_lt?: Maybe<Float>;
+  longitude_lte?: Maybe<Float>;
+  longitude_gt?: Maybe<Float>;
+  longitude_gte?: Maybe<Float>;
+  AND?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
+  OR?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
+  NOT?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
+}
+
+export type CoordinatesWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export type ProfileFieldWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -581,6 +673,7 @@ export interface ConnectionCreateInput {
   sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesCreateOneInput>;
 }
 
 export interface UserCreateOneWithoutSentConnectionsInput {
@@ -644,6 +737,18 @@ export interface ConnectionCreateWithoutReceiverInput {
   id?: Maybe<ID_Input>;
   sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesCreateOneInput>;
+}
+
+export interface CoordinatesCreateOneInput {
+  create?: Maybe<CoordinatesCreateInput>;
+  connect?: Maybe<CoordinatesWhereUniqueInput>;
+}
+
+export interface CoordinatesCreateInput {
+  id?: Maybe<ID_Input>;
+  latitude?: Maybe<Float>;
+  longitude?: Maybe<Float>;
 }
 
 export interface UserCreateOneWithoutReceivedConnectionsInput {
@@ -678,12 +783,14 @@ export interface ConnectionCreateWithoutSenderInput {
   id?: Maybe<ID_Input>;
   receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesCreateOneInput>;
 }
 
 export interface ConnectionUpdateInput {
   sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesUpdateOneInput>;
 }
 
 export interface UserUpdateOneWithoutSentConnectionsInput {
@@ -934,6 +1041,26 @@ export interface ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
 export interface ConnectionUpdateWithoutReceiverDataInput {
   sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesUpdateOneInput>;
+}
+
+export interface CoordinatesUpdateOneInput {
+  create?: Maybe<CoordinatesCreateInput>;
+  update?: Maybe<CoordinatesUpdateDataInput>;
+  upsert?: Maybe<CoordinatesUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<CoordinatesWhereUniqueInput>;
+}
+
+export interface CoordinatesUpdateDataInput {
+  latitude?: Maybe<Float>;
+  longitude?: Maybe<Float>;
+}
+
+export interface CoordinatesUpsertNestedInput {
+  update: CoordinatesUpdateDataInput;
+  create: CoordinatesCreateInput;
 }
 
 export interface ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
@@ -1035,6 +1162,7 @@ export interface ConnectionUpdateWithWhereUniqueWithoutSenderInput {
 export interface ConnectionUpdateWithoutSenderDataInput {
   receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
+  coords?: Maybe<CoordinatesUpdateOneInput>;
 }
 
 export interface ConnectionUpsertWithWhereUniqueWithoutSenderInput {
@@ -1050,6 +1178,16 @@ export interface UserUpsertWithoutReceivedConnectionsInput {
 
 export interface ConnectionUpdateManyMutationInput {
   status?: Maybe<ConnectionStatus>;
+}
+
+export interface CoordinatesUpdateInput {
+  latitude?: Maybe<Float>;
+  longitude?: Maybe<Float>;
+}
+
+export interface CoordinatesUpdateManyMutationInput {
+  latitude?: Maybe<Float>;
+  longitude?: Maybe<Float>;
 }
 
 export interface ProfileFieldCreateInput {
@@ -1254,6 +1392,23 @@ export interface ConnectionSubscriptionWhereInput {
   >;
 }
 
+export interface CoordinatesSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<CoordinatesWhereInput>;
+  AND?: Maybe<
+    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+  >;
+}
+
 export interface ProfileFieldSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -1307,6 +1462,7 @@ export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
   sender: <T = UserPromise>() => T;
   receiver: <T = UserPromise>() => T;
   status: () => Promise<ConnectionStatus>;
+  coords: <T = CoordinatesPromise>() => T;
 }
 
 export interface ConnectionSubscription
@@ -1316,6 +1472,7 @@ export interface ConnectionSubscription
   sender: <T = UserSubscription>() => T;
   receiver: <T = UserSubscription>() => T;
   status: () => Promise<AsyncIterator<ConnectionStatus>>;
+  coords: <T = CoordinatesSubscription>() => T;
 }
 
 export interface ConnectionNullablePromise
@@ -1325,6 +1482,7 @@ export interface ConnectionNullablePromise
   sender: <T = UserPromise>() => T;
   receiver: <T = UserPromise>() => T;
   status: () => Promise<ConnectionStatus>;
+  coords: <T = CoordinatesPromise>() => T;
 }
 
 export interface User {
@@ -1565,6 +1723,34 @@ export interface QRCodeNullablePromise
   user: <T = UserPromise>() => T;
 }
 
+export interface Coordinates {
+  id: ID_Output;
+  latitude?: Float;
+  longitude?: Float;
+}
+
+export interface CoordinatesPromise extends Promise<Coordinates>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  latitude: () => Promise<Float>;
+  longitude: () => Promise<Float>;
+}
+
+export interface CoordinatesSubscription
+  extends Promise<AsyncIterator<Coordinates>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  latitude: () => Promise<AsyncIterator<Float>>;
+  longitude: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface CoordinatesNullablePromise
+  extends Promise<Coordinates | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  latitude: () => Promise<Float>;
+  longitude: () => Promise<Float>;
+}
+
 export interface ConnectionConnection {
   pageInfo: PageInfo;
   edges: ConnectionEdge[];
@@ -1640,6 +1826,62 @@ export interface AggregateConnectionPromise
 
 export interface AggregateConnectionSubscription
   extends Promise<AsyncIterator<AggregateConnection>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CoordinatesConnection {
+  pageInfo: PageInfo;
+  edges: CoordinatesEdge[];
+}
+
+export interface CoordinatesConnectionPromise
+  extends Promise<CoordinatesConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CoordinatesEdge>>() => T;
+  aggregate: <T = AggregateCoordinatesPromise>() => T;
+}
+
+export interface CoordinatesConnectionSubscription
+  extends Promise<AsyncIterator<CoordinatesConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CoordinatesEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCoordinatesSubscription>() => T;
+}
+
+export interface CoordinatesEdge {
+  node: Coordinates;
+  cursor: String;
+}
+
+export interface CoordinatesEdgePromise
+  extends Promise<CoordinatesEdge>,
+    Fragmentable {
+  node: <T = CoordinatesPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CoordinatesEdgeSubscription
+  extends Promise<AsyncIterator<CoordinatesEdge>>,
+    Fragmentable {
+  node: <T = CoordinatesSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCoordinates {
+  count: Int;
+}
+
+export interface AggregateCoordinatesPromise
+  extends Promise<AggregateCoordinates>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCoordinatesSubscription
+  extends Promise<AsyncIterator<AggregateCoordinates>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -1868,6 +2110,53 @@ export interface ConnectionPreviousValuesSubscription
   status: () => Promise<AsyncIterator<ConnectionStatus>>;
 }
 
+export interface CoordinatesSubscriptionPayload {
+  mutation: MutationType;
+  node: Coordinates;
+  updatedFields: String[];
+  previousValues: CoordinatesPreviousValues;
+}
+
+export interface CoordinatesSubscriptionPayloadPromise
+  extends Promise<CoordinatesSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CoordinatesPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CoordinatesPreviousValuesPromise>() => T;
+}
+
+export interface CoordinatesSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CoordinatesSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CoordinatesSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CoordinatesPreviousValuesSubscription>() => T;
+}
+
+export interface CoordinatesPreviousValues {
+  id: ID_Output;
+  latitude?: Float;
+  longitude?: Float;
+}
+
+export interface CoordinatesPreviousValuesPromise
+  extends Promise<CoordinatesPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  latitude: () => Promise<Float>;
+  longitude: () => Promise<Float>;
+}
+
+export interface CoordinatesPreviousValuesSubscription
+  extends Promise<AsyncIterator<CoordinatesPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  latitude: () => Promise<AsyncIterator<Float>>;
+  longitude: () => Promise<AsyncIterator<Float>>;
+}
+
 export interface ProfileFieldSubscriptionPayload {
   mutation: MutationType;
   node: ProfileField;
@@ -2053,6 +2342,11 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 export type Int = number;
 
 /*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
+*/
+export type Float = number;
+
+/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
@@ -2090,6 +2384,10 @@ export const models: Model[] = [
   },
   {
     name: "ConnectionStatus",
+    embedded: false
+  },
+  {
+    name: "Coordinates",
     embedded: false
   }
 ];
