@@ -193,18 +193,21 @@ const Mutation = {
     try {
       // users should not be able to send a connection to themself
       if (userID === user.id)
-        throw new UserInputError("You'll always have a friend in yourself... just not on here.");
+        throw new UserInputError(
+          "You'll always have a friend in yourself... just not on here."
+        );
       // users should not be able to send a duplicate connection
       const existingConnections = await prisma.connections({
         where: {
-          sender: { id: user.id },
-          receiver: { id: userID }
+          OR: [
+            { sender: { id: user.id }, receiver: { id: userID } },
+            { sender: { id: userID }, receiver: { id: user.id } }
+          ]
         }
       });
-      if (existingConnections.length)
-        throw new UserInputError(
-          "You've already made a connection request to this user. Chill."
-        );
+      if (existingConnections.length) throw new UserInputError(
+        'A connection already exists between you.'
+      );
       const connection = await prisma.createConnection({
         sender: { connect: { id: user.id } },
         receiver: { connect: { id: userID } }
