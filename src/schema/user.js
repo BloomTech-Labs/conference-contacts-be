@@ -17,6 +17,7 @@ const typeDefs = gql`
     sentConnections: [Connection]!
     receivedConnections: [Connection]!
     pendingConnections: [Connection]!
+    connections: [Connection]!
   }
 
   type ProfileField {

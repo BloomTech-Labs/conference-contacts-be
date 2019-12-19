@@ -38,6 +38,13 @@ const User = {
     return [...sentConnections, ...receivedConnections].filter(
       connection => connection.status === 'PENDING'
     );
+  },
+  async connections({ id }, _, { dataSources: { prisma } }) {
+    const sentConnections = await prisma.user({ id }).sentConnections();
+    const receivedConnections = await prisma.user({ id }).receivedConnections();
+    return [...sentConnections, ...receivedConnections].filter(
+      connection => connection.status === 'CONNECTED'
+    );
   }
 };
 
