@@ -1,6 +1,6 @@
 const User = {
   async profile({ id }, _, { dataSources: { prisma }, user }) {
-    if (!user.id) return prisma.user({ id }).profile();
+    if (id === user.id) return prisma.user({ id }).profile();
 
     const [connection] = await prisma.connections({
       where: {
