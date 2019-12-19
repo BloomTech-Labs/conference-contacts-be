@@ -8,6 +8,7 @@
   * [Objects](#objects)
     * [Connection](#connection)
     * [ConnectionResponse](#connectionresponse)
+    * [Coordinates](#coordinates)
     * [ProfileField](#profilefield)
     * [ProfileMutationResponse](#profilemutationresponse)
     * [ProfileMutationsResponse](#profilemutationsresponse)
@@ -28,6 +29,7 @@
     * [ProfileFieldType](#profilefieldtype)
   * [Scalars](#scalars)
     * [Boolean](#boolean)
+    * [Float](#float)
     * [ID](#id)
     * [Int](#int)
     * [String](#string)
@@ -323,6 +325,11 @@ Deletes a connection entirely.
 <td valign="top"><a href="#connectionstatus">ConnectionStatus</a></td>
 <td></td>
 </tr>
+<tr>
+<td colspan="2" valign="top"><strong>coords</strong></td>
+<td valign="top"><a href="#coordinates">Coordinates</a></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -356,6 +363,36 @@ Deletes a connection entirely.
 <tr>
 <td colspan="2" valign="top"><strong>connection</strong></td>
 <td valign="top"><a href="#connection">Connection</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+### Coordinates
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>id</strong></td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>latitude</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>longitude</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -630,6 +667,11 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>pendingConnections</strong></td>
+<td valign="top">[<a href="#connection">Connection</a>]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>connections</strong></td>
 <td valign="top">[<a href="#connection">Connection</a>]!</td>
 <td></td>
 </tr>
@@ -1009,6 +1051,10 @@ Deletes a connection entirely.
 ### Boolean
 
 The `Boolean` scalar type represents `true` or `false`.
+
+### Float
+
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point).
 
 ### ID
 
