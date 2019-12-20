@@ -21,17 +21,21 @@ const Query = {
       }
     });
 
-    return userData.map(
-      byPrivacy(
-        !connection ||
-          connection.status === 'PENDING' ||
-          (await prisma.connection({ id: connection.id }).blocker())
-          ? '!'
-          : '*'
-      )
-    );
+    if (
+      !connection ||
+      connection.status === 'PENDING' ||
+      (await prisma.connection({ id: connection.id }).blocker())
+    ) {
+      for (const field in userData) {
+        if (userData.hasOwnProperty(field)) {
+          if (!['id', 'name', 'picture', 'tagline'].includes(field)) {
+            userData[field] = null;
+          }
+        }
+      }
+    }
 
-    return prisma.user({ id });
+    return userData;
   },
   qrcode(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('Invalid token');
