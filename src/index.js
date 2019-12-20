@@ -46,7 +46,6 @@ function getUser(token) {
       try {
         const authId = decoded.sub.split('|')[1];
         const user = await prisma.user({ authId });
-        if (!user) reject('User does not exist');
         resolve({decoded, user});
       } catch (error) {
         reject(error);
