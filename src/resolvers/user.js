@@ -15,13 +15,11 @@ const User = {
       }
     });
 
-    if (!connection) return userProfile.filter(byPrivacy(['PUBLIC']));
-
-    const blocker = await prisma.connection({ id: connection.id }).blocker();
-
     return userProfile.filter(
       byPrivacy(
-        blocker || connection.status === 'PENDING'
+        !connection ||
+          connection.status === 'PENDING' ||
+          (await prisma.connection({ id: connection.id }).blocker())
           ? ['PUBLIC']
           : ['PUBLIC', 'CONNECTED']
       )
