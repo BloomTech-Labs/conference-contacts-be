@@ -28,7 +28,7 @@ const Query = {
     ) {
       for (const field in userData) {
         if (userData.hasOwnProperty(field)) {
-          if (!['id', 'name', 'picture', 'tagline'].includes(field)) {
+          if (!['id', 'authId', 'name', 'picture', 'tagline'].includes(field)) {
             userData[field] = null;
           }
         }
