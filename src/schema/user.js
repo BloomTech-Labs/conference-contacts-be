@@ -14,10 +14,12 @@ const typeDefs = gql`
     bio: String
     profile: [ProfileField]!
     qrcodes: [QRCode]!
+    connections: [Connection]!
     sentConnections: [Connection]!
     receivedConnections: [Connection]!
     pendingConnections: [Connection]!
-    connections: [Connection]!
+    blockedConnections: [Connection]!
+    notifications: [Notification]!
   }
 
   type ProfileField {
@@ -56,20 +58,24 @@ const typeDefs = gql`
     id: ID!
     sender: User
     receiver: User
+    blocker: User
     status: ConnectionStatus
-    coords: Coordinates
+    senderLat: Float
+    senderLon: Float
+    receiverLat: Float
+    receiverLon: Float
+    location: String
   }
 
   enum ConnectionStatus {
     PENDING
     CONNECTED
-    BLOCKED
   }
 
-  type Coordinates {
+  type Notification {
     id: ID!
-    latitude: Float
-    longitude: Float
+    message: String!
+    user: User!
   }
 `;
 

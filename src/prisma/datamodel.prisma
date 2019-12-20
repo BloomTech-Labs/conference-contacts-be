@@ -13,6 +13,8 @@ type User {
   qrcodes: [QRCode]!
   sentConnections: [Connection]! @relation(name: "SentConnections")
   receivedConnections: [Connection]! @relation(name: "ReceivedConnections")
+  blockedConnections: [Connection]! @relation(name: "BlockedConnections")
+  notifications: [Notification]!
 }
 
 type ProfileField {
@@ -52,18 +54,22 @@ type Connection {
   id: ID! @id
   sender: User @relation(name: "SentConnections")
   receiver: User @relation(name: "ReceivedConnections")
+  blocker: User @relation(name: "BlockedConnections")
   status: ConnectionStatus @default(value: PENDING)
-  coords: Coordinates
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 enum ConnectionStatus {
   PENDING
   CONNECTED
-  BLOCKED
 }
 
-type Coordinates {
+type Notification {
   id: ID! @id
-  latitude: Float
-  longitude: Float
+  message: String!
+  user: User!
 }

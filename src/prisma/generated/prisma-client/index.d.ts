@@ -17,7 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   connection: (where?: ConnectionWhereInput) => Promise<boolean>;
-  coordinates: (where?: CoordinatesWhereInput) => Promise<boolean>;
+  notification: (where?: NotificationWhereInput) => Promise<boolean>;
   profileField: (where?: ProfileFieldWhereInput) => Promise<boolean>;
   qRCode: (where?: QRCodeWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -61,27 +61,27 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ConnectionConnectionPromise;
-  coordinates: (
-    where: CoordinatesWhereUniqueInput
-  ) => CoordinatesNullablePromise;
-  coordinateses: (args?: {
-    where?: CoordinatesWhereInput;
-    orderBy?: CoordinatesOrderByInput;
+  notification: (
+    where: NotificationWhereUniqueInput
+  ) => NotificationNullablePromise;
+  notifications: (args?: {
+    where?: NotificationWhereInput;
+    orderBy?: NotificationOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Coordinates>;
-  coordinatesesConnection: (args?: {
-    where?: CoordinatesWhereInput;
-    orderBy?: CoordinatesOrderByInput;
+  }) => FragmentableArray<Notification>;
+  notificationsConnection: (args?: {
+    where?: NotificationWhereInput;
+    orderBy?: NotificationOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => CoordinatesConnectionPromise;
+  }) => NotificationConnectionPromise;
   profileField: (
     where: ProfileFieldWhereUniqueInput
   ) => ProfileFieldNullablePromise;
@@ -163,23 +163,25 @@ export interface Prisma {
   }) => ConnectionPromise;
   deleteConnection: (where: ConnectionWhereUniqueInput) => ConnectionPromise;
   deleteManyConnections: (where?: ConnectionWhereInput) => BatchPayloadPromise;
-  createCoordinates: (data: CoordinatesCreateInput) => CoordinatesPromise;
-  updateCoordinates: (args: {
-    data: CoordinatesUpdateInput;
-    where: CoordinatesWhereUniqueInput;
-  }) => CoordinatesPromise;
-  updateManyCoordinateses: (args: {
-    data: CoordinatesUpdateManyMutationInput;
-    where?: CoordinatesWhereInput;
+  createNotification: (data: NotificationCreateInput) => NotificationPromise;
+  updateNotification: (args: {
+    data: NotificationUpdateInput;
+    where: NotificationWhereUniqueInput;
+  }) => NotificationPromise;
+  updateManyNotifications: (args: {
+    data: NotificationUpdateManyMutationInput;
+    where?: NotificationWhereInput;
   }) => BatchPayloadPromise;
-  upsertCoordinates: (args: {
-    where: CoordinatesWhereUniqueInput;
-    create: CoordinatesCreateInput;
-    update: CoordinatesUpdateInput;
-  }) => CoordinatesPromise;
-  deleteCoordinates: (where: CoordinatesWhereUniqueInput) => CoordinatesPromise;
-  deleteManyCoordinateses: (
-    where?: CoordinatesWhereInput
+  upsertNotification: (args: {
+    where: NotificationWhereUniqueInput;
+    create: NotificationCreateInput;
+    update: NotificationUpdateInput;
+  }) => NotificationPromise;
+  deleteNotification: (
+    where: NotificationWhereUniqueInput
+  ) => NotificationPromise;
+  deleteManyNotifications: (
+    where?: NotificationWhereInput
   ) => BatchPayloadPromise;
   createProfileField: (data: ProfileFieldCreateInput) => ProfileFieldPromise;
   updateProfileField: (args: {
@@ -245,9 +247,9 @@ export interface Subscription {
   connection: (
     where?: ConnectionSubscriptionWhereInput
   ) => ConnectionSubscriptionPayloadSubscription;
-  coordinates: (
-    where?: CoordinatesSubscriptionWhereInput
-  ) => CoordinatesSubscriptionPayloadSubscription;
+  notification: (
+    where?: NotificationSubscriptionWhereInput
+  ) => NotificationSubscriptionPayloadSubscription;
   profileField: (
     where?: ProfileFieldSubscriptionWhereInput
   ) => ProfileFieldSubscriptionPayloadSubscription;
@@ -267,7 +269,7 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type ConnectionStatus = "PENDING" | "CONNECTED" | "BLOCKED";
+export type ConnectionStatus = "PENDING" | "CONNECTED";
 
 export type ProfileFieldType =
   | "EMAIL"
@@ -304,15 +306,23 @@ export type ConnectionOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "status_ASC"
-  | "status_DESC";
+  | "status_DESC"
+  | "senderLat_ASC"
+  | "senderLat_DESC"
+  | "senderLon_ASC"
+  | "senderLon_DESC"
+  | "receiverLat_ASC"
+  | "receiverLat_DESC"
+  | "receiverLon_ASC"
+  | "receiverLon_DESC"
+  | "location_ASC"
+  | "location_DESC";
 
-export type CoordinatesOrderByInput =
+export type NotificationOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "latitude_ASC"
-  | "latitude_DESC"
-  | "longitude_ASC"
-  | "longitude_DESC";
+  | "message_ASC"
+  | "message_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -540,6 +550,12 @@ export interface UserWhereInput {
   receivedConnections_every?: Maybe<ConnectionWhereInput>;
   receivedConnections_some?: Maybe<ConnectionWhereInput>;
   receivedConnections_none?: Maybe<ConnectionWhereInput>;
+  blockedConnections_every?: Maybe<ConnectionWhereInput>;
+  blockedConnections_some?: Maybe<ConnectionWhereInput>;
+  blockedConnections_none?: Maybe<ConnectionWhereInput>;
+  notifications_every?: Maybe<NotificationWhereInput>;
+  notifications_some?: Maybe<NotificationWhereInput>;
+  notifications_none?: Maybe<NotificationWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -605,17 +621,63 @@ export interface ConnectionWhereInput {
   id_not_ends_with?: Maybe<ID_Input>;
   sender?: Maybe<UserWhereInput>;
   receiver?: Maybe<UserWhereInput>;
+  blocker?: Maybe<UserWhereInput>;
   status?: Maybe<ConnectionStatus>;
   status_not?: Maybe<ConnectionStatus>;
   status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
   status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
-  coords?: Maybe<CoordinatesWhereInput>;
+  senderLat?: Maybe<Float>;
+  senderLat_not?: Maybe<Float>;
+  senderLat_in?: Maybe<Float[] | Float>;
+  senderLat_not_in?: Maybe<Float[] | Float>;
+  senderLat_lt?: Maybe<Float>;
+  senderLat_lte?: Maybe<Float>;
+  senderLat_gt?: Maybe<Float>;
+  senderLat_gte?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  senderLon_not?: Maybe<Float>;
+  senderLon_in?: Maybe<Float[] | Float>;
+  senderLon_not_in?: Maybe<Float[] | Float>;
+  senderLon_lt?: Maybe<Float>;
+  senderLon_lte?: Maybe<Float>;
+  senderLon_gt?: Maybe<Float>;
+  senderLon_gte?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLat_not?: Maybe<Float>;
+  receiverLat_in?: Maybe<Float[] | Float>;
+  receiverLat_not_in?: Maybe<Float[] | Float>;
+  receiverLat_lt?: Maybe<Float>;
+  receiverLat_lte?: Maybe<Float>;
+  receiverLat_gt?: Maybe<Float>;
+  receiverLat_gte?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  receiverLon_not?: Maybe<Float>;
+  receiverLon_in?: Maybe<Float[] | Float>;
+  receiverLon_not_in?: Maybe<Float[] | Float>;
+  receiverLon_lt?: Maybe<Float>;
+  receiverLon_lte?: Maybe<Float>;
+  receiverLon_gt?: Maybe<Float>;
+  receiverLon_gte?: Maybe<Float>;
+  location?: Maybe<String>;
+  location_not?: Maybe<String>;
+  location_in?: Maybe<String[] | String>;
+  location_not_in?: Maybe<String[] | String>;
+  location_lt?: Maybe<String>;
+  location_lte?: Maybe<String>;
+  location_gt?: Maybe<String>;
+  location_gte?: Maybe<String>;
+  location_contains?: Maybe<String>;
+  location_not_contains?: Maybe<String>;
+  location_starts_with?: Maybe<String>;
+  location_not_starts_with?: Maybe<String>;
+  location_ends_with?: Maybe<String>;
+  location_not_ends_with?: Maybe<String>;
   AND?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   OR?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   NOT?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
 }
 
-export interface CoordinatesWhereInput {
+export interface NotificationWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -630,28 +692,27 @@ export interface CoordinatesWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  latitude?: Maybe<Float>;
-  latitude_not?: Maybe<Float>;
-  latitude_in?: Maybe<Float[] | Float>;
-  latitude_not_in?: Maybe<Float[] | Float>;
-  latitude_lt?: Maybe<Float>;
-  latitude_lte?: Maybe<Float>;
-  latitude_gt?: Maybe<Float>;
-  latitude_gte?: Maybe<Float>;
-  longitude?: Maybe<Float>;
-  longitude_not?: Maybe<Float>;
-  longitude_in?: Maybe<Float[] | Float>;
-  longitude_not_in?: Maybe<Float[] | Float>;
-  longitude_lt?: Maybe<Float>;
-  longitude_lte?: Maybe<Float>;
-  longitude_gt?: Maybe<Float>;
-  longitude_gte?: Maybe<Float>;
-  AND?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
-  OR?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
-  NOT?: Maybe<CoordinatesWhereInput[] | CoordinatesWhereInput>;
+  message?: Maybe<String>;
+  message_not?: Maybe<String>;
+  message_in?: Maybe<String[] | String>;
+  message_not_in?: Maybe<String[] | String>;
+  message_lt?: Maybe<String>;
+  message_lte?: Maybe<String>;
+  message_gt?: Maybe<String>;
+  message_gte?: Maybe<String>;
+  message_contains?: Maybe<String>;
+  message_not_contains?: Maybe<String>;
+  message_starts_with?: Maybe<String>;
+  message_not_starts_with?: Maybe<String>;
+  message_ends_with?: Maybe<String>;
+  message_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  AND?: Maybe<NotificationWhereInput[] | NotificationWhereInput>;
+  OR?: Maybe<NotificationWhereInput[] | NotificationWhereInput>;
+  NOT?: Maybe<NotificationWhereInput[] | NotificationWhereInput>;
 }
 
-export type CoordinatesWhereUniqueInput = AtLeastOne<{
+export type NotificationWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
@@ -672,8 +733,13 @@ export interface ConnectionCreateInput {
   id?: Maybe<ID_Input>;
   sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
+  blocker?: Maybe<UserCreateOneWithoutBlockedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesCreateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
 export interface UserCreateOneWithoutSentConnectionsInput {
@@ -695,6 +761,8 @@ export interface UserCreateWithoutSentConnectionsInput {
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
   receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
 }
 
 export interface ProfileFieldCreateManyWithoutUserInput {
@@ -736,19 +804,55 @@ export interface ConnectionCreateManyWithoutReceiverInput {
 export interface ConnectionCreateWithoutReceiverInput {
   id?: Maybe<ID_Input>;
   sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
+  blocker?: Maybe<UserCreateOneWithoutBlockedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesCreateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
-export interface CoordinatesCreateOneInput {
-  create?: Maybe<CoordinatesCreateInput>;
-  connect?: Maybe<CoordinatesWhereUniqueInput>;
+export interface UserCreateOneWithoutBlockedConnectionsInput {
+  create?: Maybe<UserCreateWithoutBlockedConnectionsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface CoordinatesCreateInput {
+export interface UserCreateWithoutBlockedConnectionsInput {
   id?: Maybe<ID_Input>;
-  latitude?: Maybe<Float>;
-  longitude?: Maybe<Float>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
+}
+
+export interface ConnectionCreateManyWithoutSenderInput {
+  create?: Maybe<
+    ConnectionCreateWithoutSenderInput[] | ConnectionCreateWithoutSenderInput
+  >;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+}
+
+export interface ConnectionCreateWithoutSenderInput {
+  id?: Maybe<ID_Input>;
+  receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
+  blocker?: Maybe<UserCreateOneWithoutBlockedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
 export interface UserCreateOneWithoutReceivedConnectionsInput {
@@ -770,27 +874,53 @@ export interface UserCreateWithoutReceivedConnectionsInput {
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
 }
 
-export interface ConnectionCreateManyWithoutSenderInput {
+export interface ConnectionCreateManyWithoutBlockerInput {
   create?: Maybe<
-    ConnectionCreateWithoutSenderInput[] | ConnectionCreateWithoutSenderInput
+    ConnectionCreateWithoutBlockerInput[] | ConnectionCreateWithoutBlockerInput
   >;
   connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
 }
 
-export interface ConnectionCreateWithoutSenderInput {
+export interface ConnectionCreateWithoutBlockerInput {
   id?: Maybe<ID_Input>;
+  sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesCreateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
+}
+
+export interface NotificationCreateManyWithoutUserInput {
+  create?: Maybe<
+    NotificationCreateWithoutUserInput[] | NotificationCreateWithoutUserInput
+  >;
+  connect?: Maybe<
+    NotificationWhereUniqueInput[] | NotificationWhereUniqueInput
+  >;
+}
+
+export interface NotificationCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  message: String;
 }
 
 export interface ConnectionUpdateInput {
   sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
+  blocker?: Maybe<UserUpdateOneWithoutBlockedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesUpdateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutSentConnectionsInput {
@@ -815,6 +945,8 @@ export interface UserUpdateWithoutSentConnectionsDataInput {
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
   receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
 }
 
 export interface ProfileFieldUpdateManyWithoutUserInput {
@@ -1040,83 +1172,25 @@ export interface ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
 
 export interface ConnectionUpdateWithoutReceiverDataInput {
   sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
+  blocker?: Maybe<UserUpdateOneWithoutBlockedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesUpdateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
-export interface CoordinatesUpdateOneInput {
-  create?: Maybe<CoordinatesCreateInput>;
-  update?: Maybe<CoordinatesUpdateDataInput>;
-  upsert?: Maybe<CoordinatesUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<CoordinatesWhereUniqueInput>;
-}
-
-export interface CoordinatesUpdateDataInput {
-  latitude?: Maybe<Float>;
-  longitude?: Maybe<Float>;
-}
-
-export interface CoordinatesUpsertNestedInput {
-  update: CoordinatesUpdateDataInput;
-  create: CoordinatesCreateInput;
-}
-
-export interface ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
-  where: ConnectionWhereUniqueInput;
-  update: ConnectionUpdateWithoutReceiverDataInput;
-  create: ConnectionCreateWithoutReceiverInput;
-}
-
-export interface ConnectionScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  status?: Maybe<ConnectionStatus>;
-  status_not?: Maybe<ConnectionStatus>;
-  status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
-  status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
-  AND?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
-  OR?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
-  NOT?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
-}
-
-export interface ConnectionUpdateManyWithWhereNestedInput {
-  where: ConnectionScalarWhereInput;
-  data: ConnectionUpdateManyDataInput;
-}
-
-export interface ConnectionUpdateManyDataInput {
-  status?: Maybe<ConnectionStatus>;
-}
-
-export interface UserUpsertWithoutSentConnectionsInput {
-  update: UserUpdateWithoutSentConnectionsDataInput;
-  create: UserCreateWithoutSentConnectionsInput;
-}
-
-export interface UserUpdateOneWithoutReceivedConnectionsInput {
-  create?: Maybe<UserCreateWithoutReceivedConnectionsInput>;
-  update?: Maybe<UserUpdateWithoutReceivedConnectionsDataInput>;
-  upsert?: Maybe<UserUpsertWithoutReceivedConnectionsInput>;
+export interface UserUpdateOneWithoutBlockedConnectionsInput {
+  create?: Maybe<UserCreateWithoutBlockedConnectionsInput>;
+  update?: Maybe<UserUpdateWithoutBlockedConnectionsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutBlockedConnectionsInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutReceivedConnectionsDataInput {
+export interface UserUpdateWithoutBlockedConnectionsDataInput {
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1129,6 +1203,8 @@ export interface UserUpdateWithoutReceivedConnectionsDataInput {
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
 }
 
 export interface ConnectionUpdateManyWithoutSenderInput {
@@ -1161,8 +1237,260 @@ export interface ConnectionUpdateWithWhereUniqueWithoutSenderInput {
 
 export interface ConnectionUpdateWithoutSenderDataInput {
   receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
+  blocker?: Maybe<UserUpdateOneWithoutBlockedConnectionsInput>;
   status?: Maybe<ConnectionStatus>;
-  coords?: Maybe<CoordinatesUpdateOneInput>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
+}
+
+export interface UserUpdateOneWithoutReceivedConnectionsInput {
+  create?: Maybe<UserCreateWithoutReceivedConnectionsInput>;
+  update?: Maybe<UserUpdateWithoutReceivedConnectionsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutReceivedConnectionsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutReceivedConnectionsDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
+}
+
+export interface ConnectionUpdateManyWithoutBlockerInput {
+  create?: Maybe<
+    ConnectionCreateWithoutBlockerInput[] | ConnectionCreateWithoutBlockerInput
+  >;
+  delete?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  connect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  set?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  disconnect?: Maybe<ConnectionWhereUniqueInput[] | ConnectionWhereUniqueInput>;
+  update?: Maybe<
+    | ConnectionUpdateWithWhereUniqueWithoutBlockerInput[]
+    | ConnectionUpdateWithWhereUniqueWithoutBlockerInput
+  >;
+  upsert?: Maybe<
+    | ConnectionUpsertWithWhereUniqueWithoutBlockerInput[]
+    | ConnectionUpsertWithWhereUniqueWithoutBlockerInput
+  >;
+  deleteMany?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  updateMany?: Maybe<
+    | ConnectionUpdateManyWithWhereNestedInput[]
+    | ConnectionUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ConnectionUpdateWithWhereUniqueWithoutBlockerInput {
+  where: ConnectionWhereUniqueInput;
+  data: ConnectionUpdateWithoutBlockerDataInput;
+}
+
+export interface ConnectionUpdateWithoutBlockerDataInput {
+  sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
+  receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
+  status?: Maybe<ConnectionStatus>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
+}
+
+export interface ConnectionUpsertWithWhereUniqueWithoutBlockerInput {
+  where: ConnectionWhereUniqueInput;
+  update: ConnectionUpdateWithoutBlockerDataInput;
+  create: ConnectionCreateWithoutBlockerInput;
+}
+
+export interface ConnectionScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  status?: Maybe<ConnectionStatus>;
+  status_not?: Maybe<ConnectionStatus>;
+  status_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  status_not_in?: Maybe<ConnectionStatus[] | ConnectionStatus>;
+  senderLat?: Maybe<Float>;
+  senderLat_not?: Maybe<Float>;
+  senderLat_in?: Maybe<Float[] | Float>;
+  senderLat_not_in?: Maybe<Float[] | Float>;
+  senderLat_lt?: Maybe<Float>;
+  senderLat_lte?: Maybe<Float>;
+  senderLat_gt?: Maybe<Float>;
+  senderLat_gte?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  senderLon_not?: Maybe<Float>;
+  senderLon_in?: Maybe<Float[] | Float>;
+  senderLon_not_in?: Maybe<Float[] | Float>;
+  senderLon_lt?: Maybe<Float>;
+  senderLon_lte?: Maybe<Float>;
+  senderLon_gt?: Maybe<Float>;
+  senderLon_gte?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLat_not?: Maybe<Float>;
+  receiverLat_in?: Maybe<Float[] | Float>;
+  receiverLat_not_in?: Maybe<Float[] | Float>;
+  receiverLat_lt?: Maybe<Float>;
+  receiverLat_lte?: Maybe<Float>;
+  receiverLat_gt?: Maybe<Float>;
+  receiverLat_gte?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  receiverLon_not?: Maybe<Float>;
+  receiverLon_in?: Maybe<Float[] | Float>;
+  receiverLon_not_in?: Maybe<Float[] | Float>;
+  receiverLon_lt?: Maybe<Float>;
+  receiverLon_lte?: Maybe<Float>;
+  receiverLon_gt?: Maybe<Float>;
+  receiverLon_gte?: Maybe<Float>;
+  location?: Maybe<String>;
+  location_not?: Maybe<String>;
+  location_in?: Maybe<String[] | String>;
+  location_not_in?: Maybe<String[] | String>;
+  location_lt?: Maybe<String>;
+  location_lte?: Maybe<String>;
+  location_gt?: Maybe<String>;
+  location_gte?: Maybe<String>;
+  location_contains?: Maybe<String>;
+  location_not_contains?: Maybe<String>;
+  location_starts_with?: Maybe<String>;
+  location_not_starts_with?: Maybe<String>;
+  location_ends_with?: Maybe<String>;
+  location_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  OR?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+  NOT?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
+}
+
+export interface ConnectionUpdateManyWithWhereNestedInput {
+  where: ConnectionScalarWhereInput;
+  data: ConnectionUpdateManyDataInput;
+}
+
+export interface ConnectionUpdateManyDataInput {
+  status?: Maybe<ConnectionStatus>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
+}
+
+export interface NotificationUpdateManyWithoutUserInput {
+  create?: Maybe<
+    NotificationCreateWithoutUserInput[] | NotificationCreateWithoutUserInput
+  >;
+  delete?: Maybe<NotificationWhereUniqueInput[] | NotificationWhereUniqueInput>;
+  connect?: Maybe<
+    NotificationWhereUniqueInput[] | NotificationWhereUniqueInput
+  >;
+  set?: Maybe<NotificationWhereUniqueInput[] | NotificationWhereUniqueInput>;
+  disconnect?: Maybe<
+    NotificationWhereUniqueInput[] | NotificationWhereUniqueInput
+  >;
+  update?: Maybe<
+    | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    | NotificationUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    | NotificationUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<
+    NotificationScalarWhereInput[] | NotificationScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | NotificationUpdateManyWithWhereNestedInput[]
+    | NotificationUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface NotificationUpdateWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput;
+  data: NotificationUpdateWithoutUserDataInput;
+}
+
+export interface NotificationUpdateWithoutUserDataInput {
+  message?: Maybe<String>;
+}
+
+export interface NotificationUpsertWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput;
+  update: NotificationUpdateWithoutUserDataInput;
+  create: NotificationCreateWithoutUserInput;
+}
+
+export interface NotificationScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  message?: Maybe<String>;
+  message_not?: Maybe<String>;
+  message_in?: Maybe<String[] | String>;
+  message_not_in?: Maybe<String[] | String>;
+  message_lt?: Maybe<String>;
+  message_lte?: Maybe<String>;
+  message_gt?: Maybe<String>;
+  message_gte?: Maybe<String>;
+  message_contains?: Maybe<String>;
+  message_not_contains?: Maybe<String>;
+  message_starts_with?: Maybe<String>;
+  message_not_starts_with?: Maybe<String>;
+  message_ends_with?: Maybe<String>;
+  message_not_ends_with?: Maybe<String>;
+  AND?: Maybe<NotificationScalarWhereInput[] | NotificationScalarWhereInput>;
+  OR?: Maybe<NotificationScalarWhereInput[] | NotificationScalarWhereInput>;
+  NOT?: Maybe<NotificationScalarWhereInput[] | NotificationScalarWhereInput>;
+}
+
+export interface NotificationUpdateManyWithWhereNestedInput {
+  where: NotificationScalarWhereInput;
+  data: NotificationUpdateManyDataInput;
+}
+
+export interface NotificationUpdateManyDataInput {
+  message?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutReceivedConnectionsInput {
+  update: UserUpdateWithoutReceivedConnectionsDataInput;
+  create: UserCreateWithoutReceivedConnectionsInput;
 }
 
 export interface ConnectionUpsertWithWhereUniqueWithoutSenderInput {
@@ -1171,23 +1499,96 @@ export interface ConnectionUpsertWithWhereUniqueWithoutSenderInput {
   create: ConnectionCreateWithoutSenderInput;
 }
 
-export interface UserUpsertWithoutReceivedConnectionsInput {
-  update: UserUpdateWithoutReceivedConnectionsDataInput;
-  create: UserCreateWithoutReceivedConnectionsInput;
+export interface UserUpsertWithoutBlockedConnectionsInput {
+  update: UserUpdateWithoutBlockedConnectionsDataInput;
+  create: UserCreateWithoutBlockedConnectionsInput;
+}
+
+export interface ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
+  where: ConnectionWhereUniqueInput;
+  update: ConnectionUpdateWithoutReceiverDataInput;
+  create: ConnectionCreateWithoutReceiverInput;
+}
+
+export interface UserUpsertWithoutSentConnectionsInput {
+  update: UserUpdateWithoutSentConnectionsDataInput;
+  create: UserCreateWithoutSentConnectionsInput;
 }
 
 export interface ConnectionUpdateManyMutationInput {
   status?: Maybe<ConnectionStatus>;
+  senderLat?: Maybe<Float>;
+  senderLon?: Maybe<Float>;
+  receiverLat?: Maybe<Float>;
+  receiverLon?: Maybe<Float>;
+  location?: Maybe<String>;
 }
 
-export interface CoordinatesUpdateInput {
-  latitude?: Maybe<Float>;
-  longitude?: Maybe<Float>;
+export interface NotificationCreateInput {
+  id?: Maybe<ID_Input>;
+  message: String;
+  user: UserCreateOneWithoutNotificationsInput;
 }
 
-export interface CoordinatesUpdateManyMutationInput {
-  latitude?: Maybe<Float>;
-  longitude?: Maybe<Float>;
+export interface UserCreateOneWithoutNotificationsInput {
+  create?: Maybe<UserCreateWithoutNotificationsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutNotificationsInput {
+  id?: Maybe<ID_Input>;
+  authId: String;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+}
+
+export interface NotificationUpdateInput {
+  message?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutNotificationsInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutNotificationsInput {
+  create?: Maybe<UserCreateWithoutNotificationsInput>;
+  update?: Maybe<UserUpdateWithoutNotificationsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutNotificationsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutNotificationsDataInput {
+  authId?: Maybe<String>;
+  name?: Maybe<String>;
+  picture?: Maybe<String>;
+  birthdate?: Maybe<String>;
+  location?: Maybe<String>;
+  industry?: Maybe<String>;
+  jobtitle?: Maybe<String>;
+  tagline?: Maybe<String>;
+  bio?: Maybe<String>;
+  profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
+  qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
+  sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
+  receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+}
+
+export interface UserUpsertWithoutNotificationsInput {
+  update: UserUpdateWithoutNotificationsDataInput;
+  create: UserCreateWithoutNotificationsInput;
+}
+
+export interface NotificationUpdateManyMutationInput {
+  message?: Maybe<String>;
 }
 
 export interface ProfileFieldCreateInput {
@@ -1218,6 +1619,8 @@ export interface UserCreateWithoutProfileInput {
   qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
 }
 
 export interface ProfileFieldUpdateInput {
@@ -1248,6 +1651,8 @@ export interface UserUpdateWithoutProfileDataInput {
   qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
 }
 
 export interface UserUpsertWithoutProfileInput {
@@ -1288,6 +1693,8 @@ export interface UserCreateWithoutQrcodesInput {
   profile?: Maybe<ProfileFieldCreateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
 }
 
 export interface QRCodeUpdateInput {
@@ -1318,6 +1725,8 @@ export interface UserUpdateWithoutQrcodesDataInput {
   profile?: Maybe<ProfileFieldUpdateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
 }
 
 export interface UserUpsertWithoutQrcodesInput {
@@ -1345,6 +1754,8 @@ export interface UserCreateInput {
   qrcodes?: Maybe<QRCodeCreateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionCreateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionCreateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionCreateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationCreateManyWithoutUserInput>;
 }
 
 export interface UserUpdateInput {
@@ -1361,6 +1772,8 @@ export interface UserUpdateInput {
   qrcodes?: Maybe<QRCodeUpdateManyWithoutUserInput>;
   sentConnections?: Maybe<ConnectionUpdateManyWithoutSenderInput>;
   receivedConnections?: Maybe<ConnectionUpdateManyWithoutReceiverInput>;
+  blockedConnections?: Maybe<ConnectionUpdateManyWithoutBlockerInput>;
+  notifications?: Maybe<NotificationUpdateManyWithoutUserInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -1392,20 +1805,20 @@ export interface ConnectionSubscriptionWhereInput {
   >;
 }
 
-export interface CoordinatesSubscriptionWhereInput {
+export interface NotificationSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<CoordinatesWhereInput>;
+  node?: Maybe<NotificationWhereInput>;
   AND?: Maybe<
-    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+    NotificationSubscriptionWhereInput[] | NotificationSubscriptionWhereInput
   >;
   OR?: Maybe<
-    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+    NotificationSubscriptionWhereInput[] | NotificationSubscriptionWhereInput
   >;
   NOT?: Maybe<
-    CoordinatesSubscriptionWhereInput[] | CoordinatesSubscriptionWhereInput
+    NotificationSubscriptionWhereInput[] | NotificationSubscriptionWhereInput
   >;
 }
 
@@ -1455,14 +1868,24 @@ export interface NodeNode {
 export interface Connection {
   id: ID_Output;
   status?: ConnectionStatus;
+  senderLat?: Float;
+  senderLon?: Float;
+  receiverLat?: Float;
+  receiverLon?: Float;
+  location?: String;
 }
 
 export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
   id: () => Promise<ID_Output>;
   sender: <T = UserPromise>() => T;
   receiver: <T = UserPromise>() => T;
+  blocker: <T = UserPromise>() => T;
   status: () => Promise<ConnectionStatus>;
-  coords: <T = CoordinatesPromise>() => T;
+  senderLat: () => Promise<Float>;
+  senderLon: () => Promise<Float>;
+  receiverLat: () => Promise<Float>;
+  receiverLon: () => Promise<Float>;
+  location: () => Promise<String>;
 }
 
 export interface ConnectionSubscription
@@ -1471,8 +1894,13 @@ export interface ConnectionSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   sender: <T = UserSubscription>() => T;
   receiver: <T = UserSubscription>() => T;
+  blocker: <T = UserSubscription>() => T;
   status: () => Promise<AsyncIterator<ConnectionStatus>>;
-  coords: <T = CoordinatesSubscription>() => T;
+  senderLat: () => Promise<AsyncIterator<Float>>;
+  senderLon: () => Promise<AsyncIterator<Float>>;
+  receiverLat: () => Promise<AsyncIterator<Float>>;
+  receiverLon: () => Promise<AsyncIterator<Float>>;
+  location: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ConnectionNullablePromise
@@ -1481,8 +1909,13 @@ export interface ConnectionNullablePromise
   id: () => Promise<ID_Output>;
   sender: <T = UserPromise>() => T;
   receiver: <T = UserPromise>() => T;
+  blocker: <T = UserPromise>() => T;
   status: () => Promise<ConnectionStatus>;
-  coords: <T = CoordinatesPromise>() => T;
+  senderLat: () => Promise<Float>;
+  senderLon: () => Promise<Float>;
+  receiverLat: () => Promise<Float>;
+  receiverLon: () => Promise<Float>;
+  location: () => Promise<String>;
 }
 
 export interface User {
@@ -1545,6 +1978,24 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  blockedConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  notifications: <T = FragmentableArray<Notification>>(args?: {
+    where?: NotificationWhereInput;
+    orderBy?: NotificationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -1598,6 +2049,26 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  blockedConnections: <
+    T = Promise<AsyncIterator<ConnectionSubscription>>
+  >(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  notifications: <T = Promise<AsyncIterator<NotificationSubscription>>>(args?: {
+    where?: NotificationWhereInput;
+    orderBy?: NotificationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserNullablePromise
@@ -1643,6 +2114,24 @@ export interface UserNullablePromise
   receivedConnections: <T = FragmentableArray<Connection>>(args?: {
     where?: ConnectionWhereInput;
     orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  blockedConnections: <T = FragmentableArray<Connection>>(args?: {
+    where?: ConnectionWhereInput;
+    orderBy?: ConnectionOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  notifications: <T = FragmentableArray<Notification>>(args?: {
+    where?: NotificationWhereInput;
+    orderBy?: NotificationOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1723,32 +2212,33 @@ export interface QRCodeNullablePromise
   user: <T = UserPromise>() => T;
 }
 
-export interface Coordinates {
+export interface Notification {
   id: ID_Output;
-  latitude?: Float;
-  longitude?: Float;
+  message: String;
 }
 
-export interface CoordinatesPromise extends Promise<Coordinates>, Fragmentable {
+export interface NotificationPromise
+  extends Promise<Notification>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  latitude: () => Promise<Float>;
-  longitude: () => Promise<Float>;
+  message: () => Promise<String>;
+  user: <T = UserPromise>() => T;
 }
 
-export interface CoordinatesSubscription
-  extends Promise<AsyncIterator<Coordinates>>,
+export interface NotificationSubscription
+  extends Promise<AsyncIterator<Notification>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  latitude: () => Promise<AsyncIterator<Float>>;
-  longitude: () => Promise<AsyncIterator<Float>>;
+  message: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
 }
 
-export interface CoordinatesNullablePromise
-  extends Promise<Coordinates | null>,
+export interface NotificationNullablePromise
+  extends Promise<Notification | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  latitude: () => Promise<Float>;
-  longitude: () => Promise<Float>;
+  message: () => Promise<String>;
+  user: <T = UserPromise>() => T;
 }
 
 export interface ConnectionConnection {
@@ -1830,58 +2320,58 @@ export interface AggregateConnectionSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface CoordinatesConnection {
+export interface NotificationConnection {
   pageInfo: PageInfo;
-  edges: CoordinatesEdge[];
+  edges: NotificationEdge[];
 }
 
-export interface CoordinatesConnectionPromise
-  extends Promise<CoordinatesConnection>,
+export interface NotificationConnectionPromise
+  extends Promise<NotificationConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CoordinatesEdge>>() => T;
-  aggregate: <T = AggregateCoordinatesPromise>() => T;
+  edges: <T = FragmentableArray<NotificationEdge>>() => T;
+  aggregate: <T = AggregateNotificationPromise>() => T;
 }
 
-export interface CoordinatesConnectionSubscription
-  extends Promise<AsyncIterator<CoordinatesConnection>>,
+export interface NotificationConnectionSubscription
+  extends Promise<AsyncIterator<NotificationConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CoordinatesEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCoordinatesSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<NotificationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateNotificationSubscription>() => T;
 }
 
-export interface CoordinatesEdge {
-  node: Coordinates;
+export interface NotificationEdge {
+  node: Notification;
   cursor: String;
 }
 
-export interface CoordinatesEdgePromise
-  extends Promise<CoordinatesEdge>,
+export interface NotificationEdgePromise
+  extends Promise<NotificationEdge>,
     Fragmentable {
-  node: <T = CoordinatesPromise>() => T;
+  node: <T = NotificationPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface CoordinatesEdgeSubscription
-  extends Promise<AsyncIterator<CoordinatesEdge>>,
+export interface NotificationEdgeSubscription
+  extends Promise<AsyncIterator<NotificationEdge>>,
     Fragmentable {
-  node: <T = CoordinatesSubscription>() => T;
+  node: <T = NotificationSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCoordinates {
+export interface AggregateNotification {
   count: Int;
 }
 
-export interface AggregateCoordinatesPromise
-  extends Promise<AggregateCoordinates>,
+export interface AggregateNotificationPromise
+  extends Promise<AggregateNotification>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateCoordinatesSubscription
-  extends Promise<AsyncIterator<AggregateCoordinates>>,
+export interface AggregateNotificationSubscription
+  extends Promise<AsyncIterator<AggregateNotification>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2094,6 +2584,11 @@ export interface ConnectionSubscriptionPayloadSubscription
 export interface ConnectionPreviousValues {
   id: ID_Output;
   status?: ConnectionStatus;
+  senderLat?: Float;
+  senderLon?: Float;
+  receiverLat?: Float;
+  receiverLon?: Float;
+  location?: String;
 }
 
 export interface ConnectionPreviousValuesPromise
@@ -2101,6 +2596,11 @@ export interface ConnectionPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   status: () => Promise<ConnectionStatus>;
+  senderLat: () => Promise<Float>;
+  senderLon: () => Promise<Float>;
+  receiverLat: () => Promise<Float>;
+  receiverLon: () => Promise<Float>;
+  location: () => Promise<String>;
 }
 
 export interface ConnectionPreviousValuesSubscription
@@ -2108,53 +2608,55 @@ export interface ConnectionPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   status: () => Promise<AsyncIterator<ConnectionStatus>>;
+  senderLat: () => Promise<AsyncIterator<Float>>;
+  senderLon: () => Promise<AsyncIterator<Float>>;
+  receiverLat: () => Promise<AsyncIterator<Float>>;
+  receiverLon: () => Promise<AsyncIterator<Float>>;
+  location: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CoordinatesSubscriptionPayload {
+export interface NotificationSubscriptionPayload {
   mutation: MutationType;
-  node: Coordinates;
+  node: Notification;
   updatedFields: String[];
-  previousValues: CoordinatesPreviousValues;
+  previousValues: NotificationPreviousValues;
 }
 
-export interface CoordinatesSubscriptionPayloadPromise
-  extends Promise<CoordinatesSubscriptionPayload>,
+export interface NotificationSubscriptionPayloadPromise
+  extends Promise<NotificationSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = CoordinatesPromise>() => T;
+  node: <T = NotificationPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = CoordinatesPreviousValuesPromise>() => T;
+  previousValues: <T = NotificationPreviousValuesPromise>() => T;
 }
 
-export interface CoordinatesSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CoordinatesSubscriptionPayload>>,
+export interface NotificationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<NotificationSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CoordinatesSubscription>() => T;
+  node: <T = NotificationSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CoordinatesPreviousValuesSubscription>() => T;
+  previousValues: <T = NotificationPreviousValuesSubscription>() => T;
 }
 
-export interface CoordinatesPreviousValues {
+export interface NotificationPreviousValues {
   id: ID_Output;
-  latitude?: Float;
-  longitude?: Float;
+  message: String;
 }
 
-export interface CoordinatesPreviousValuesPromise
-  extends Promise<CoordinatesPreviousValues>,
+export interface NotificationPreviousValuesPromise
+  extends Promise<NotificationPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  latitude: () => Promise<Float>;
-  longitude: () => Promise<Float>;
+  message: () => Promise<String>;
 }
 
-export interface CoordinatesPreviousValuesSubscription
-  extends Promise<AsyncIterator<CoordinatesPreviousValues>>,
+export interface NotificationPreviousValuesSubscription
+  extends Promise<AsyncIterator<NotificationPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  latitude: () => Promise<AsyncIterator<Float>>;
-  longitude: () => Promise<AsyncIterator<Float>>;
+  message: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ProfileFieldSubscriptionPayload {
@@ -2387,7 +2889,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Coordinates",
+    name: "Notification",
     embedded: false
   }
 ];

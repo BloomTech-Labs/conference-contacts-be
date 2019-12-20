@@ -8,7 +8,8 @@
   * [Objects](#objects)
     * [Connection](#connection)
     * [ConnectionResponse](#connectionresponse)
-    * [Coordinates](#coordinates)
+    * [Notification](#notification)
+    * [NotificationResponse](#notificationresponse)
     * [ProfileField](#profilefield)
     * [ProfileMutationResponse](#profilemutationresponse)
     * [ProfileMutationsResponse](#profilemutationsresponse)
@@ -17,8 +18,10 @@
     * [User](#user)
     * [UserMutationResponse](#usermutationresponse)
   * [Inputs](#inputs)
+    * [CoordinatesInput](#coordinatesinput)
     * [CreateProfileFieldInput](#createprofilefieldinput)
     * [CreateUserInput](#createuserinput)
+    * [UpdateConnectionInput](#updateconnectioninput)
     * [UpdateProfileFieldInput](#updateprofilefieldinput)
     * [UpdateProfileFieldsInput](#updateprofilefieldsinput)
     * [UpdateUserInput](#updateuserinput)
@@ -256,11 +259,16 @@ Creates a connection request to the specified user.
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>updateConnection</strong></td>
+<td colspan="2" align="right" valign="top">senderCoords</td>
+<td valign="top"><a href="#coordinatesinput">CoordinatesInput</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>acceptConnection</strong></td>
 <td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
 <td>
 
-Updates a connection status.
+Accepts an incoming connection request.
 
 </td>
 </tr>
@@ -270,8 +278,22 @@ Updates a connection status.
 <td></td>
 </tr>
 <tr>
-<td colspan="2" align="right" valign="top">status</td>
-<td valign="top"><a href="#connectionstatus">ConnectionStatus</a>!</td>
+<td colspan="2" align="right" valign="top">receiverCoords</td>
+<td valign="top"><a href="#coordinatesinput">CoordinatesInput</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>blockConnection</strong></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
+<td>
+
+Blocks an existing connection.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
 <td></td>
 </tr>
 <tr>
@@ -280,6 +302,20 @@ Updates a connection status.
 <td>
 
 Deletes a connection entirely.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>deleteNotification</strong></td>
+<td valign="top"><a href="#notificationresponse">NotificationResponse</a>!</td>
+<td>
+
+Deletes a notification.
 
 </td>
 </tr>
@@ -321,13 +357,38 @@ Deletes a connection entirely.
 <td></td>
 </tr>
 <tr>
+<td colspan="2" valign="top"><strong>blocker</strong></td>
+<td valign="top"><a href="#user">User</a></td>
+<td></td>
+</tr>
+<tr>
 <td colspan="2" valign="top"><strong>status</strong></td>
 <td valign="top"><a href="#connectionstatus">ConnectionStatus</a></td>
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>coords</strong></td>
-<td valign="top"><a href="#coordinates">Coordinates</a></td>
+<td colspan="2" valign="top"><strong>senderLat</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>senderLon</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>receiverLat</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>receiverLon</strong></td>
+<td valign="top"><a href="#float">Float</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>location</strong></td>
+<td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -368,7 +429,7 @@ Deletes a connection entirely.
 </tbody>
 </table>
 
-### Coordinates
+### Notification
 
 <table>
 <thead>
@@ -386,13 +447,48 @@ Deletes a connection entirely.
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>latitude</strong></td>
-<td valign="top"><a href="#float">Float</a></td>
+<td colspan="2" valign="top"><strong>message</strong></td>
+<td valign="top"><a href="#string">String</a>!</td>
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>longitude</strong></td>
-<td valign="top"><a href="#float">Float</a></td>
+<td colspan="2" valign="top"><strong>user</strong></td>
+<td valign="top"><a href="#user">User</a>!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+### NotificationResponse
+
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="right">Argument</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>code</strong></td>
+<td valign="top"><a href="#int">Int</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>success</strong></td>
+<td valign="top"><a href="#boolean">Boolean</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>message</strong></td>
+<td valign="top"><a href="#string">String</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>notification</strong></td>
+<td valign="top"><a href="#notification">Notification</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -656,6 +752,11 @@ Deletes a connection entirely.
 <td></td>
 </tr>
 <tr>
+<td colspan="2" valign="top"><strong>connections</strong></td>
+<td valign="top">[<a href="#connection">Connection</a>]!</td>
+<td></td>
+</tr>
+<tr>
 <td colspan="2" valign="top"><strong>sentConnections</strong></td>
 <td valign="top">[<a href="#connection">Connection</a>]!</td>
 <td></td>
@@ -671,8 +772,13 @@ Deletes a connection entirely.
 <td></td>
 </tr>
 <tr>
-<td colspan="2" valign="top"><strong>connections</strong></td>
+<td colspan="2" valign="top"><strong>blockedConnections</strong></td>
 <td valign="top">[<a href="#connection">Connection</a>]!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>notifications</strong></td>
+<td valign="top">[<a href="#notification">Notification</a>]!</td>
 <td></td>
 </tr>
 </tbody>
@@ -714,6 +820,30 @@ Deletes a connection entirely.
 </table>
 
 ## Inputs
+
+### CoordinatesInput
+
+<table>
+<thead>
+<tr>
+<th colspan="2" align="left">Field</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>latitude</strong></td>
+<td valign="top"><a href="#float">Float</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>longitude</strong></td>
+<td valign="top"><a href="#float">Float</a>!</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 ### CreateProfileFieldInput
 
@@ -803,6 +933,30 @@ Deletes a connection entirely.
 <tr>
 <td colspan="2" valign="top"><strong>email</strong></td>
 <td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+### UpdateConnectionInput
+
+<table>
+<thead>
+<tr>
+<th colspan="2" align="left">Field</th>
+<th align="left">Type</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="2" valign="top"><strong>status</strong></td>
+<td valign="top"><a href="#connectionstatus">ConnectionStatus</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>receiverCoordinates</strong></td>
+<td valign="top"><a href="#coordinatesinput">CoordinatesInput</a></td>
 <td></td>
 </tr>
 </tbody>
@@ -975,10 +1129,6 @@ Deletes a connection entirely.
 </tr>
 <tr>
 <td valign="top"><strong>CONNECTED</strong></td>
-<td></td>
-</tr>
-<tr>
-<td valign="top"><strong>BLOCKED</strong></td>
 <td></td>
 </tr>
 </tbody>

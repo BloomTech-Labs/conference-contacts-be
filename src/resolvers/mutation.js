@@ -1,4 +1,8 @@
-const { AuthenticationError, UserInputError } = require('apollo-server');
+const {
+  AuthenticationError,
+  UserInputError,
+  ForbiddenError
+} = require('apollo-server');
 
 const mutationSuccess = (code, message, fields) => ({
   code,
@@ -189,7 +193,11 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async createConnection(_, { userID }, { dataSources: { prisma }, user }) {
+  async createConnection(
+    _,
+    { userID, senderCoords },
+    { dataSources: { prisma }, user }
+  ) {
     try {
       // users should not be able to send a connection to themself
       if (userID === user.id)
@@ -205,12 +213,13 @@ const Mutation = {
           ]
         }
       });
-      if (existingConnections.length) throw new UserInputError(
-        'A connection already exists between you.'
-      );
+      if (existingConnections.length)
+        throw new UserInputError('A connection already exists between you.');
       const connection = await prisma.createConnection({
         sender: { connect: { id: user.id } },
-        receiver: { connect: { id: userID } }
+        receiver: { connect: { id: userID } },
+        senderLat: senderCoords.latitude,
+        senderLon: senderCoords.longitude
       });
       return mutationSuccess(201, 'Connection created successfully!', {
         connection
@@ -219,18 +228,54 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async updateConnection(_, { id, status }, { dataSources: { prisma }, user }) {
+  async acceptConnection(
+    _,
+    { id, receiverCoords },
+    { dataSources: { prisma }, user }
+  ) {
     try {
       const receiver = await prisma.connection({ id }).receiver();
       if (user.id !== receiver.id)
-        throw new AuthenticationError(
-          'You cannot change a connection that does not belong to you.'
-        );
-      const connection = await prisma.updateConnection({
+        throw new ForbiddenError(':( i accept ur frenship even if they wont');
+      let connection = await prisma.updateConnection({
         where: { id },
-        data: { status }
+        data: {
+          status: 'CONNECTED',
+          receiverLat: receiverCoords.latitude,
+          receiverLon: receiverCoords.longitude
+        }
+      });
+      const sender = await prisma.connection({ id }).sender();
+      await prisma.createNotification({
+        message: `You made a friend! ${user.name} has accepted your connection request.`,
+        user: { connect: { id: sender.id } }
+      });
+      const { senderLat, senderLon, receiverLat, receiverLon } = connection;
+      const distance = Math.sqrt(
+        (senderLat - receiverLat) ** 2 + (senderLon - receiverLon) ** 2
+      );
+      connection = await prisma.updateConnection({
+        where: { id },
+        data: { location: distance < 1 ? 'INPERSON' : 'REMOTE' }
       });
       return mutationSuccess(200, 'Connection status updated successfully.', {
+        connection
+      });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async blockConnection(_, { id }, { dataSources: { prisma }, user }) {
+    try {
+      const sender = await prisma.connection({ id }).sender();
+      const receiver = await prisma.connection({ id }).receiver();
+      if (![sender.id, receiver.id].includes(user.id))
+        throw new ForbiddenError('What. Is. Happening?!');
+      const connection = await prisma.updateConnection({
+        where: { id },
+        data: { blocker: { connect: { id: user.id } } }
+      });
+      return mutationSuccess(200, 'User blocked successfully!', {
         connection
       });
     } catch (error) {
@@ -243,12 +288,22 @@ const Mutation = {
       const receiver = await prisma.connection({ id }).receiver();
       if (![sender.id, receiver.id].includes(user.id))
         throw new AuthenticationError(
-          'You cannot delete a connection that does not belong to you.'
+          "You cannot delete a connection that doesn't belong to you."
         );
       const connection = await prisma.deleteConnection({ id });
       return mutationSuccess(204, 'Connection deleted successfully.', {
         connection
       });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+  async deleteNotification(_, { id }, { dataSources: { prisma }, user }) {
+    try {
+      const notifiedUser = await prisma.notification({ id }).user();
+      if (notifiedUser.id !== user.id) throw new ForbiddenError("That's rude.");
+      const notification = await prisma.deleteNotification({ id });
+      return mutationSuccess(204, 'Notification dismissed.', { notification });
     } catch (error) {
       return mutationError(error);
     }

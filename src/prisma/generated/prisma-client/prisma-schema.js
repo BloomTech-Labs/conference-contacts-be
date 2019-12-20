@@ -7,7 +7,7 @@ module.exports = {
   count: Int!
 }
 
-type AggregateCoordinates {
+type AggregateNotification {
   count: Int!
 }
 
@@ -31,8 +31,13 @@ type Connection {
   id: ID!
   sender: User
   receiver: User
+  blocker: User
   status: ConnectionStatus
-  coords: Coordinates
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 type ConnectionConnection {
@@ -45,8 +50,18 @@ input ConnectionCreateInput {
   id: ID
   sender: UserCreateOneWithoutSentConnectionsInput
   receiver: UserCreateOneWithoutReceivedConnectionsInput
+  blocker: UserCreateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesCreateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
+input ConnectionCreateManyWithoutBlockerInput {
+  create: [ConnectionCreateWithoutBlockerInput!]
+  connect: [ConnectionWhereUniqueInput!]
 }
 
 input ConnectionCreateManyWithoutReceiverInput {
@@ -59,18 +74,40 @@ input ConnectionCreateManyWithoutSenderInput {
   connect: [ConnectionWhereUniqueInput!]
 }
 
+input ConnectionCreateWithoutBlockerInput {
+  id: ID
+  sender: UserCreateOneWithoutSentConnectionsInput
+  receiver: UserCreateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
 input ConnectionCreateWithoutReceiverInput {
   id: ID
   sender: UserCreateOneWithoutSentConnectionsInput
+  blocker: UserCreateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesCreateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 input ConnectionCreateWithoutSenderInput {
   id: ID
   receiver: UserCreateOneWithoutReceivedConnectionsInput
+  blocker: UserCreateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesCreateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 type ConnectionEdge {
@@ -83,11 +120,26 @@ enum ConnectionOrderByInput {
   id_DESC
   status_ASC
   status_DESC
+  senderLat_ASC
+  senderLat_DESC
+  senderLon_ASC
+  senderLon_DESC
+  receiverLat_ASC
+  receiverLat_DESC
+  receiverLon_ASC
+  receiverLon_DESC
+  location_ASC
+  location_DESC
 }
 
 type ConnectionPreviousValues {
   id: ID!
   status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 input ConnectionScalarWhereInput {
@@ -109,6 +161,52 @@ input ConnectionScalarWhereInput {
   status_not: ConnectionStatus
   status_in: [ConnectionStatus!]
   status_not_in: [ConnectionStatus!]
+  senderLat: Float
+  senderLat_not: Float
+  senderLat_in: [Float!]
+  senderLat_not_in: [Float!]
+  senderLat_lt: Float
+  senderLat_lte: Float
+  senderLat_gt: Float
+  senderLat_gte: Float
+  senderLon: Float
+  senderLon_not: Float
+  senderLon_in: [Float!]
+  senderLon_not_in: [Float!]
+  senderLon_lt: Float
+  senderLon_lte: Float
+  senderLon_gt: Float
+  senderLon_gte: Float
+  receiverLat: Float
+  receiverLat_not: Float
+  receiverLat_in: [Float!]
+  receiverLat_not_in: [Float!]
+  receiverLat_lt: Float
+  receiverLat_lte: Float
+  receiverLat_gt: Float
+  receiverLat_gte: Float
+  receiverLon: Float
+  receiverLon_not: Float
+  receiverLon_in: [Float!]
+  receiverLon_not_in: [Float!]
+  receiverLon_lt: Float
+  receiverLon_lte: Float
+  receiverLon_gt: Float
+  receiverLon_gte: Float
+  location: String
+  location_not: String
+  location_in: [String!]
+  location_not_in: [String!]
+  location_lt: String
+  location_lte: String
+  location_gt: String
+  location_gte: String
+  location_contains: String
+  location_not_contains: String
+  location_starts_with: String
+  location_not_starts_with: String
+  location_ends_with: String
+  location_not_ends_with: String
   AND: [ConnectionScalarWhereInput!]
   OR: [ConnectionScalarWhereInput!]
   NOT: [ConnectionScalarWhereInput!]
@@ -117,7 +215,6 @@ input ConnectionScalarWhereInput {
 enum ConnectionStatus {
   PENDING
   CONNECTED
-  BLOCKED
 }
 
 type ConnectionSubscriptionPayload {
@@ -141,16 +238,43 @@ input ConnectionSubscriptionWhereInput {
 input ConnectionUpdateInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  blocker: UserUpdateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesUpdateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 input ConnectionUpdateManyDataInput {
   status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 input ConnectionUpdateManyMutationInput {
   status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
+input ConnectionUpdateManyWithoutBlockerInput {
+  create: [ConnectionCreateWithoutBlockerInput!]
+  delete: [ConnectionWhereUniqueInput!]
+  connect: [ConnectionWhereUniqueInput!]
+  set: [ConnectionWhereUniqueInput!]
+  disconnect: [ConnectionWhereUniqueInput!]
+  update: [ConnectionUpdateWithWhereUniqueWithoutBlockerInput!]
+  upsert: [ConnectionUpsertWithWhereUniqueWithoutBlockerInput!]
+  deleteMany: [ConnectionScalarWhereInput!]
+  updateMany: [ConnectionUpdateManyWithWhereNestedInput!]
 }
 
 input ConnectionUpdateManyWithoutReceiverInput {
@@ -182,16 +306,42 @@ input ConnectionUpdateManyWithWhereNestedInput {
   data: ConnectionUpdateManyDataInput!
 }
 
+input ConnectionUpdateWithoutBlockerDataInput {
+  sender: UserUpdateOneWithoutSentConnectionsInput
+  receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
 input ConnectionUpdateWithoutReceiverDataInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
+  blocker: UserUpdateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesUpdateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
 }
 
 input ConnectionUpdateWithoutSenderDataInput {
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  blocker: UserUpdateOneWithoutBlockedConnectionsInput
   status: ConnectionStatus
-  coords: CoordinatesUpdateOneInput
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
+input ConnectionUpdateWithWhereUniqueWithoutBlockerInput {
+  where: ConnectionWhereUniqueInput!
+  data: ConnectionUpdateWithoutBlockerDataInput!
 }
 
 input ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
@@ -202,6 +352,12 @@ input ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
 input ConnectionUpdateWithWhereUniqueWithoutSenderInput {
   where: ConnectionWhereUniqueInput!
   data: ConnectionUpdateWithoutSenderDataInput!
+}
+
+input ConnectionUpsertWithWhereUniqueWithoutBlockerInput {
+  where: ConnectionWhereUniqueInput!
+  update: ConnectionUpdateWithoutBlockerDataInput!
+  create: ConnectionCreateWithoutBlockerInput!
 }
 
 input ConnectionUpsertWithWhereUniqueWithoutReceiverInput {
@@ -233,147 +389,63 @@ input ConnectionWhereInput {
   id_not_ends_with: ID
   sender: UserWhereInput
   receiver: UserWhereInput
+  blocker: UserWhereInput
   status: ConnectionStatus
   status_not: ConnectionStatus
   status_in: [ConnectionStatus!]
   status_not_in: [ConnectionStatus!]
-  coords: CoordinatesWhereInput
+  senderLat: Float
+  senderLat_not: Float
+  senderLat_in: [Float!]
+  senderLat_not_in: [Float!]
+  senderLat_lt: Float
+  senderLat_lte: Float
+  senderLat_gt: Float
+  senderLat_gte: Float
+  senderLon: Float
+  senderLon_not: Float
+  senderLon_in: [Float!]
+  senderLon_not_in: [Float!]
+  senderLon_lt: Float
+  senderLon_lte: Float
+  senderLon_gt: Float
+  senderLon_gte: Float
+  receiverLat: Float
+  receiverLat_not: Float
+  receiverLat_in: [Float!]
+  receiverLat_not_in: [Float!]
+  receiverLat_lt: Float
+  receiverLat_lte: Float
+  receiverLat_gt: Float
+  receiverLat_gte: Float
+  receiverLon: Float
+  receiverLon_not: Float
+  receiverLon_in: [Float!]
+  receiverLon_not_in: [Float!]
+  receiverLon_lt: Float
+  receiverLon_lte: Float
+  receiverLon_gt: Float
+  receiverLon_gte: Float
+  location: String
+  location_not: String
+  location_in: [String!]
+  location_not_in: [String!]
+  location_lt: String
+  location_lte: String
+  location_gt: String
+  location_gte: String
+  location_contains: String
+  location_not_contains: String
+  location_starts_with: String
+  location_not_starts_with: String
+  location_ends_with: String
+  location_not_ends_with: String
   AND: [ConnectionWhereInput!]
   OR: [ConnectionWhereInput!]
   NOT: [ConnectionWhereInput!]
 }
 
 input ConnectionWhereUniqueInput {
-  id: ID
-}
-
-type Coordinates {
-  id: ID!
-  latitude: Float
-  longitude: Float
-}
-
-type CoordinatesConnection {
-  pageInfo: PageInfo!
-  edges: [CoordinatesEdge]!
-  aggregate: AggregateCoordinates!
-}
-
-input CoordinatesCreateInput {
-  id: ID
-  latitude: Float
-  longitude: Float
-}
-
-input CoordinatesCreateOneInput {
-  create: CoordinatesCreateInput
-  connect: CoordinatesWhereUniqueInput
-}
-
-type CoordinatesEdge {
-  node: Coordinates!
-  cursor: String!
-}
-
-enum CoordinatesOrderByInput {
-  id_ASC
-  id_DESC
-  latitude_ASC
-  latitude_DESC
-  longitude_ASC
-  longitude_DESC
-}
-
-type CoordinatesPreviousValues {
-  id: ID!
-  latitude: Float
-  longitude: Float
-}
-
-type CoordinatesSubscriptionPayload {
-  mutation: MutationType!
-  node: Coordinates
-  updatedFields: [String!]
-  previousValues: CoordinatesPreviousValues
-}
-
-input CoordinatesSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: CoordinatesWhereInput
-  AND: [CoordinatesSubscriptionWhereInput!]
-  OR: [CoordinatesSubscriptionWhereInput!]
-  NOT: [CoordinatesSubscriptionWhereInput!]
-}
-
-input CoordinatesUpdateDataInput {
-  latitude: Float
-  longitude: Float
-}
-
-input CoordinatesUpdateInput {
-  latitude: Float
-  longitude: Float
-}
-
-input CoordinatesUpdateManyMutationInput {
-  latitude: Float
-  longitude: Float
-}
-
-input CoordinatesUpdateOneInput {
-  create: CoordinatesCreateInput
-  update: CoordinatesUpdateDataInput
-  upsert: CoordinatesUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: CoordinatesWhereUniqueInput
-}
-
-input CoordinatesUpsertNestedInput {
-  update: CoordinatesUpdateDataInput!
-  create: CoordinatesCreateInput!
-}
-
-input CoordinatesWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  latitude: Float
-  latitude_not: Float
-  latitude_in: [Float!]
-  latitude_not_in: [Float!]
-  latitude_lt: Float
-  latitude_lte: Float
-  latitude_gt: Float
-  latitude_gte: Float
-  longitude: Float
-  longitude_not: Float
-  longitude_in: [Float!]
-  longitude_not_in: [Float!]
-  longitude_lt: Float
-  longitude_lte: Float
-  longitude_gt: Float
-  longitude_gte: Float
-  AND: [CoordinatesWhereInput!]
-  OR: [CoordinatesWhereInput!]
-  NOT: [CoordinatesWhereInput!]
-}
-
-input CoordinatesWhereUniqueInput {
   id: ID
 }
 
@@ -386,12 +458,12 @@ type Mutation {
   upsertConnection(where: ConnectionWhereUniqueInput!, create: ConnectionCreateInput!, update: ConnectionUpdateInput!): Connection!
   deleteConnection(where: ConnectionWhereUniqueInput!): Connection
   deleteManyConnections(where: ConnectionWhereInput): BatchPayload!
-  createCoordinates(data: CoordinatesCreateInput!): Coordinates!
-  updateCoordinates(data: CoordinatesUpdateInput!, where: CoordinatesWhereUniqueInput!): Coordinates
-  updateManyCoordinateses(data: CoordinatesUpdateManyMutationInput!, where: CoordinatesWhereInput): BatchPayload!
-  upsertCoordinates(where: CoordinatesWhereUniqueInput!, create: CoordinatesCreateInput!, update: CoordinatesUpdateInput!): Coordinates!
-  deleteCoordinates(where: CoordinatesWhereUniqueInput!): Coordinates
-  deleteManyCoordinateses(where: CoordinatesWhereInput): BatchPayload!
+  createNotification(data: NotificationCreateInput!): Notification!
+  updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
+  updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
+  upsertNotification(where: NotificationWhereUniqueInput!, create: NotificationCreateInput!, update: NotificationUpdateInput!): Notification!
+  deleteNotification(where: NotificationWhereUniqueInput!): Notification
+  deleteManyNotifications(where: NotificationWhereInput): BatchPayload!
   createProfileField(data: ProfileFieldCreateInput!): ProfileField!
   updateProfileField(data: ProfileFieldUpdateInput!, where: ProfileFieldWhereUniqueInput!): ProfileField
   updateManyProfileFields(data: ProfileFieldUpdateManyMutationInput!, where: ProfileFieldWhereInput): BatchPayload!
@@ -420,6 +492,187 @@ enum MutationType {
 
 interface Node {
   id: ID!
+}
+
+type Notification {
+  id: ID!
+  message: String!
+  user: User!
+}
+
+type NotificationConnection {
+  pageInfo: PageInfo!
+  edges: [NotificationEdge]!
+  aggregate: AggregateNotification!
+}
+
+input NotificationCreateInput {
+  id: ID
+  message: String!
+  user: UserCreateOneWithoutNotificationsInput!
+}
+
+input NotificationCreateManyWithoutUserInput {
+  create: [NotificationCreateWithoutUserInput!]
+  connect: [NotificationWhereUniqueInput!]
+}
+
+input NotificationCreateWithoutUserInput {
+  id: ID
+  message: String!
+}
+
+type NotificationEdge {
+  node: Notification!
+  cursor: String!
+}
+
+enum NotificationOrderByInput {
+  id_ASC
+  id_DESC
+  message_ASC
+  message_DESC
+}
+
+type NotificationPreviousValues {
+  id: ID!
+  message: String!
+}
+
+input NotificationScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  AND: [NotificationScalarWhereInput!]
+  OR: [NotificationScalarWhereInput!]
+  NOT: [NotificationScalarWhereInput!]
+}
+
+type NotificationSubscriptionPayload {
+  mutation: MutationType!
+  node: Notification
+  updatedFields: [String!]
+  previousValues: NotificationPreviousValues
+}
+
+input NotificationSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: NotificationWhereInput
+  AND: [NotificationSubscriptionWhereInput!]
+  OR: [NotificationSubscriptionWhereInput!]
+  NOT: [NotificationSubscriptionWhereInput!]
+}
+
+input NotificationUpdateInput {
+  message: String
+  user: UserUpdateOneRequiredWithoutNotificationsInput
+}
+
+input NotificationUpdateManyDataInput {
+  message: String
+}
+
+input NotificationUpdateManyMutationInput {
+  message: String
+}
+
+input NotificationUpdateManyWithoutUserInput {
+  create: [NotificationCreateWithoutUserInput!]
+  delete: [NotificationWhereUniqueInput!]
+  connect: [NotificationWhereUniqueInput!]
+  set: [NotificationWhereUniqueInput!]
+  disconnect: [NotificationWhereUniqueInput!]
+  update: [NotificationUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [NotificationUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [NotificationScalarWhereInput!]
+  updateMany: [NotificationUpdateManyWithWhereNestedInput!]
+}
+
+input NotificationUpdateManyWithWhereNestedInput {
+  where: NotificationScalarWhereInput!
+  data: NotificationUpdateManyDataInput!
+}
+
+input NotificationUpdateWithoutUserDataInput {
+  message: String
+}
+
+input NotificationUpdateWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput!
+  data: NotificationUpdateWithoutUserDataInput!
+}
+
+input NotificationUpsertWithWhereUniqueWithoutUserInput {
+  where: NotificationWhereUniqueInput!
+  update: NotificationUpdateWithoutUserDataInput!
+  create: NotificationCreateWithoutUserInput!
+}
+
+input NotificationWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  message: String
+  message_not: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_lt: String
+  message_lte: String
+  message_gt: String
+  message_gte: String
+  message_contains: String
+  message_not_contains: String
+  message_starts_with: String
+  message_not_starts_with: String
+  message_ends_with: String
+  message_not_ends_with: String
+  user: UserWhereInput
+  AND: [NotificationWhereInput!]
+  OR: [NotificationWhereInput!]
+  NOT: [NotificationWhereInput!]
+}
+
+input NotificationWhereUniqueInput {
+  id: ID
 }
 
 type PageInfo {
@@ -887,9 +1140,9 @@ type Query {
   connection(where: ConnectionWhereUniqueInput!): Connection
   connections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection]!
   connectionsConnection(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectionConnection!
-  coordinates(where: CoordinatesWhereUniqueInput!): Coordinates
-  coordinateses(where: CoordinatesWhereInput, orderBy: CoordinatesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Coordinates]!
-  coordinatesesConnection(where: CoordinatesWhereInput, orderBy: CoordinatesOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CoordinatesConnection!
+  notification(where: NotificationWhereUniqueInput!): Notification
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
+  notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
   profileField(where: ProfileFieldWhereUniqueInput!): ProfileField
   profileFields(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProfileField]!
   profileFieldsConnection(where: ProfileFieldWhereInput, orderBy: ProfileFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProfileFieldConnection!
@@ -904,7 +1157,7 @@ type Query {
 
 type Subscription {
   connection(where: ConnectionSubscriptionWhereInput): ConnectionSubscriptionPayload
-  coordinates(where: CoordinatesSubscriptionWhereInput): CoordinatesSubscriptionPayload
+  notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
   profileField(where: ProfileFieldSubscriptionWhereInput): ProfileFieldSubscriptionPayload
   qRCode(where: QRCodeSubscriptionWhereInput): QRCodeSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -925,6 +1178,8 @@ type User {
   qrcodes(where: QRCodeWhereInput, orderBy: QRCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [QRCode!]
   sentConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
   receivedConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
+  blockedConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
+  notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification!]
 }
 
 type UserConnection {
@@ -948,6 +1203,18 @@ input UserCreateInput {
   qrcodes: QRCodeCreateManyWithoutUserInput
   sentConnections: ConnectionCreateManyWithoutSenderInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  notifications: NotificationCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutBlockedConnectionsInput {
+  create: UserCreateWithoutBlockedConnectionsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutNotificationsInput {
+  create: UserCreateWithoutNotificationsInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutProfileInput {
@@ -970,6 +1237,42 @@ input UserCreateOneWithoutSentConnectionsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateWithoutBlockedConnectionsInput {
+  id: ID
+  authId: String!
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldCreateManyWithoutUserInput
+  qrcodes: QRCodeCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  notifications: NotificationCreateManyWithoutUserInput
+}
+
+input UserCreateWithoutNotificationsInput {
+  id: ID
+  authId: String!
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldCreateManyWithoutUserInput
+  qrcodes: QRCodeCreateManyWithoutUserInput
+  sentConnections: ConnectionCreateManyWithoutSenderInput
+  receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+}
+
 input UserCreateWithoutProfileInput {
   id: ID
   authId: String!
@@ -984,6 +1287,8 @@ input UserCreateWithoutProfileInput {
   qrcodes: QRCodeCreateManyWithoutUserInput
   sentConnections: ConnectionCreateManyWithoutSenderInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  notifications: NotificationCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutQrcodesInput {
@@ -1000,6 +1305,8 @@ input UserCreateWithoutQrcodesInput {
   profile: ProfileFieldCreateManyWithoutUserInput
   sentConnections: ConnectionCreateManyWithoutSenderInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  notifications: NotificationCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutReceivedConnectionsInput {
@@ -1016,6 +1323,8 @@ input UserCreateWithoutReceivedConnectionsInput {
   profile: ProfileFieldCreateManyWithoutUserInput
   qrcodes: QRCodeCreateManyWithoutUserInput
   sentConnections: ConnectionCreateManyWithoutSenderInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  notifications: NotificationCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutSentConnectionsInput {
@@ -1032,6 +1341,8 @@ input UserCreateWithoutSentConnectionsInput {
   profile: ProfileFieldCreateManyWithoutUserInput
   qrcodes: QRCodeCreateManyWithoutUserInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
+  blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  notifications: NotificationCreateManyWithoutUserInput
 }
 
 type UserEdge {
@@ -1107,6 +1418,8 @@ input UserUpdateInput {
   qrcodes: QRCodeUpdateManyWithoutUserInput
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -1121,10 +1434,26 @@ input UserUpdateManyMutationInput {
   bio: String
 }
 
+input UserUpdateOneRequiredWithoutNotificationsInput {
+  create: UserCreateWithoutNotificationsInput
+  update: UserUpdateWithoutNotificationsDataInput
+  upsert: UserUpsertWithoutNotificationsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutProfileInput {
   create: UserCreateWithoutProfileInput
   update: UserUpdateWithoutProfileDataInput
   upsert: UserUpsertWithoutProfileInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneWithoutBlockedConnectionsInput {
+  create: UserCreateWithoutBlockedConnectionsInput
+  update: UserUpdateWithoutBlockedConnectionsDataInput
+  upsert: UserUpsertWithoutBlockedConnectionsInput
+  delete: Boolean
+  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 
@@ -1155,6 +1484,40 @@ input UserUpdateOneWithoutSentConnectionsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateWithoutBlockedConnectionsDataInput {
+  authId: String
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
+  qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  notifications: NotificationUpdateManyWithoutUserInput
+}
+
+input UserUpdateWithoutNotificationsDataInput {
+  authId: String
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
+  qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+}
+
 input UserUpdateWithoutProfileDataInput {
   authId: String
   name: String
@@ -1168,6 +1531,8 @@ input UserUpdateWithoutProfileDataInput {
   qrcodes: QRCodeUpdateManyWithoutUserInput
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutQrcodesDataInput {
@@ -1183,6 +1548,8 @@ input UserUpdateWithoutQrcodesDataInput {
   profile: ProfileFieldUpdateManyWithoutUserInput
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutReceivedConnectionsDataInput {
@@ -1198,6 +1565,8 @@ input UserUpdateWithoutReceivedConnectionsDataInput {
   profile: ProfileFieldUpdateManyWithoutUserInput
   qrcodes: QRCodeUpdateManyWithoutUserInput
   sentConnections: ConnectionUpdateManyWithoutSenderInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
 }
 
 input UserUpdateWithoutSentConnectionsDataInput {
@@ -1213,6 +1582,18 @@ input UserUpdateWithoutSentConnectionsDataInput {
   profile: ProfileFieldUpdateManyWithoutUserInput
   qrcodes: QRCodeUpdateManyWithoutUserInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
+}
+
+input UserUpsertWithoutBlockedConnectionsInput {
+  update: UserUpdateWithoutBlockedConnectionsDataInput!
+  create: UserCreateWithoutBlockedConnectionsInput!
+}
+
+input UserUpsertWithoutNotificationsInput {
+  update: UserUpdateWithoutNotificationsDataInput!
+  create: UserCreateWithoutNotificationsInput!
 }
 
 input UserUpsertWithoutProfileInput {
@@ -1388,6 +1769,12 @@ input UserWhereInput {
   receivedConnections_every: ConnectionWhereInput
   receivedConnections_some: ConnectionWhereInput
   receivedConnections_none: ConnectionWhereInput
+  blockedConnections_every: ConnectionWhereInput
+  blockedConnections_some: ConnectionWhereInput
+  blockedConnections_none: ConnectionWhereInput
+  notifications_every: NotificationWhereInput
+  notifications_some: NotificationWhereInput
+  notifications_none: NotificationWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
