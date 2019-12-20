@@ -33,7 +33,7 @@ var models = [
     embedded: false
   },
   {
-    name: "Coordinates",
+    name: "Notification",
     embedded: false
   }
 ];
