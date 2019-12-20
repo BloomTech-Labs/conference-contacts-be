@@ -45,15 +45,23 @@ const typeDefs = gql`
     """
     Creates a connection request to the specified user.
     """
-    createConnection(userID: ID!): ConnectionResponse!
+    createConnection(userID: ID!, senderCoords: CoordinatesInput!): ConnectionResponse!
     """
-    Updates a connection status.
+    Accepts an incoming connection request.
     """
-    updateConnection(id: ID!, status: ConnectionStatus!): ConnectionResponse!
+    acceptConnection(id: ID!, receiverCoords: CoordinatesInput!): ConnectionResponse!
+    """
+    Blocks an incoming connection request.
+    """
+    blockConnection(id: ID!): ConnectionResponse!
     """
     Deletes a connection entirely.
     """
     deleteConnection(id: ID!): ConnectionResponse!
+    """
+    Deletes a notification.
+    """
+    deleteNotification(id: ID!): NotificationResponse!
   }
 
   input CreateUserInput {
@@ -78,6 +86,16 @@ const typeDefs = gql`
     tagline: String
     bio: String
     email: String
+  }
+
+  input CoordinatesInput {
+    latitude: Float!
+    longitude: Float!
+  }
+
+  input UpdateConnectionInput {
+    status: ConnectionStatus!
+    receiverCoordinates: CoordinatesInput
   }
 
   input CreateProfileFieldInput {
@@ -150,6 +168,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     connection: Connection
+  }
+
+  type NotificationResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    notification: Notification
   }
 `;
 
