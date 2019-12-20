@@ -51,7 +51,7 @@ const typeDefs = gql`
     """
     acceptConnection(id: ID!, receiverCoords: CoordinatesInput!): ConnectionResponse!
     """
-    Blocks an incoming connection request.
+    Blocks an existing connection.
     """
     blockConnection(id: ID!): ConnectionResponse!
     """
