@@ -52,6 +52,9 @@ const User = {
   },
   blockedConnections({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).blockedConnections();
+  },
+  notifications({ id }, _, { dataSources: { prisma } }) {
+    return prisma.user({ id }).notifications();
   }
 };
 
