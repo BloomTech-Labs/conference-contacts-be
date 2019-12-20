@@ -4,14 +4,18 @@ const User = {
 
     if (id === user.id) return userProfile;
 
+    const byPrivacy = visibility => field => visibility.includes(field.privacy);
+
     const [connection] = await prisma.connections({
       where: {
-        sender: { id: user.id },
-        receiver: { id }
+        OR: [
+          { sender: { id: user.id }, receiver: { id } },
+          { sender: { id }, receiver: { id: user.id } }
+        ]
       }
     });
 
-    const byPrivacy = visibility => field => visibility.includes(field.privacy);
+    if (!connection) return userProfile.filter(byPrivacy(['PUBLIC']));
 
     const blocker = await prisma.connection({ id: connection.id }).blocker();
 
