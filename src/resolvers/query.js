@@ -10,7 +10,7 @@ const Query = {
     if (!(await prisma.$exists.user({ id })))
       throw new UserInputError('User does not exist');
 
-    const userData = prisma.user({ id });
+    const userData = await prisma.user({ id });
 
     const [connection] = await prisma.connections({
       where: {
