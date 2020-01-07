@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Server - e2e gets user profile 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "name": "Jonathan Picazo",
+      "profile": Array [
+        Object {
+          "privacy": "PRIVATE",
+          "type": "EMAIL",
+          "value": "macbethjonathan@gmail.com",
+        },
+      ],
+    },
+  },
+}
+`;

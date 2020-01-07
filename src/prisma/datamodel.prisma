@@ -1,0 +1,75 @@
+type User {
+  id: ID! @id
+  authId: String! @unique
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: [ProfileField]!
+  qrcodes: [QRCode]!
+  sentConnections: [Connection]! @relation(name: "SentConnections")
+  receivedConnections: [Connection]! @relation(name: "ReceivedConnections")
+  blockedConnections: [Connection]! @relation(name: "BlockedConnections")
+  notifications: [Notification]!
+}
+
+type ProfileField {
+  id: ID! @id
+  user: User!
+  value: String!
+  type: ProfileFieldType!
+  privacy: ProfileFieldPrivacy!
+  preferredContact: Boolean @default(value: false)
+}
+
+enum ProfileFieldType {
+  EMAIL
+  PHONE
+  SMS
+  INSTAGRAM
+  FACEBOOK
+  LINKEDIN
+  TWITTER
+}
+
+enum ProfileFieldPrivacy {
+  PUBLIC
+  PRIVATE
+  CONNECTED
+}
+
+# https://swaap.co/connect/:id
+type QRCode {
+  id: ID! @id
+  label: String
+  scans: Int @default(value: 0)
+  user: User
+}
+
+type Connection {
+  id: ID! @id
+  sender: User @relation(name: "SentConnections")
+  receiver: User @relation(name: "ReceivedConnections")
+  blocker: User @relation(name: "BlockedConnections")
+  status: ConnectionStatus @default(value: PENDING)
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+}
+
+enum ConnectionStatus {
+  PENDING
+  CONNECTED
+}
+
+type Notification {
+  id: ID! @id
+  message: String!
+  user: User!
+}

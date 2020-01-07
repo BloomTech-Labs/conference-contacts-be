@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Queries fetches list of users 1`] = `
+Object {
+  "data": Object {
+    "user": Object {
+      "bio": "I love testing!!!!!!",
+      "birthdate": "2/5/1995",
+      "gender": "NONBINARY",
+      "industry": "Development",
+      "jobtitle": "Software Engineer",
+      "name": "Tyler Quinn",
+      "picture": "quinn.png",
+      "profile": Array [
+        Object {
+          "preferredContact": true,
+          "privacy": "CONNECTED",
+          "type": "EMAIL",
+          "value": "nicetry@gmail.com",
+        },
+      ],
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
