@@ -1,6 +1,8 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Query = {
+  // see notes in query schema for version details
+  version: () => 1,
   async user(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
 
