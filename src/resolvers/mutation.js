@@ -4,6 +4,7 @@ const {
   ForbiddenError
 } = require('apollo-server');
 
+// these are here so we follow the response format we defined in our schema
 const mutationSuccess = (code, message, fields) => ({
   code,
   message,
@@ -22,10 +23,12 @@ const Mutation = {
     try {
       const authId = decoded.sub.split('|')[1];
       const userExists = await prisma.$exists.user({ authId });
+      // check if user with id already exists in our db
+      // if not, create it - otherwise return user data
       if (!userExists) {
         const { email, ...fields } = data;
         const user = await prisma.createUser({ authId, ...fields });
-        if (email)
+        if (email) {
           await prisma.createProfileField({
             value: email,
             type: 'EMAIL',
@@ -33,6 +36,7 @@ const Mutation = {
             preferredContact: true,
             user: { connect: { authId } }
           });
+        }
         return mutationSuccess(201, 'User creation successful!', { user });
       } else {
         const user = await prisma.user({ authId });
@@ -74,9 +78,12 @@ const Mutation = {
       return mutationError(error);
     }
   },
+  // the mutation below should be used preferably to the one above
+  // so there are less calls to the server in order to update a profile
   async createProfileFields(_, { data }, { dataSources: { prisma }, user }) {
-    if (!Array.isArray(data))
+    if (!Array.isArray(data)) {
       throw new UserInputError(`Expected data array, got ${typeof data}`);
+    }
     try {
       const profileFields = [];
       for (const mutation of data) {
@@ -114,6 +121,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
+  // same here, the mutation below would be preferable to the one above
   async updateProfileFields(_, { data }, { dataSources: { prisma }, user }) {
     if (!Array.isArray(data))
       throw new UserInputError(`Expected data array, got ${typeof data}`);
@@ -159,6 +167,7 @@ const Mutation = {
       return mutationError(error);
     }
   },
+  // same here, the mutation below would be preferable to the one above
   async deleteProfileFields(_, { ids }, { dataSources: { prisma }, user }) {
     if (!Array.isArray(ids))
       throw new UserInputError(`Expected ids array, got ${typeof data}`);
@@ -200,10 +209,12 @@ const Mutation = {
   ) {
     try {
       // users should not be able to send a connection to themself
-      if (userID === user.id)
+      if (userID === user.id) {
         throw new UserInputError(
           "You'll always have a friend in yourself... just not on here."
         );
+      }
+
       // users should not be able to send a duplicate connection
       const existingConnections = await prisma.connections({
         where: {
@@ -213,14 +224,18 @@ const Mutation = {
           ]
         }
       });
-      if (existingConnections.length)
+
+      if (existingConnections.length) {
         throw new UserInputError('A connection already exists between you.');
+      }
+
       const connection = await prisma.createConnection({
         sender: { connect: { id: user.id } },
         receiver: { connect: { id: userID } },
         senderLat: senderCoords.latitude,
         senderLon: senderCoords.longitude
       });
+
       return mutationSuccess(201, 'Connection created successfully!', {
         connection
       });
@@ -235,8 +250,10 @@ const Mutation = {
   ) {
     try {
       const receiver = await prisma.connection({ id }).receiver();
-      if (user.id !== receiver.id)
+      // only receivers of a connection request should be able to accept it
+      if (user.id !== receiver.id) {
         throw new ForbiddenError(':( i accept ur frenship even if they wont');
+      }
       let connection = await prisma.updateConnection({
         where: { id },
         data: {
@@ -245,11 +262,13 @@ const Mutation = {
           receiverLon: receiverCoords.longitude
         }
       });
+      // notify the user who sent the request that it was accepted
       const sender = await prisma.connection({ id }).sender();
       await prisma.createNotification({
         message: `You made a friend! ${user.name} has accepted your connection request.`,
         user: { connect: { id: sender.id } }
       });
+      // update the location of the connection so users can see where they met
       const { senderLat, senderLon, receiverLat, receiverLon } = connection;
       const distance = Math.sqrt(
         (senderLat - receiverLat) ** 2 + (senderLon - receiverLon) ** 2
@@ -265,6 +284,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+  // TODO: we haven't really implelmented this client-side, so this could
+  // TODO: still be worked on
   async blockConnection(_, { id }, { dataSources: { prisma }, user }) {
     try {
       const sender = await prisma.connection({ id }).sender();

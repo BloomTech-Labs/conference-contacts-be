@@ -2,8 +2,12 @@ const User = {
   async profile({ id }, _, { dataSources: { prisma }, user }) {
     const userProfile = await prisma.user({ id }).profile();
 
+    // return profile data for the current logged in user if
+    // the id is the same as the user making the request
     if (id === user.id) return userProfile;
 
+    // otherwise, we're fetching data for another user (most likely
+    // one of our contacts)
     const byPrivacy = visibility => field => visibility.includes(field.privacy);
 
     const [connection] = await prisma.connections({
@@ -15,6 +19,8 @@ const User = {
       }
     });
 
+    // only return "connected" data if you're connected and unblocked
+    // otherwise return public data
     return userProfile.filter(
       byPrivacy(
         !connection ||
