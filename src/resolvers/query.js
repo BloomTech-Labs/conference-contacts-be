@@ -45,7 +45,7 @@ const Query = {
     return userData;
   },
   qrcode(_, { id }, { dataSources: { prisma }, user }) {
-    if (!user) throw new AuthenticationError('Invalid token');
+    if (!user) throw new AuthenticationError('User does not exist');
     return prisma.qRCode({ id });
   }
 };
