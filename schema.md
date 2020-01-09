@@ -54,15 +54,6 @@
 </thead>
 <tbody>
 <tr>
-<td colspan="2" valign="top"><strong>users</strong></td>
-<td valign="top">[<a href="#user">User</a>]!</td>
-<td>
-
-Returns all users; this query is temporary.
-
-</td>
-</tr>
-<tr>
 <td colspan="2" valign="top"><strong>user</strong></td>
 <td valign="top"><a href="#user">User</a></td>
 <td>

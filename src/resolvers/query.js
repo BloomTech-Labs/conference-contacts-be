@@ -1,17 +1,22 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Query = {
-  users(_, __, { dataSources: { prisma } }) {
-    return prisma.users();
-  },
   async user(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
+
+    // ids are optional, so if we don't pass one (or we pass our own),
+    // we want to return information for the currently logged in user
     if (!id || id === user.id) return prisma.user({ id: user.id });
-    if (!(await prisma.$exists.user({ id })))
+
+    // otherwise, we're fetching data for another user (probably one
+    // of our contacts) below
+    if (!(await prisma.$exists.user({ id }))) {
       throw new UserInputError('User does not exist');
+    }
 
     const userData = await prisma.user({ id });
 
+    // does a connection exist between you two?
     const [connection] = await prisma.connections({
       where: {
         OR: [
@@ -26,6 +31,8 @@ const Query = {
       connection.status === 'PENDING' ||
       (await prisma.connection({ id: connection.id }).blocker())
     ) {
+      // if there is no connection found, or it is pending, or someone has
+      // been blocked, only return public data (defined below)
       for (const field in userData) {
         if (userData.hasOwnProperty(field)) {
           if (!['id', 'authId', 'name', 'picture', 'tagline'].includes(field)) {
