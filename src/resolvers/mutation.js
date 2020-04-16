@@ -32,7 +32,7 @@ const Mutation = {
           await prisma.createProfileField({
             value: email,
             type: 'EMAIL',
-            privacy: 'PRIVATE',
+            privacy: 'PUBLIC',
             preferredContact: true,
             user: { connect: { authId } }
           });
