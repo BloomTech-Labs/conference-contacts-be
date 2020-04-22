@@ -11,7 +11,9 @@ const Query = {
       user
     }
   ) {
-    //if (!user) throw new AuthenticationError('User does not exist');
+    // OLD AUTHENTICATION CHECK if (!user) throw new AuthenticationError('User does not exist');
+
+    // makes public query if no user suthentication is sent
     if (!user) {
       return prisma.user({ id });
     }

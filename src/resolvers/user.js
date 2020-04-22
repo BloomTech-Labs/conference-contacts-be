@@ -7,6 +7,7 @@ const User = {
       user
     }
   ) {
+    // public query, goes around the need for authentication
     if (!user) {
       const userProfile = await prisma.user({ id }).profile();
       return userProfile;
