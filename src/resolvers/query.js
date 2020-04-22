@@ -3,8 +3,18 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 const Query = {
   // see notes in query schema for version details
   version: () => 1,
-  async user(_, { id }, { dataSources: { prisma }, user }) {
-    if (!user) throw new AuthenticationError('User does not exist');
+  async user(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
+    //if (!user) throw new AuthenticationError('User does not exist');
+    if (!user) {
+      return prisma.user({ id });
+    }
 
     // ids are optional, so if we don't pass one (or we pass our own),
     // we want to return information for the currently logged in user
@@ -46,7 +56,14 @@ const Query = {
 
     return userData;
   },
-  qrcode(_, { id }, { dataSources: { prisma }, user }) {
+  qrcode(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
     if (!user) throw new AuthenticationError('User does not exist');
     return prisma.qRCode({ id });
   }
