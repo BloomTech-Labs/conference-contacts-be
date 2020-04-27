@@ -1,5 +1,18 @@
 const User = {
-  async profile({ id }, _, { dataSources: { prisma }, user }) {
+  async profile(
+    { id },
+    _,
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
+    // public query, goes around the need for authentication
+    if (!user) {
+      const userProfile = await prisma.user({ id }).profile();
+      return userProfile;
+    }
+
     const userProfile = await prisma.user({ id }).profile();
 
     // return profile data for the current logged in user if
@@ -31,10 +44,22 @@ const User = {
       )
     );
   },
-  qrcodes({ id }, _, { dataSources: { prisma } }) {
+  qrcodes(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     return prisma.user({ id }).qrcodes();
   },
-  async connections({ id }, _, { dataSources: { prisma } }) {
+  async connections(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     const connections = await prisma.connections({
       where: {
         OR: [{ sender: { id } }, { receiver: { id } }]
@@ -42,13 +67,31 @@ const User = {
     });
     return connections.filter(connection => connection.status === 'CONNECTED');
   },
-  sentConnections({ id }, _, { dataSources: { prisma } }) {
+  sentConnections(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     return prisma.user({ id }).sentConnections();
   },
-  receivedConnections({ id }, _, { dataSources: { prisma } }) {
+  receivedConnections(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     return prisma.user({ id }).receivedConnections();
   },
-  async pendingConnections({ id }, _, { dataSources: { prisma } }) {
+  async pendingConnections(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     const connections = await prisma.connections({
       where: {
         OR: [{ sender: { id } }, { receiver: { id } }]
@@ -56,10 +99,22 @@ const User = {
     });
     return connections.filter(connection => connection.status === 'PENDING');
   },
-  blockedConnections({ id }, _, { dataSources: { prisma } }) {
+  blockedConnections(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     return prisma.user({ id }).blockedConnections();
   },
-  notifications({ id }, _, { dataSources: { prisma } }) {
+  notifications(
+    { id },
+    _,
+    {
+      dataSources: { prisma }
+    }
+  ) {
     return prisma.user({ id }).notifications();
   }
 };
