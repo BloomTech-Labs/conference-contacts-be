@@ -3,7 +3,14 @@ const { AuthenticationError, UserInputError } = require('apollo-server');
 const Query = {
   // see notes in query schema for version details
   version: () => 1,
-  async user(_, { id }, { dataSources: { prisma }, user }) {
+  async user(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
     if (!user) throw new AuthenticationError('User does not exist');
 
     // ids are optional, so if we don't pass one (or we pass our own),
@@ -37,7 +44,11 @@ const Query = {
       // been blocked, only return public data (defined below)
       for (const field in userData) {
         if (userData.hasOwnProperty(field)) {
-          if (!['id', 'authId', 'name', 'picture', 'tagline'].includes(field)) {
+          if (
+            !['id', 'authId', 'name', 'picture', 'tagline', 'bio'].includes(
+              field
+            )
+          ) {
             userData[field] = null;
           }
         }
@@ -46,7 +57,14 @@ const Query = {
 
     return userData;
   },
-  qrcode(_, { id }, { dataSources: { prisma }, user }) {
+  qrcode(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
     if (!user) throw new AuthenticationError('User does not exist');
     return prisma.qRCode({ id });
   }
