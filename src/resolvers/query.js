@@ -11,7 +11,16 @@ const Query = {
       user
     }
   ) {
+<<<<<<< HEAD
     if (!user) throw new AuthenticationError('User does not exist');
+=======
+    // OLD AUTHENTICATION CHECK if (!user) throw new AuthenticationError('User does not exist');
+
+    // makes public query if no user suthentication is sent
+    if (!user) {
+      return prisma.user({ id });
+    }
+>>>>>>> 25ef15bd3bf29527c339adeb6c8208ac2e492e60
 
     // ids are optional, so if we don't pass one (or we pass our own),
     // we want to return information for the currently logged in user
