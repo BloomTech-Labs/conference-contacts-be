@@ -42,7 +42,6 @@ enum ProfileFieldPrivacy {
   CONNECTED
 }
 
-# https://swaap.co/connect/:id
 type QRCode {
   id: ID! @id
   label: String
@@ -61,6 +60,8 @@ type Connection {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String 
+  receiverNote: String
 }
 
 enum ConnectionStatus {

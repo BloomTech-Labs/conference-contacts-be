@@ -65,6 +65,8 @@ const typeDefs = gql`
     receiverLat: Float
     receiverLon: Float
     location: String
+    senderNote: String
+    receiverNote: String
   }
 
   enum ConnectionStatus {

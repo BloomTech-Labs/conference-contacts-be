@@ -49,7 +49,7 @@ const Query = {
       // been blocked, only return public data (defined below)
       for (const field in userData) {
         if (userData.hasOwnProperty(field)) {
-          if (!['id', 'authId', 'name', 'picture', 'tagline'].includes(field)) {
+          if (!['id', 'authId', 'name', 'picture', 'tagline', 'bio'].includes(field)) {
             userData[field] = null;
           }
         }
