@@ -2,6 +2,8 @@
 
 #### Backend deployed at [Heroku](https://lambda-labs-swaap.herokuapp.com/) <br>
 
+***❗Any changes to the master branch should be coordinated with the iOS team.***
+
 ## Getting started
 
 To get the server running locally:

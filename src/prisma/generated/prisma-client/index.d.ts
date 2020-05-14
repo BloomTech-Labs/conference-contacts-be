@@ -316,7 +316,11 @@ export type ConnectionOrderByInput =
   | "receiverLon_ASC"
   | "receiverLon_DESC"
   | "location_ASC"
-  | "location_DESC";
+  | "location_DESC"
+  | "senderNote_ASC"
+  | "senderNote_DESC"
+  | "receiverNote_ASC"
+  | "receiverNote_DESC";
 
 export type NotificationOrderByInput =
   | "id_ASC"
@@ -672,6 +676,34 @@ export interface ConnectionWhereInput {
   location_not_starts_with?: Maybe<String>;
   location_ends_with?: Maybe<String>;
   location_not_ends_with?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  senderNote_not?: Maybe<String>;
+  senderNote_in?: Maybe<String[] | String>;
+  senderNote_not_in?: Maybe<String[] | String>;
+  senderNote_lt?: Maybe<String>;
+  senderNote_lte?: Maybe<String>;
+  senderNote_gt?: Maybe<String>;
+  senderNote_gte?: Maybe<String>;
+  senderNote_contains?: Maybe<String>;
+  senderNote_not_contains?: Maybe<String>;
+  senderNote_starts_with?: Maybe<String>;
+  senderNote_not_starts_with?: Maybe<String>;
+  senderNote_ends_with?: Maybe<String>;
+  senderNote_not_ends_with?: Maybe<String>;
+  receiverNote?: Maybe<String>;
+  receiverNote_not?: Maybe<String>;
+  receiverNote_in?: Maybe<String[] | String>;
+  receiverNote_not_in?: Maybe<String[] | String>;
+  receiverNote_lt?: Maybe<String>;
+  receiverNote_lte?: Maybe<String>;
+  receiverNote_gt?: Maybe<String>;
+  receiverNote_gte?: Maybe<String>;
+  receiverNote_contains?: Maybe<String>;
+  receiverNote_not_contains?: Maybe<String>;
+  receiverNote_starts_with?: Maybe<String>;
+  receiverNote_not_starts_with?: Maybe<String>;
+  receiverNote_ends_with?: Maybe<String>;
+  receiverNote_not_ends_with?: Maybe<String>;
   AND?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   OR?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   NOT?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
@@ -740,6 +772,8 @@ export interface ConnectionCreateInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserCreateOneWithoutSentConnectionsInput {
@@ -811,6 +845,8 @@ export interface ConnectionCreateWithoutReceiverInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserCreateOneWithoutBlockedConnectionsInput {
@@ -853,6 +889,8 @@ export interface ConnectionCreateWithoutSenderInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserCreateOneWithoutReceivedConnectionsInput {
@@ -895,6 +933,8 @@ export interface ConnectionCreateWithoutBlockerInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface NotificationCreateManyWithoutUserInput {
@@ -921,6 +961,8 @@ export interface ConnectionUpdateInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutSentConnectionsInput {
@@ -1179,6 +1221,8 @@ export interface ConnectionUpdateWithoutReceiverDataInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutBlockedConnectionsInput {
@@ -1244,6 +1288,8 @@ export interface ConnectionUpdateWithoutSenderDataInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface UserUpdateOneWithoutReceivedConnectionsInput {
@@ -1309,6 +1355,8 @@ export interface ConnectionUpdateWithoutBlockerDataInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface ConnectionUpsertWithWhereUniqueWithoutBlockerInput {
@@ -1382,6 +1430,34 @@ export interface ConnectionScalarWhereInput {
   location_not_starts_with?: Maybe<String>;
   location_ends_with?: Maybe<String>;
   location_not_ends_with?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  senderNote_not?: Maybe<String>;
+  senderNote_in?: Maybe<String[] | String>;
+  senderNote_not_in?: Maybe<String[] | String>;
+  senderNote_lt?: Maybe<String>;
+  senderNote_lte?: Maybe<String>;
+  senderNote_gt?: Maybe<String>;
+  senderNote_gte?: Maybe<String>;
+  senderNote_contains?: Maybe<String>;
+  senderNote_not_contains?: Maybe<String>;
+  senderNote_starts_with?: Maybe<String>;
+  senderNote_not_starts_with?: Maybe<String>;
+  senderNote_ends_with?: Maybe<String>;
+  senderNote_not_ends_with?: Maybe<String>;
+  receiverNote?: Maybe<String>;
+  receiverNote_not?: Maybe<String>;
+  receiverNote_in?: Maybe<String[] | String>;
+  receiverNote_not_in?: Maybe<String[] | String>;
+  receiverNote_lt?: Maybe<String>;
+  receiverNote_lte?: Maybe<String>;
+  receiverNote_gt?: Maybe<String>;
+  receiverNote_gte?: Maybe<String>;
+  receiverNote_contains?: Maybe<String>;
+  receiverNote_not_contains?: Maybe<String>;
+  receiverNote_starts_with?: Maybe<String>;
+  receiverNote_not_starts_with?: Maybe<String>;
+  receiverNote_ends_with?: Maybe<String>;
+  receiverNote_not_ends_with?: Maybe<String>;
   AND?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
   OR?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
   NOT?: Maybe<ConnectionScalarWhereInput[] | ConnectionScalarWhereInput>;
@@ -1399,6 +1475,8 @@ export interface ConnectionUpdateManyDataInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface NotificationUpdateManyWithoutUserInput {
@@ -1522,6 +1600,8 @@ export interface ConnectionUpdateManyMutationInput {
   receiverLat?: Maybe<Float>;
   receiverLon?: Maybe<Float>;
   location?: Maybe<String>;
+  senderNote?: Maybe<String>;
+  receiverNote?: Maybe<String>;
 }
 
 export interface NotificationCreateInput {
@@ -1873,6 +1953,8 @@ export interface Connection {
   receiverLat?: Float;
   receiverLon?: Float;
   location?: String;
+  senderNote?: String;
+  receiverNote?: String;
 }
 
 export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
@@ -1886,6 +1968,8 @@ export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
   receiverLat: () => Promise<Float>;
   receiverLon: () => Promise<Float>;
   location: () => Promise<String>;
+  senderNote: () => Promise<String>;
+  receiverNote: () => Promise<String>;
 }
 
 export interface ConnectionSubscription
@@ -1901,6 +1985,8 @@ export interface ConnectionSubscription
   receiverLat: () => Promise<AsyncIterator<Float>>;
   receiverLon: () => Promise<AsyncIterator<Float>>;
   location: () => Promise<AsyncIterator<String>>;
+  senderNote: () => Promise<AsyncIterator<String>>;
+  receiverNote: () => Promise<AsyncIterator<String>>;
 }
 
 export interface ConnectionNullablePromise
@@ -1916,6 +2002,8 @@ export interface ConnectionNullablePromise
   receiverLat: () => Promise<Float>;
   receiverLon: () => Promise<Float>;
   location: () => Promise<String>;
+  senderNote: () => Promise<String>;
+  receiverNote: () => Promise<String>;
 }
 
 export interface User {
@@ -2589,6 +2677,8 @@ export interface ConnectionPreviousValues {
   receiverLat?: Float;
   receiverLon?: Float;
   location?: String;
+  senderNote?: String;
+  receiverNote?: String;
 }
 
 export interface ConnectionPreviousValuesPromise
@@ -2601,6 +2691,8 @@ export interface ConnectionPreviousValuesPromise
   receiverLat: () => Promise<Float>;
   receiverLon: () => Promise<Float>;
   location: () => Promise<String>;
+  senderNote: () => Promise<String>;
+  receiverNote: () => Promise<String>;
 }
 
 export interface ConnectionPreviousValuesSubscription
@@ -2613,6 +2705,8 @@ export interface ConnectionPreviousValuesSubscription
   receiverLat: () => Promise<AsyncIterator<Float>>;
   receiverLon: () => Promise<AsyncIterator<Float>>;
   location: () => Promise<AsyncIterator<String>>;
+  senderNote: () => Promise<AsyncIterator<String>>;
+  receiverNote: () => Promise<AsyncIterator<String>>;
 }
 
 export interface NotificationSubscriptionPayload {

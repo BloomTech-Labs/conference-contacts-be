@@ -1,8 +1,22 @@
 const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Query = {
-  async user(_, { id }, { dataSources: { prisma }, user }) {
-    if (!user) throw new AuthenticationError('User does not exist');
+  // see notes in query schema for version details
+  version: () => 1,
+  async user(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
+    // OLD AUTHENTICATION CHECK if (!user) throw new AuthenticationError('User does not exist');
+
+    // makes public query if no user suthentication is sent
+    if (!user) {
+      return prisma.user({ id });
+    }
 
     // ids are optional, so if we don't pass one (or we pass our own),
     // we want to return information for the currently logged in user
@@ -35,7 +49,7 @@ const Query = {
       // been blocked, only return public data (defined below)
       for (const field in userData) {
         if (userData.hasOwnProperty(field)) {
-          if (!['id', 'authId', 'name', 'picture', 'tagline'].includes(field)) {
+          if (!['id', 'authId', 'name', 'picture', 'tagline', 'bio'].includes(field)) {
             userData[field] = null;
           }
         }
@@ -44,8 +58,15 @@ const Query = {
 
     return userData;
   },
-  qrcode(_, { id }, { dataSources: { prisma }, user }) {
-    if (!user) throw new AuthenticationError('Invalid token');
+  qrcode(
+    _,
+    { id },
+    {
+      dataSources: { prisma },
+      user
+    }
+  ) {
+    if (!user) throw new AuthenticationError('User does not exist');
     return prisma.qRCode({ id });
   }
 };
