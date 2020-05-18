@@ -74,8 +74,3 @@ type Notification {
   message: String!
   user: User!
 }
-
-type Event {
-  id: ID! @id
-  name: String!
-}
