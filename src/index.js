@@ -10,7 +10,7 @@ const client = jwksClient({
 });
 
 function getKey(header, cb) {
-  client.getSigningKey(header.kid, function(err, key) {
+  client.getSigningKey(header.kid, function (err, key) {
     let signingKey = key.publicKey || key.rsaPublicKey;
     cb(null, signingKey);
   });
@@ -40,7 +40,7 @@ const dataSources = () => ({ prisma });
 // Fetch existing user data from the received auth token
 function getUser(token) {
   return new Promise((resolve, reject) => {
-    if (!token || token === '') resolve({ decoded: null, user: null });
+    if (!token || token === '') resolve(null);
     jwt.verify(token, getKey, options, async (err, decoded) => {
       if (err) reject(err);
       try {
@@ -58,8 +58,13 @@ function getUser(token) {
 
 // the function that sets up the global context for each resolver, using the req
 const context = async ({ req }) => ({
-  ...(await getUser(req.headers.authorization ? req.headers.authorization : ''))
+  ...await getUser(req.headers.authorization)
 });
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true
+};
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers
@@ -68,6 +73,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources,
   context,
+  cors: corsOptions,
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
     schemaTag: process.env.ENGINE_SCHEMA_TAG

@@ -38,6 +38,8 @@ type Connection {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 type ConnectionConnection {
@@ -57,6 +59,8 @@ input ConnectionCreateInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionCreateManyWithoutBlockerInput {
@@ -84,6 +88,8 @@ input ConnectionCreateWithoutBlockerInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionCreateWithoutReceiverInput {
@@ -96,6 +102,8 @@ input ConnectionCreateWithoutReceiverInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionCreateWithoutSenderInput {
@@ -108,6 +116,8 @@ input ConnectionCreateWithoutSenderInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 type ConnectionEdge {
@@ -130,6 +140,10 @@ enum ConnectionOrderByInput {
   receiverLon_DESC
   location_ASC
   location_DESC
+  senderNote_ASC
+  senderNote_DESC
+  receiverNote_ASC
+  receiverNote_DESC
 }
 
 type ConnectionPreviousValues {
@@ -140,6 +154,8 @@ type ConnectionPreviousValues {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionScalarWhereInput {
@@ -207,6 +223,34 @@ input ConnectionScalarWhereInput {
   location_not_starts_with: String
   location_ends_with: String
   location_not_ends_with: String
+  senderNote: String
+  senderNote_not: String
+  senderNote_in: [String!]
+  senderNote_not_in: [String!]
+  senderNote_lt: String
+  senderNote_lte: String
+  senderNote_gt: String
+  senderNote_gte: String
+  senderNote_contains: String
+  senderNote_not_contains: String
+  senderNote_starts_with: String
+  senderNote_not_starts_with: String
+  senderNote_ends_with: String
+  senderNote_not_ends_with: String
+  receiverNote: String
+  receiverNote_not: String
+  receiverNote_in: [String!]
+  receiverNote_not_in: [String!]
+  receiverNote_lt: String
+  receiverNote_lte: String
+  receiverNote_gt: String
+  receiverNote_gte: String
+  receiverNote_contains: String
+  receiverNote_not_contains: String
+  receiverNote_starts_with: String
+  receiverNote_not_starts_with: String
+  receiverNote_ends_with: String
+  receiverNote_not_ends_with: String
   AND: [ConnectionScalarWhereInput!]
   OR: [ConnectionScalarWhereInput!]
   NOT: [ConnectionScalarWhereInput!]
@@ -245,6 +289,8 @@ input ConnectionUpdateInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateManyDataInput {
@@ -254,6 +300,8 @@ input ConnectionUpdateManyDataInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateManyMutationInput {
@@ -263,6 +311,8 @@ input ConnectionUpdateManyMutationInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateManyWithoutBlockerInput {
@@ -315,6 +365,8 @@ input ConnectionUpdateWithoutBlockerDataInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateWithoutReceiverDataInput {
@@ -326,6 +378,8 @@ input ConnectionUpdateWithoutReceiverDataInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateWithoutSenderDataInput {
@@ -337,6 +391,8 @@ input ConnectionUpdateWithoutSenderDataInput {
   receiverLat: Float
   receiverLon: Float
   location: String
+  senderNote: String
+  receiverNote: String
 }
 
 input ConnectionUpdateWithWhereUniqueWithoutBlockerInput {
@@ -440,6 +496,34 @@ input ConnectionWhereInput {
   location_not_starts_with: String
   location_ends_with: String
   location_not_ends_with: String
+  senderNote: String
+  senderNote_not: String
+  senderNote_in: [String!]
+  senderNote_not_in: [String!]
+  senderNote_lt: String
+  senderNote_lte: String
+  senderNote_gt: String
+  senderNote_gte: String
+  senderNote_contains: String
+  senderNote_not_contains: String
+  senderNote_starts_with: String
+  senderNote_not_starts_with: String
+  senderNote_ends_with: String
+  senderNote_not_ends_with: String
+  receiverNote: String
+  receiverNote_not: String
+  receiverNote_in: [String!]
+  receiverNote_not_in: [String!]
+  receiverNote_lt: String
+  receiverNote_lte: String
+  receiverNote_gt: String
+  receiverNote_gte: String
+  receiverNote_contains: String
+  receiverNote_not_contains: String
+  receiverNote_starts_with: String
+  receiverNote_not_starts_with: String
+  receiverNote_ends_with: String
+  receiverNote_not_ends_with: String
   AND: [ConnectionWhereInput!]
   OR: [ConnectionWhereInput!]
   NOT: [ConnectionWhereInput!]
