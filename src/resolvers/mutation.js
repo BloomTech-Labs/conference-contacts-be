@@ -19,6 +19,8 @@ const mutationError = error => ({
 });
 
 const Mutation = {
+
+  // CREATE USER
   async createUser(_, { data }, { dataSources: { prisma }, decoded }) {
     try {
       const authId = decoded.sub.split('|')[1];
@@ -46,6 +48,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // UPDATE USER
   async updateUser(_, { data }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -58,6 +62,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // DELETE USER
   async deleteUser(_, __, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -67,6 +73,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // CREATE PROFILE FIELD
   async createProfileField(_, { data }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -81,6 +89,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // CREATE PROFILE FIELDS
   // the mutation below should be used preferably to the one above
   // so there are less calls to the server in order to update a profile
   async createProfileFields(_, { data }, { dataSources: { prisma }, user }) {
@@ -104,6 +114,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // UPDATE PROFILE FIELD
   async updateProfileField(_, { id, data }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -126,6 +138,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // UPDATE PROFILE FIELDS
   // same here, the mutation below would be preferable to the one above
   async updateProfileFields(_, { data }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
@@ -157,6 +171,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // DELETE PROFILE FIELD
   async deleteProfileField(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -175,6 +191,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // DELETE PROFILE FIELDS
   // same here, the mutation below would be preferable to the one above
   async deleteProfileFields(_, { ids }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
@@ -201,6 +219,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // CREATE QR CODE
   async createQRCode(_, { label }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -213,11 +233,9 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async createConnection(
-    _,
-    { userID, senderCoords },
-    { dataSources: { prisma }, user }
-  ) {
+
+  // CREATE CONNECTION (THE SENDER)
+  async createConnection(_, { userID, senderCoords, senderNote },{ dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
       // users should not be able to send a connection to themself
@@ -245,7 +263,8 @@ const Mutation = {
         sender: { connect: { id: user.id } },
         receiver: { connect: { id: userID } },
         senderLat: senderCoords.latitude,
-        senderLon: senderCoords.longitude
+        senderLon: senderCoords.longitude,
+        senderNote: senderNote.text,
       });
 
       return mutationSuccess(201, 'Connection created successfully!', {
@@ -255,11 +274,9 @@ const Mutation = {
       return mutationError(error);
     }
   },
-  async acceptConnection(
-    _,
-    { id, receiverCoords },
-    { dataSources: { prisma }, user }
-  ) {
+
+  // ACCEPT CONNECTION (THE RECEIVER)
+  async acceptConnection(_,{ id, receiverCoords, receiverNote },{ dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
       const receiver = await prisma.connection({ id }).receiver();
@@ -267,28 +284,30 @@ const Mutation = {
       if (user.id !== receiver.id) {
         throw new ForbiddenError(':( i accept ur frenship even if they wont');
       }
+
       let connection = await prisma.updateConnection({
         where: { id },
         data: {
           status: 'CONNECTED',
           receiverLat: receiverCoords.latitude,
-          receiverLon: receiverCoords.longitude
+          receiverLon: receiverCoords.longitude,
+          receiverNote: receiverNote.text,
         }
       });
       // notify the user who sent the request that it was accepted
       const sender = await prisma.connection({ id }).sender();
+      
+      // CREATE NOTIFICATION
       await prisma.createNotification({
         message: `You made a friend! ${user.name} has accepted your connection request.`,
         user: { connect: { id: sender.id } }
       });
       // update the location of the connection so users can see where they met
       const { senderLat, senderLon, receiverLat, receiverLon } = connection;
-      const distance = Math.sqrt(
-        (senderLat - receiverLat) ** 2 + (senderLon - receiverLon) ** 2
-      );
+      const distance = Math.sqrt((senderLat - receiverLat) ** 2 + (senderLon - receiverLon) ** 2);
       connection = await prisma.updateConnection({
         where: { id },
-        data: { location: distance < 1 ? 'INPERSON' : 'REMOTE' }
+        data: { location: distance < 1 ? 'INPERSON' : 'REMOTE',  }
       });
       return mutationSuccess(200, 'Connection status updated successfully.', {
         connection
@@ -297,6 +316,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // BLOCK CONNECTION
   // TODO: we haven't really implelmented this client-side, so this could
   // TODO: still be worked on
   async blockConnection(_, { id }, { dataSources: { prisma }, user }) {
@@ -318,6 +339,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // DELETE CONNECTION
   async deleteConnection(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
@@ -336,6 +359,8 @@ const Mutation = {
       return mutationError(error);
     }
   },
+
+  // DELETE NOTIFICATION
   async deleteNotification(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
