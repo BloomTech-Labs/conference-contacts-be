@@ -67,6 +67,8 @@ const typeDefs = gql`
     location: String
     senderNote: String
     receiverNote: String
+    senderEvent: Event!
+    receiverEvent: Event!
   }
 
   enum ConnectionStatus {
@@ -77,6 +79,13 @@ const typeDefs = gql`
   type Notification {
     id: ID!
     message: String!
+    user: User!
+  }
+
+  type Event {
+    id: ID!
+    name: String!
+    description: String
     user: User!
   }
 `;

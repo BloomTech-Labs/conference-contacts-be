@@ -15,6 +15,10 @@ const typeDefs = gql`
     Returns a specific QR code by its ID.
     """
     qrcode(id: ID!): QRCode
+    """
+    returns events
+    """
+    event(id: ID!): Event
   }
 `;
 

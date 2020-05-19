@@ -62,6 +62,14 @@ const typeDefs = gql`
     Deletes a notification.
     """
     deleteNotification(id: ID!): NotificationResponse!
+    """
+    Creates an event
+    """
+    createEvent(id: ID!, event: CreateEventInput): EventResponse!
+    """
+    Updates invent information.
+    """
+    updateEvent(id: ID!, event: UpdateEventInput): EventResponse!
   }
 
   input NoteInput {
@@ -124,6 +132,16 @@ const typeDefs = gql`
     preferredContact: Boolean
   }
 
+  input CreateEventInput {
+    name: String
+    description: String
+  }
+
+  input UpdateEventInput {
+    name: String
+    description: String
+  }
+
   interface MutationResponse {
     """
     A number that represents the status of the data transfer. Think of it like an HTTP status code.
@@ -179,6 +197,13 @@ const typeDefs = gql`
     success: Boolean!
     message: String!
     notification: Notification
+  }
+
+  type EventResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    event: Event
   }
 `;
 

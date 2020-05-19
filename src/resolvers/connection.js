@@ -10,6 +10,12 @@ const Connection = {
   },
   senderNote({ id }, _, { dataSources: { prisma } }) {
     return prisma.connection({ id }).senderNote();
+  },
+  senderEvent({ id }, _, { dataSources: { prisma } }) {
+    return prisma.connection({ id }).senderEvent();
+  },
+  receiverEvent({ id }, _, { dataSources: { prisma } }) {
+    return prisma.connection({ id }).receiverEvent();
   }
 };
 

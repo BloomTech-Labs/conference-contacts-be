@@ -56,7 +56,23 @@ const Query = {
   qrcode(_, { id }, { dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     return prisma.qRCode({ id });
+  },
+
+  //GET Events
+  async event(_, {id}, {dataSources: {prisma}, user}){
+    if(!user){
+      throw new error("Error, user doesn't exist");
+    }
+
+    const event = prisma.Event({ id })
+
+    if(!event) {
+      throw new error("Error, event doesn't exist")
+    }
+    return event
   }
+
+
 };
 
 module.exports = Query;
