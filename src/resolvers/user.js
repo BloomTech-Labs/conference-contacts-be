@@ -1,4 +1,6 @@
 const User = {
+
+  // GET PROFILE
   async profile({ id }, _, { dataSources: { prisma }, user }) {
     const userProfile = await prisma.user({ id }).profile();
 
@@ -31,9 +33,13 @@ const User = {
       )
     );
   },
+
+  // GET QR CODES
   qrcodes({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).qrcodes();
   },
+
+  // GET CONNECTIONS
   async connections({ id }, _, { dataSources: { prisma } }) {
     const connections = await prisma.connections({
       where: {
@@ -42,12 +48,18 @@ const User = {
     });
     return connections.filter(connection => connection.status === 'CONNECTED');
   },
+
+  // GET SENT CONNECTIONS
   sentConnections({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).sentConnections();
   },
+
+  // GET RECEIVED CONNECTIONS
   receivedConnections({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).receivedConnections();
   },
+
+  // GET PENDING CONNECTIONS
   async pendingConnections({ id }, _, { dataSources: { prisma } }) {
     const connections = await prisma.connections({
       where: {
@@ -56,9 +68,14 @@ const User = {
     });
     return connections.filter(connection => connection.status === 'PENDING');
   },
+
+  // GET BLOCKED CONNECTIONS
+  // TODO: not implemented on the frontend
   blockedConnections({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).blockedConnections();
   },
+
+  // GET NOTIFICATIONS
   notifications({ id }, _, { dataSources: { prisma } }) {
     return prisma.user({ id }).notifications();
   }
