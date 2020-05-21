@@ -61,11 +61,6 @@ const context = async ({ req }) => ({
   ...await getUser(req.headers.authorization)
 });
 
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true
-};
-
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers
 const server = new ApolloServer({
@@ -73,7 +68,6 @@ const server = new ApolloServer({
   resolvers,
   dataSources,
   context,
-  cors: corsOptions,
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
     schemaTag: process.env.ENGINE_SCHEMA_TAG
