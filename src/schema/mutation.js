@@ -91,6 +91,7 @@ const typeDefs = gql`
     tagline: String
     bio: String
     email: String
+    username: String
   }
 
   input CoordinatesInput {

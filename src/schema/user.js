@@ -20,7 +20,7 @@ const typeDefs = gql`
     pendingConnections: [Connection]!
     blockedConnections: [Connection]!
     notifications: [Notification]!
-    username: String!
+    username: String
   }
 
   type ProfileField {
