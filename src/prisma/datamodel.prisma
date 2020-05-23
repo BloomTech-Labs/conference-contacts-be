@@ -63,6 +63,8 @@ type Connection {
   location: String
   senderNote: String 
   receiverNote: String
+  senderEvent: Event @relation(link: TABLE, name: "SenderEvent")
+  recieverEvent: Event @relation(link: TABLE, name: "ReceiverEvent")
 }
 
 enum ConnectionStatus {
@@ -78,11 +80,9 @@ type Notification {
 
 type Event {
   id: ID! @id
-  name: String! @default(value: "Connection Location")
-  description: String
-  user: User!
-  sender: [Connection]! @relation(name: "SenderEvents")
-  reciever: [Connection]! @relation(name: "RecieverEvents")
+  name: String!
+  senderEvent: Connection @relation(name: "SenderEvent")
+  recieverEvent: Connection @relation(name: "ReceiverEvent")
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
