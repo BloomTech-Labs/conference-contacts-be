@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateEvent {
+  count: Int!
+}
+
 type AggregateNotification {
   count: Int!
 }
@@ -61,6 +65,11 @@ input ConnectionCreateInput {
   location: String
   senderNote: String
   receiverNote: String
+}
+
+input ConnectionCreateManyInput {
+  create: [ConnectionCreateInput!]
+  connect: [ConnectionWhereUniqueInput!]
 }
 
 input ConnectionCreateManyWithoutBlockerInput {
@@ -279,6 +288,20 @@ input ConnectionSubscriptionWhereInput {
   NOT: [ConnectionSubscriptionWhereInput!]
 }
 
+input ConnectionUpdateDataInput {
+  sender: UserUpdateOneWithoutSentConnectionsInput
+  receiver: UserUpdateOneWithoutReceivedConnectionsInput
+  blocker: UserUpdateOneWithoutBlockedConnectionsInput
+  status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+  senderNote: String
+  receiverNote: String
+}
+
 input ConnectionUpdateInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
@@ -302,6 +325,18 @@ input ConnectionUpdateManyDataInput {
   location: String
   senderNote: String
   receiverNote: String
+}
+
+input ConnectionUpdateManyInput {
+  create: [ConnectionCreateInput!]
+  update: [ConnectionUpdateWithWhereUniqueNestedInput!]
+  upsert: [ConnectionUpsertWithWhereUniqueNestedInput!]
+  delete: [ConnectionWhereUniqueInput!]
+  connect: [ConnectionWhereUniqueInput!]
+  set: [ConnectionWhereUniqueInput!]
+  disconnect: [ConnectionWhereUniqueInput!]
+  deleteMany: [ConnectionScalarWhereInput!]
+  updateMany: [ConnectionUpdateManyWithWhereNestedInput!]
 }
 
 input ConnectionUpdateManyMutationInput {
@@ -395,6 +430,11 @@ input ConnectionUpdateWithoutSenderDataInput {
   receiverNote: String
 }
 
+input ConnectionUpdateWithWhereUniqueNestedInput {
+  where: ConnectionWhereUniqueInput!
+  data: ConnectionUpdateDataInput!
+}
+
 input ConnectionUpdateWithWhereUniqueWithoutBlockerInput {
   where: ConnectionWhereUniqueInput!
   data: ConnectionUpdateWithoutBlockerDataInput!
@@ -408,6 +448,12 @@ input ConnectionUpdateWithWhereUniqueWithoutReceiverInput {
 input ConnectionUpdateWithWhereUniqueWithoutSenderInput {
   where: ConnectionWhereUniqueInput!
   data: ConnectionUpdateWithoutSenderDataInput!
+}
+
+input ConnectionUpsertWithWhereUniqueNestedInput {
+  where: ConnectionWhereUniqueInput!
+  update: ConnectionUpdateDataInput!
+  create: ConnectionCreateInput!
 }
 
 input ConnectionUpsertWithWhereUniqueWithoutBlockerInput {
@@ -533,6 +579,166 @@ input ConnectionWhereUniqueInput {
   id: ID
 }
 
+scalar DateTime
+
+type Event {
+  id: ID!
+  name: String!
+  description: String
+  user: User!
+  sender(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
+  reciever(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EventConnection {
+  pageInfo: PageInfo!
+  edges: [EventEdge]!
+  aggregate: AggregateEvent!
+}
+
+input EventCreateInput {
+  id: ID
+  name: String
+  description: String
+  user: UserCreateOneInput!
+  sender: ConnectionCreateManyInput
+  reciever: ConnectionCreateManyInput
+}
+
+type EventEdge {
+  node: Event!
+  cursor: String!
+}
+
+enum EventOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  description_ASC
+  description_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type EventPreviousValues {
+  id: ID!
+  name: String!
+  description: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EventSubscriptionPayload {
+  mutation: MutationType!
+  node: Event
+  updatedFields: [String!]
+  previousValues: EventPreviousValues
+}
+
+input EventSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: EventWhereInput
+  AND: [EventSubscriptionWhereInput!]
+  OR: [EventSubscriptionWhereInput!]
+  NOT: [EventSubscriptionWhereInput!]
+}
+
+input EventUpdateInput {
+  name: String
+  description: String
+  user: UserUpdateOneRequiredInput
+  sender: ConnectionUpdateManyInput
+  reciever: ConnectionUpdateManyInput
+}
+
+input EventUpdateManyMutationInput {
+  name: String
+  description: String
+}
+
+input EventWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  user: UserWhereInput
+  sender_every: ConnectionWhereInput
+  sender_some: ConnectionWhereInput
+  sender_none: ConnectionWhereInput
+  reciever_every: ConnectionWhereInput
+  reciever_some: ConnectionWhereInput
+  reciever_none: ConnectionWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [EventWhereInput!]
+  OR: [EventWhereInput!]
+  NOT: [EventWhereInput!]
+}
+
+input EventWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
@@ -542,6 +748,12 @@ type Mutation {
   upsertConnection(where: ConnectionWhereUniqueInput!, create: ConnectionCreateInput!, update: ConnectionUpdateInput!): Connection!
   deleteConnection(where: ConnectionWhereUniqueInput!): Connection
   deleteManyConnections(where: ConnectionWhereInput): BatchPayload!
+  createEvent(data: EventCreateInput!): Event!
+  updateEvent(data: EventUpdateInput!, where: EventWhereUniqueInput!): Event
+  updateManyEvents(data: EventUpdateManyMutationInput!, where: EventWhereInput): BatchPayload!
+  upsertEvent(where: EventWhereUniqueInput!, create: EventCreateInput!, update: EventUpdateInput!): Event!
+  deleteEvent(where: EventWhereUniqueInput!): Event
+  deleteManyEvents(where: EventWhereInput): BatchPayload!
   createNotification(data: NotificationCreateInput!): Notification!
   updateNotification(data: NotificationUpdateInput!, where: NotificationWhereUniqueInput!): Notification
   updateManyNotifications(data: NotificationUpdateManyMutationInput!, where: NotificationWhereInput): BatchPayload!
@@ -1224,6 +1436,9 @@ type Query {
   connection(where: ConnectionWhereUniqueInput!): Connection
   connections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection]!
   connectionsConnection(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConnectionConnection!
+  event(where: EventWhereUniqueInput!): Event
+  events(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Event]!
+  eventsConnection(where: EventWhereInput, orderBy: EventOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): EventConnection!
   notification(where: NotificationWhereUniqueInput!): Notification
   notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification]!
   notificationsConnection(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): NotificationConnection!
@@ -1241,6 +1456,7 @@ type Query {
 
 type Subscription {
   connection(where: ConnectionSubscriptionWhereInput): ConnectionSubscriptionPayload
+  event(where: EventSubscriptionWhereInput): EventSubscriptionPayload
   notification(where: NotificationSubscriptionWhereInput): NotificationSubscriptionPayload
   profileField(where: ProfileFieldSubscriptionWhereInput): ProfileFieldSubscriptionPayload
   qRCode(where: QRCodeSubscriptionWhereInput): QRCodeSubscriptionPayload
@@ -1264,6 +1480,7 @@ type User {
   receivedConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
   blockedConnections(where: ConnectionWhereInput, orderBy: ConnectionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Connection!]
   notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification!]
+  username: String
 }
 
 type UserConnection {
@@ -1289,6 +1506,12 @@ input UserCreateInput {
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 input UserCreateOneWithoutBlockedConnectionsInput {
@@ -1337,6 +1560,7 @@ input UserCreateWithoutBlockedConnectionsInput {
   sentConnections: ConnectionCreateManyWithoutSenderInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
 }
 
 input UserCreateWithoutNotificationsInput {
@@ -1355,6 +1579,7 @@ input UserCreateWithoutNotificationsInput {
   sentConnections: ConnectionCreateManyWithoutSenderInput
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
+  username: String
 }
 
 input UserCreateWithoutProfileInput {
@@ -1373,6 +1598,7 @@ input UserCreateWithoutProfileInput {
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
 }
 
 input UserCreateWithoutQrcodesInput {
@@ -1391,6 +1617,7 @@ input UserCreateWithoutQrcodesInput {
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
 }
 
 input UserCreateWithoutReceivedConnectionsInput {
@@ -1409,6 +1636,7 @@ input UserCreateWithoutReceivedConnectionsInput {
   sentConnections: ConnectionCreateManyWithoutSenderInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
 }
 
 input UserCreateWithoutSentConnectionsInput {
@@ -1427,6 +1655,7 @@ input UserCreateWithoutSentConnectionsInput {
   receivedConnections: ConnectionCreateManyWithoutReceiverInput
   blockedConnections: ConnectionCreateManyWithoutBlockerInput
   notifications: NotificationCreateManyWithoutUserInput
+  username: String
 }
 
 type UserEdge {
@@ -1455,6 +1684,8 @@ enum UserOrderByInput {
   tagline_DESC
   bio_ASC
   bio_DESC
+  username_ASC
+  username_DESC
 }
 
 type UserPreviousValues {
@@ -1468,6 +1699,7 @@ type UserPreviousValues {
   jobtitle: String
   tagline: String
   bio: String
+  username: String
 }
 
 type UserSubscriptionPayload {
@@ -1488,6 +1720,25 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  authId: String
+  name: String
+  picture: String
+  birthdate: String
+  location: String
+  industry: String
+  jobtitle: String
+  tagline: String
+  bio: String
+  profile: ProfileFieldUpdateManyWithoutUserInput
+  qrcodes: QRCodeUpdateManyWithoutUserInput
+  sentConnections: ConnectionUpdateManyWithoutSenderInput
+  receivedConnections: ConnectionUpdateManyWithoutReceiverInput
+  blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  notifications: NotificationUpdateManyWithoutUserInput
+  username: String
+}
+
 input UserUpdateInput {
   authId: String
   name: String
@@ -1504,6 +1755,7 @@ input UserUpdateInput {
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
 }
 
 input UserUpdateManyMutationInput {
@@ -1516,6 +1768,14 @@ input UserUpdateManyMutationInput {
   jobtitle: String
   tagline: String
   bio: String
+  username: String
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
 }
 
 input UserUpdateOneRequiredWithoutNotificationsInput {
@@ -1583,6 +1843,7 @@ input UserUpdateWithoutBlockedConnectionsDataInput {
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
 }
 
 input UserUpdateWithoutNotificationsDataInput {
@@ -1600,6 +1861,7 @@ input UserUpdateWithoutNotificationsDataInput {
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
+  username: String
 }
 
 input UserUpdateWithoutProfileDataInput {
@@ -1617,6 +1879,7 @@ input UserUpdateWithoutProfileDataInput {
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
 }
 
 input UserUpdateWithoutQrcodesDataInput {
@@ -1634,6 +1897,7 @@ input UserUpdateWithoutQrcodesDataInput {
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
 }
 
 input UserUpdateWithoutReceivedConnectionsDataInput {
@@ -1651,6 +1915,7 @@ input UserUpdateWithoutReceivedConnectionsDataInput {
   sentConnections: ConnectionUpdateManyWithoutSenderInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
 }
 
 input UserUpdateWithoutSentConnectionsDataInput {
@@ -1668,6 +1933,12 @@ input UserUpdateWithoutSentConnectionsDataInput {
   receivedConnections: ConnectionUpdateManyWithoutReceiverInput
   blockedConnections: ConnectionUpdateManyWithoutBlockerInput
   notifications: NotificationUpdateManyWithoutUserInput
+  username: String
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithoutBlockedConnectionsInput {
@@ -1859,6 +2130,20 @@ input UserWhereInput {
   notifications_every: NotificationWhereInput
   notifications_some: NotificationWhereInput
   notifications_none: NotificationWhereInput
+  username: String
+  username_not: String
+  username_in: [String!]
+  username_not_in: [String!]
+  username_lt: String
+  username_lte: String
+  username_gt: String
+  username_gte: String
+  username_contains: String
+  username_not_contains: String
+  username_starts_with: String
+  username_not_starts_with: String
+  username_ends_with: String
+  username_not_ends_with: String
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

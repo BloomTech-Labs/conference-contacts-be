@@ -15,6 +15,7 @@ type User {
   receivedConnections: [Connection]! @relation(name: "ReceivedConnections")
   blockedConnections: [Connection]! @relation(name: "BlockedConnections")
   notifications: [Notification]!
+  username: String
 }
 
 type ProfileField {
@@ -62,6 +63,8 @@ type Connection {
   location: String
   senderNote: String 
   receiverNote: String
+  senderEvent: Event @relation(link: TABLE, name: "SenderEvent")
+  recieverEvent: Event @relation(link: TABLE, name: "ReceiverEvent")
 }
 
 enum ConnectionStatus {
@@ -73,4 +76,13 @@ type Notification {
   id: ID! @id
   message: String!
   user: User!
+}
+
+type Event {
+  id: ID! @id
+  name: String!
+  senderEvent: Connection @relation(name: "SenderEvent")
+  recieverEvent: Connection @relation(name: "ReceiverEvent")
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
