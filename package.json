@@ -7,7 +7,7 @@
     "test": "dotenv jest --watch",
     "start": "dotenv node src/index.js",
     "server": "dotenv nodemon src/index.js",
-    "deploy": "cd src/prisma && dotenv -e ../../.env -- prisma1 deploy"
+    "deploy": "cd src/prisma && dotenv -e ../../.env -- prisma deploy"
   },
   "repository": {
     "type": "git",
