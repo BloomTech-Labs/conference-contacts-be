@@ -17,7 +17,6 @@ type User {
   notifications: [Notification]!
   username: String
 }
-
 type ProfileField {
   id: ID! @id
   user: User!
@@ -26,7 +25,6 @@ type ProfileField {
   privacy: ProfileFieldPrivacy!
   preferredContact: Boolean @default(value: false)
 }
-
 enum ProfileFieldType {
   EMAIL
   PHONE
@@ -36,20 +34,17 @@ enum ProfileFieldType {
   LINKEDIN
   TWITTER
 }
-
 enum ProfileFieldPrivacy {
   PUBLIC
   PRIVATE
   CONNECTED
 }
-
 type QRCode {
   id: ID! @id
   label: String
   scans: Int @default(value: 0)
   user: User
 }
-
 type Connection {
   id: ID! @id
   sender: User @relation(name: "SentConnections")
@@ -66,18 +61,15 @@ type Connection {
   senderEvent: Event @relation(link: TABLE, name: "SenderEvent")
   recieverEvent: Event @relation(link: TABLE, name: "ReceiverEvent")
 }
-
 enum ConnectionStatus {
   PENDING
   CONNECTED
 }
-
 type Notification {
   id: ID! @id
   message: String!
   user: User!
 }
-
 type Event {
   id: ID! @id
   name: String!
