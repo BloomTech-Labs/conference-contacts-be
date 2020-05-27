@@ -44,6 +44,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://infinite-garden-59996.herokuapp.com/swaap${process.env["SERVICE_STAGE"]}`
+  endpoint: `https://lambda-swaap-b5a9ceec8c.herokuapp.com/swaap/${process.env.SERVICE_STAGE}`
 });
 exports.prisma = new exports.Prisma();
