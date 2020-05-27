@@ -69,10 +69,6 @@ const server = new ApolloServer({
   resolvers,
   dataSources,
   context,
-  cors: {
-    origin: '*',
-    credentials: true
-  },
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
     schemaTag: process.env.ENGINE_SCHEMA_TAG
