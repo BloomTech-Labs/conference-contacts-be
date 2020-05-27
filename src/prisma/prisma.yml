@@ -1,4 +1,6 @@
-endpoint: https://lambda-swaap-b5a9ceec8c.herokuapp.com/swaap/${env:SERVICE_STAGE}
+
+endpoint:  https://lambda-swaap-b5a9ceec8c.herokuapp.com/swaap/${process.env.SERVICE_STAGE}
+
 datamodel: datamodel.prisma
 
 generate:
