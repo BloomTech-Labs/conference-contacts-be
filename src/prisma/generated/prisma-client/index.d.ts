@@ -380,8 +380,6 @@ export type EventOrderByInput =
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "test_ASC"
-  | "test_DESC"
   | "authId_ASC"
   | "authId_DESC"
   | "name_ASC"
@@ -469,20 +467,6 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  test?: Maybe<String>;
-  test_not?: Maybe<String>;
-  test_in?: Maybe<String[] | String>;
-  test_not_in?: Maybe<String[] | String>;
-  test_lt?: Maybe<String>;
-  test_lte?: Maybe<String>;
-  test_gt?: Maybe<String>;
-  test_gte?: Maybe<String>;
-  test_contains?: Maybe<String>;
-  test_not_contains?: Maybe<String>;
-  test_starts_with?: Maybe<String>;
-  test_not_starts_with?: Maybe<String>;
-  test_ends_with?: Maybe<String>;
-  test_not_ends_with?: Maybe<String>;
   authId?: Maybe<String>;
   authId_not?: Maybe<String>;
   authId_in?: Maybe<String[] | String>;
@@ -786,7 +770,7 @@ export interface ConnectionWhereInput {
   receiverNote_ends_with?: Maybe<String>;
   receiverNote_not_ends_with?: Maybe<String>;
   senderEvent?: Maybe<EventWhereInput>;
-  recieverEvent?: Maybe<EventWhereInput>;
+  receiverEvent?: Maybe<EventWhereInput>;
   AND?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   OR?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
   NOT?: Maybe<ConnectionWhereInput[] | ConnectionWhereInput>;
@@ -822,7 +806,7 @@ export interface EventWhereInput {
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
   senderEvent?: Maybe<ConnectionWhereInput>;
-  recieverEvent?: Maybe<ConnectionWhereInput>;
+  receiverEvent?: Maybe<ConnectionWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -914,7 +898,7 @@ export interface ConnectionCreateInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventCreateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventCreateOneWithoutReceiverEventInput>;
 }
 
 export interface UserCreateOneWithoutSentConnectionsInput {
@@ -924,7 +908,6 @@ export interface UserCreateOneWithoutSentConnectionsInput {
 
 export interface UserCreateWithoutSentConnectionsInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -991,7 +974,7 @@ export interface ConnectionCreateWithoutReceiverInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventCreateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventCreateOneWithoutReceiverEventInput>;
 }
 
 export interface UserCreateOneWithoutBlockedConnectionsInput {
@@ -1001,7 +984,6 @@ export interface UserCreateOneWithoutBlockedConnectionsInput {
 
 export interface UserCreateWithoutBlockedConnectionsInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1039,7 +1021,7 @@ export interface ConnectionCreateWithoutSenderInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventCreateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventCreateOneWithoutReceiverEventInput>;
 }
 
 export interface UserCreateOneWithoutReceivedConnectionsInput {
@@ -1049,7 +1031,6 @@ export interface UserCreateOneWithoutReceivedConnectionsInput {
 
 export interface UserCreateWithoutReceivedConnectionsInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1087,7 +1068,7 @@ export interface ConnectionCreateWithoutBlockerInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventCreateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventCreateOneWithoutReceiverEventInput>;
 }
 
 export interface EventCreateOneWithoutSenderEventInput {
@@ -1098,15 +1079,15 @@ export interface EventCreateOneWithoutSenderEventInput {
 export interface EventCreateWithoutSenderEventInput {
   id?: Maybe<ID_Input>;
   name: String;
-  recieverEvent?: Maybe<ConnectionCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<ConnectionCreateOneWithoutReceiverEventInput>;
 }
 
-export interface ConnectionCreateOneWithoutRecieverEventInput {
-  create?: Maybe<ConnectionCreateWithoutRecieverEventInput>;
+export interface ConnectionCreateOneWithoutReceiverEventInput {
+  create?: Maybe<ConnectionCreateWithoutReceiverEventInput>;
   connect?: Maybe<ConnectionWhereUniqueInput>;
 }
 
-export interface ConnectionCreateWithoutRecieverEventInput {
+export interface ConnectionCreateWithoutReceiverEventInput {
   id?: Maybe<ID_Input>;
   sender?: Maybe<UserCreateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserCreateOneWithoutReceivedConnectionsInput>;
@@ -1122,12 +1103,12 @@ export interface ConnectionCreateWithoutRecieverEventInput {
   senderEvent?: Maybe<EventCreateOneWithoutSenderEventInput>;
 }
 
-export interface EventCreateOneWithoutRecieverEventInput {
-  create?: Maybe<EventCreateWithoutRecieverEventInput>;
+export interface EventCreateOneWithoutReceiverEventInput {
+  create?: Maybe<EventCreateWithoutReceiverEventInput>;
   connect?: Maybe<EventWhereUniqueInput>;
 }
 
-export interface EventCreateWithoutRecieverEventInput {
+export interface EventCreateWithoutReceiverEventInput {
   id?: Maybe<ID_Input>;
   name: String;
   senderEvent?: Maybe<ConnectionCreateOneWithoutSenderEventInput>;
@@ -1151,7 +1132,7 @@ export interface ConnectionCreateWithoutSenderEventInput {
   location?: Maybe<String>;
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
-  recieverEvent?: Maybe<EventCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventCreateOneWithoutReceiverEventInput>;
 }
 
 export interface NotificationCreateManyWithoutUserInput {
@@ -1181,7 +1162,7 @@ export interface ConnectionUpdateInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventUpdateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface UserUpdateOneWithoutSentConnectionsInput {
@@ -1194,7 +1175,6 @@ export interface UserUpdateOneWithoutSentConnectionsInput {
 }
 
 export interface UserUpdateWithoutSentConnectionsDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1445,7 +1425,7 @@ export interface ConnectionUpdateWithoutReceiverDataInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventUpdateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface UserUpdateOneWithoutBlockedConnectionsInput {
@@ -1458,7 +1438,6 @@ export interface UserUpdateOneWithoutBlockedConnectionsInput {
 }
 
 export interface UserUpdateWithoutBlockedConnectionsDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1516,7 +1495,7 @@ export interface ConnectionUpdateWithoutSenderDataInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventUpdateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface UserUpdateOneWithoutReceivedConnectionsInput {
@@ -1529,7 +1508,6 @@ export interface UserUpdateOneWithoutReceivedConnectionsInput {
 }
 
 export interface UserUpdateWithoutReceivedConnectionsDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1587,7 +1565,7 @@ export interface ConnectionUpdateWithoutBlockerDataInput {
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
   senderEvent?: Maybe<EventUpdateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<EventUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface EventUpdateOneWithoutSenderEventInput {
@@ -1601,19 +1579,19 @@ export interface EventUpdateOneWithoutSenderEventInput {
 
 export interface EventUpdateWithoutSenderEventDataInput {
   name?: Maybe<String>;
-  recieverEvent?: Maybe<ConnectionUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<ConnectionUpdateOneWithoutReceiverEventInput>;
 }
 
-export interface ConnectionUpdateOneWithoutRecieverEventInput {
-  create?: Maybe<ConnectionCreateWithoutRecieverEventInput>;
-  update?: Maybe<ConnectionUpdateWithoutRecieverEventDataInput>;
-  upsert?: Maybe<ConnectionUpsertWithoutRecieverEventInput>;
+export interface ConnectionUpdateOneWithoutReceiverEventInput {
+  create?: Maybe<ConnectionCreateWithoutReceiverEventInput>;
+  update?: Maybe<ConnectionUpdateWithoutReceiverEventDataInput>;
+  upsert?: Maybe<ConnectionUpsertWithoutReceiverEventInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<ConnectionWhereUniqueInput>;
 }
 
-export interface ConnectionUpdateWithoutRecieverEventDataInput {
+export interface ConnectionUpdateWithoutReceiverEventDataInput {
   sender?: Maybe<UserUpdateOneWithoutSentConnectionsInput>;
   receiver?: Maybe<UserUpdateOneWithoutReceivedConnectionsInput>;
   blocker?: Maybe<UserUpdateOneWithoutBlockedConnectionsInput>;
@@ -1628,9 +1606,9 @@ export interface ConnectionUpdateWithoutRecieverEventDataInput {
   senderEvent?: Maybe<EventUpdateOneWithoutSenderEventInput>;
 }
 
-export interface ConnectionUpsertWithoutRecieverEventInput {
-  update: ConnectionUpdateWithoutRecieverEventDataInput;
-  create: ConnectionCreateWithoutRecieverEventInput;
+export interface ConnectionUpsertWithoutReceiverEventInput {
+  update: ConnectionUpdateWithoutReceiverEventDataInput;
+  create: ConnectionCreateWithoutReceiverEventInput;
 }
 
 export interface EventUpsertWithoutSenderEventInput {
@@ -1638,16 +1616,16 @@ export interface EventUpsertWithoutSenderEventInput {
   create: EventCreateWithoutSenderEventInput;
 }
 
-export interface EventUpdateOneWithoutRecieverEventInput {
-  create?: Maybe<EventCreateWithoutRecieverEventInput>;
-  update?: Maybe<EventUpdateWithoutRecieverEventDataInput>;
-  upsert?: Maybe<EventUpsertWithoutRecieverEventInput>;
+export interface EventUpdateOneWithoutReceiverEventInput {
+  create?: Maybe<EventCreateWithoutReceiverEventInput>;
+  update?: Maybe<EventUpdateWithoutReceiverEventDataInput>;
+  upsert?: Maybe<EventUpsertWithoutReceiverEventInput>;
   delete?: Maybe<Boolean>;
   disconnect?: Maybe<Boolean>;
   connect?: Maybe<EventWhereUniqueInput>;
 }
 
-export interface EventUpdateWithoutRecieverEventDataInput {
+export interface EventUpdateWithoutReceiverEventDataInput {
   name?: Maybe<String>;
   senderEvent?: Maybe<ConnectionUpdateOneWithoutSenderEventInput>;
 }
@@ -1673,7 +1651,7 @@ export interface ConnectionUpdateWithoutSenderEventDataInput {
   location?: Maybe<String>;
   senderNote?: Maybe<String>;
   receiverNote?: Maybe<String>;
-  recieverEvent?: Maybe<EventUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<EventUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface ConnectionUpsertWithoutSenderEventInput {
@@ -1681,9 +1659,9 @@ export interface ConnectionUpsertWithoutSenderEventInput {
   create: ConnectionCreateWithoutSenderEventInput;
 }
 
-export interface EventUpsertWithoutRecieverEventInput {
-  update: EventUpdateWithoutRecieverEventDataInput;
-  create: EventCreateWithoutRecieverEventInput;
+export interface EventUpsertWithoutReceiverEventInput {
+  update: EventUpdateWithoutReceiverEventDataInput;
+  create: EventCreateWithoutReceiverEventInput;
 }
 
 export interface ConnectionUpsertWithWhereUniqueWithoutBlockerInput {
@@ -1935,13 +1913,13 @@ export interface EventCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
   senderEvent?: Maybe<ConnectionCreateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<ConnectionCreateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<ConnectionCreateOneWithoutReceiverEventInput>;
 }
 
 export interface EventUpdateInput {
   name?: Maybe<String>;
   senderEvent?: Maybe<ConnectionUpdateOneWithoutSenderEventInput>;
-  recieverEvent?: Maybe<ConnectionUpdateOneWithoutRecieverEventInput>;
+  receiverEvent?: Maybe<ConnectionUpdateOneWithoutReceiverEventInput>;
 }
 
 export interface EventUpdateManyMutationInput {
@@ -1961,7 +1939,6 @@ export interface UserCreateOneWithoutNotificationsInput {
 
 export interface UserCreateWithoutNotificationsInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -1992,7 +1969,6 @@ export interface UserUpdateOneRequiredWithoutNotificationsInput {
 }
 
 export interface UserUpdateWithoutNotificationsDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2035,7 +2011,6 @@ export interface UserCreateOneWithoutProfileInput {
 
 export interface UserCreateWithoutProfileInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2069,7 +2044,6 @@ export interface UserUpdateOneRequiredWithoutProfileInput {
 }
 
 export interface UserUpdateWithoutProfileDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2113,7 +2087,6 @@ export interface UserCreateOneWithoutQrcodesInput {
 
 export interface UserCreateWithoutQrcodesInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2147,7 +2120,6 @@ export interface UserUpdateOneWithoutQrcodesInput {
 }
 
 export interface UserUpdateWithoutQrcodesDataInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2177,7 +2149,6 @@ export interface QRCodeUpdateManyMutationInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  test?: Maybe<String>;
   authId: String;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2197,7 +2168,6 @@ export interface UserCreateInput {
 }
 
 export interface UserUpdateInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2217,7 +2187,6 @@ export interface UserUpdateInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  test?: Maybe<String>;
   authId?: Maybe<String>;
   name?: Maybe<String>;
   picture?: Maybe<String>;
@@ -2344,7 +2313,7 @@ export interface ConnectionPromise extends Promise<Connection>, Fragmentable {
   senderNote: () => Promise<String>;
   receiverNote: () => Promise<String>;
   senderEvent: <T = EventPromise>() => T;
-  recieverEvent: <T = EventPromise>() => T;
+  receiverEvent: <T = EventPromise>() => T;
 }
 
 export interface ConnectionSubscription
@@ -2363,7 +2332,7 @@ export interface ConnectionSubscription
   senderNote: () => Promise<AsyncIterator<String>>;
   receiverNote: () => Promise<AsyncIterator<String>>;
   senderEvent: <T = EventSubscription>() => T;
-  recieverEvent: <T = EventSubscription>() => T;
+  receiverEvent: <T = EventSubscription>() => T;
 }
 
 export interface ConnectionNullablePromise
@@ -2382,12 +2351,11 @@ export interface ConnectionNullablePromise
   senderNote: () => Promise<String>;
   receiverNote: () => Promise<String>;
   senderEvent: <T = EventPromise>() => T;
-  recieverEvent: <T = EventPromise>() => T;
+  receiverEvent: <T = EventPromise>() => T;
 }
 
 export interface User {
   id: ID_Output;
-  test?: String;
   authId: String;
   name?: String;
   picture?: String;
@@ -2402,7 +2370,6 @@ export interface User {
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  test: () => Promise<String>;
   authId: () => Promise<String>;
   name: () => Promise<String>;
   picture: () => Promise<String>;
@@ -2473,7 +2440,6 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  test: () => Promise<AsyncIterator<String>>;
   authId: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   picture: () => Promise<AsyncIterator<String>>;
@@ -2548,7 +2514,6 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  test: () => Promise<String>;
   authId: () => Promise<String>;
   name: () => Promise<String>;
   picture: () => Promise<String>;
@@ -2727,7 +2692,7 @@ export interface EventPromise extends Promise<Event>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   senderEvent: <T = ConnectionPromise>() => T;
-  recieverEvent: <T = ConnectionPromise>() => T;
+  receiverEvent: <T = ConnectionPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2738,7 +2703,7 @@ export interface EventSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   senderEvent: <T = ConnectionSubscription>() => T;
-  recieverEvent: <T = ConnectionSubscription>() => T;
+  receiverEvent: <T = ConnectionSubscription>() => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2749,7 +2714,7 @@ export interface EventNullablePromise
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   senderEvent: <T = ConnectionPromise>() => T;
-  recieverEvent: <T = ConnectionPromise>() => T;
+  receiverEvent: <T = ConnectionPromise>() => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3409,7 +3374,6 @@ export interface UserSubscriptionPayloadSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  test?: String;
   authId: String;
   name?: String;
   picture?: String;
@@ -3426,7 +3390,6 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  test: () => Promise<String>;
   authId: () => Promise<String>;
   name: () => Promise<String>;
   picture: () => Promise<String>;
@@ -3443,7 +3406,6 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  test: () => Promise<AsyncIterator<String>>;
   authId: () => Promise<AsyncIterator<String>>;
   name: () => Promise<AsyncIterator<String>>;
   picture: () => Promise<AsyncIterator<String>>;
