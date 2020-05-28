@@ -374,9 +374,18 @@ const Mutation = {
   },
 
   // UPDATE A CONNECTION NOTE
-  async updateConnectionNote(_, { id, senderNote, recieverNote }, { dataSources: { prisma }, user }) {
+  async updateConnectionNote(_, { id, senderNote, recieverNote }, { dataSources: { prisma }, connection }) {
+    
+    
+    
+    
     try {
-      const connectionNote = await prisma.updateConnectionNote({ id, senderNote, recieverNote })
+      const connectionNote = await prisma.updateConnectionNote({
+        id,
+        senderNote: senderNote.text,
+        recieverNote: recieverNote.text,
+        where: {id: connection.id}
+      })
       return mutationSuccess(204, 'Note updated successfully', { connectionNote });
     } catch (error) {
       return mutationError(error);

@@ -45,7 +45,7 @@ type Connection {
   senderNote: String
   receiverNote: String
   senderEvent: Event
-  recieverEvent: Event
+  receiverEvent: Event
 }
 
 type ConnectionConnection {
@@ -68,7 +68,7 @@ input ConnectionCreateInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventCreateOneWithoutSenderEventInput
-  recieverEvent: EventCreateOneWithoutRecieverEventInput
+  receiverEvent: EventCreateOneWithoutReceiverEventInput
 }
 
 input ConnectionCreateManyWithoutBlockerInput {
@@ -86,8 +86,8 @@ input ConnectionCreateManyWithoutSenderInput {
   connect: [ConnectionWhereUniqueInput!]
 }
 
-input ConnectionCreateOneWithoutRecieverEventInput {
-  create: ConnectionCreateWithoutRecieverEventInput
+input ConnectionCreateOneWithoutReceiverEventInput {
+  create: ConnectionCreateWithoutReceiverEventInput
   connect: ConnectionWhereUniqueInput
 }
 
@@ -109,7 +109,23 @@ input ConnectionCreateWithoutBlockerInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventCreateOneWithoutSenderEventInput
-  recieverEvent: EventCreateOneWithoutRecieverEventInput
+  receiverEvent: EventCreateOneWithoutReceiverEventInput
+}
+
+input ConnectionCreateWithoutReceiverEventInput {
+  id: ID
+  sender: UserCreateOneWithoutSentConnectionsInput
+  receiver: UserCreateOneWithoutReceivedConnectionsInput
+  blocker: UserCreateOneWithoutBlockedConnectionsInput
+  status: ConnectionStatus
+  senderLat: Float
+  senderLon: Float
+  receiverLat: Float
+  receiverLon: Float
+  location: String
+  senderNote: String
+  receiverNote: String
+  senderEvent: EventCreateOneWithoutSenderEventInput
 }
 
 input ConnectionCreateWithoutReceiverInput {
@@ -125,23 +141,7 @@ input ConnectionCreateWithoutReceiverInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventCreateOneWithoutSenderEventInput
-  recieverEvent: EventCreateOneWithoutRecieverEventInput
-}
-
-input ConnectionCreateWithoutRecieverEventInput {
-  id: ID
-  sender: UserCreateOneWithoutSentConnectionsInput
-  receiver: UserCreateOneWithoutReceivedConnectionsInput
-  blocker: UserCreateOneWithoutBlockedConnectionsInput
-  status: ConnectionStatus
-  senderLat: Float
-  senderLon: Float
-  receiverLat: Float
-  receiverLon: Float
-  location: String
-  senderNote: String
-  receiverNote: String
-  senderEvent: EventCreateOneWithoutSenderEventInput
+  receiverEvent: EventCreateOneWithoutReceiverEventInput
 }
 
 input ConnectionCreateWithoutSenderEventInput {
@@ -157,7 +157,7 @@ input ConnectionCreateWithoutSenderEventInput {
   location: String
   senderNote: String
   receiverNote: String
-  recieverEvent: EventCreateOneWithoutRecieverEventInput
+  receiverEvent: EventCreateOneWithoutReceiverEventInput
 }
 
 input ConnectionCreateWithoutSenderInput {
@@ -173,7 +173,7 @@ input ConnectionCreateWithoutSenderInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventCreateOneWithoutSenderEventInput
-  recieverEvent: EventCreateOneWithoutRecieverEventInput
+  receiverEvent: EventCreateOneWithoutReceiverEventInput
 }
 
 type ConnectionEdge {
@@ -348,7 +348,7 @@ input ConnectionUpdateInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventUpdateOneWithoutSenderEventInput
-  recieverEvent: EventUpdateOneWithoutRecieverEventInput
+  receiverEvent: EventUpdateOneWithoutReceiverEventInput
 }
 
 input ConnectionUpdateManyDataInput {
@@ -414,10 +414,10 @@ input ConnectionUpdateManyWithWhereNestedInput {
   data: ConnectionUpdateManyDataInput!
 }
 
-input ConnectionUpdateOneWithoutRecieverEventInput {
-  create: ConnectionCreateWithoutRecieverEventInput
-  update: ConnectionUpdateWithoutRecieverEventDataInput
-  upsert: ConnectionUpsertWithoutRecieverEventInput
+input ConnectionUpdateOneWithoutReceiverEventInput {
+  create: ConnectionCreateWithoutReceiverEventInput
+  update: ConnectionUpdateWithoutReceiverEventDataInput
+  upsert: ConnectionUpsertWithoutReceiverEventInput
   delete: Boolean
   disconnect: Boolean
   connect: ConnectionWhereUniqueInput
@@ -444,7 +444,7 @@ input ConnectionUpdateWithoutBlockerDataInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventUpdateOneWithoutSenderEventInput
-  recieverEvent: EventUpdateOneWithoutRecieverEventInput
+  receiverEvent: EventUpdateOneWithoutReceiverEventInput
 }
 
 input ConnectionUpdateWithoutReceiverDataInput {
@@ -459,10 +459,10 @@ input ConnectionUpdateWithoutReceiverDataInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventUpdateOneWithoutSenderEventInput
-  recieverEvent: EventUpdateOneWithoutRecieverEventInput
+  receiverEvent: EventUpdateOneWithoutReceiverEventInput
 }
 
-input ConnectionUpdateWithoutRecieverEventDataInput {
+input ConnectionUpdateWithoutReceiverEventDataInput {
   sender: UserUpdateOneWithoutSentConnectionsInput
   receiver: UserUpdateOneWithoutReceivedConnectionsInput
   blocker: UserUpdateOneWithoutBlockedConnectionsInput
@@ -489,7 +489,7 @@ input ConnectionUpdateWithoutSenderDataInput {
   senderNote: String
   receiverNote: String
   senderEvent: EventUpdateOneWithoutSenderEventInput
-  recieverEvent: EventUpdateOneWithoutRecieverEventInput
+  receiverEvent: EventUpdateOneWithoutReceiverEventInput
 }
 
 input ConnectionUpdateWithoutSenderEventDataInput {
@@ -504,7 +504,7 @@ input ConnectionUpdateWithoutSenderEventDataInput {
   location: String
   senderNote: String
   receiverNote: String
-  recieverEvent: EventUpdateOneWithoutRecieverEventInput
+  receiverEvent: EventUpdateOneWithoutReceiverEventInput
 }
 
 input ConnectionUpdateWithWhereUniqueWithoutBlockerInput {
@@ -522,9 +522,9 @@ input ConnectionUpdateWithWhereUniqueWithoutSenderInput {
   data: ConnectionUpdateWithoutSenderDataInput!
 }
 
-input ConnectionUpsertWithoutRecieverEventInput {
-  update: ConnectionUpdateWithoutRecieverEventDataInput!
-  create: ConnectionCreateWithoutRecieverEventInput!
+input ConnectionUpsertWithoutReceiverEventInput {
+  update: ConnectionUpdateWithoutReceiverEventDataInput!
+  create: ConnectionCreateWithoutReceiverEventInput!
 }
 
 input ConnectionUpsertWithoutSenderEventInput {
@@ -647,7 +647,7 @@ input ConnectionWhereInput {
   receiverNote_ends_with: String
   receiverNote_not_ends_with: String
   senderEvent: EventWhereInput
-  recieverEvent: EventWhereInput
+  receiverEvent: EventWhereInput
   AND: [ConnectionWhereInput!]
   OR: [ConnectionWhereInput!]
   NOT: [ConnectionWhereInput!]
@@ -663,7 +663,7 @@ type Event {
   id: ID!
   name: String!
   senderEvent: Connection
-  recieverEvent: Connection
+  receiverEvent: Connection
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -678,11 +678,11 @@ input EventCreateInput {
   id: ID
   name: String!
   senderEvent: ConnectionCreateOneWithoutSenderEventInput
-  recieverEvent: ConnectionCreateOneWithoutRecieverEventInput
+  receiverEvent: ConnectionCreateOneWithoutReceiverEventInput
 }
 
-input EventCreateOneWithoutRecieverEventInput {
-  create: EventCreateWithoutRecieverEventInput
+input EventCreateOneWithoutReceiverEventInput {
+  create: EventCreateWithoutReceiverEventInput
   connect: EventWhereUniqueInput
 }
 
@@ -691,7 +691,7 @@ input EventCreateOneWithoutSenderEventInput {
   connect: EventWhereUniqueInput
 }
 
-input EventCreateWithoutRecieverEventInput {
+input EventCreateWithoutReceiverEventInput {
   id: ID
   name: String!
   senderEvent: ConnectionCreateOneWithoutSenderEventInput
@@ -700,7 +700,7 @@ input EventCreateWithoutRecieverEventInput {
 input EventCreateWithoutSenderEventInput {
   id: ID
   name: String!
-  recieverEvent: ConnectionCreateOneWithoutRecieverEventInput
+  receiverEvent: ConnectionCreateOneWithoutReceiverEventInput
 }
 
 type EventEdge {
@@ -747,17 +747,17 @@ input EventSubscriptionWhereInput {
 input EventUpdateInput {
   name: String
   senderEvent: ConnectionUpdateOneWithoutSenderEventInput
-  recieverEvent: ConnectionUpdateOneWithoutRecieverEventInput
+  receiverEvent: ConnectionUpdateOneWithoutReceiverEventInput
 }
 
 input EventUpdateManyMutationInput {
   name: String
 }
 
-input EventUpdateOneWithoutRecieverEventInput {
-  create: EventCreateWithoutRecieverEventInput
-  update: EventUpdateWithoutRecieverEventDataInput
-  upsert: EventUpsertWithoutRecieverEventInput
+input EventUpdateOneWithoutReceiverEventInput {
+  create: EventCreateWithoutReceiverEventInput
+  update: EventUpdateWithoutReceiverEventDataInput
+  upsert: EventUpsertWithoutReceiverEventInput
   delete: Boolean
   disconnect: Boolean
   connect: EventWhereUniqueInput
@@ -772,19 +772,19 @@ input EventUpdateOneWithoutSenderEventInput {
   connect: EventWhereUniqueInput
 }
 
-input EventUpdateWithoutRecieverEventDataInput {
+input EventUpdateWithoutReceiverEventDataInput {
   name: String
   senderEvent: ConnectionUpdateOneWithoutSenderEventInput
 }
 
 input EventUpdateWithoutSenderEventDataInput {
   name: String
-  recieverEvent: ConnectionUpdateOneWithoutRecieverEventInput
+  receiverEvent: ConnectionUpdateOneWithoutReceiverEventInput
 }
 
-input EventUpsertWithoutRecieverEventInput {
-  update: EventUpdateWithoutRecieverEventDataInput!
-  create: EventCreateWithoutRecieverEventInput!
+input EventUpsertWithoutReceiverEventInput {
+  update: EventUpdateWithoutReceiverEventDataInput!
+  create: EventCreateWithoutReceiverEventInput!
 }
 
 input EventUpsertWithoutSenderEventInput {
@@ -822,7 +822,7 @@ input EventWhereInput {
   name_ends_with: String
   name_not_ends_with: String
   senderEvent: ConnectionWhereInput
-  recieverEvent: ConnectionWhereInput
+  receiverEvent: ConnectionWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1574,7 +1574,6 @@ type Subscription {
 
 type User {
   id: ID!
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1601,7 +1600,6 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1652,7 +1650,6 @@ input UserCreateOneWithoutSentConnectionsInput {
 
 input UserCreateWithoutBlockedConnectionsInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1672,7 +1669,6 @@ input UserCreateWithoutBlockedConnectionsInput {
 
 input UserCreateWithoutNotificationsInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1692,7 +1688,6 @@ input UserCreateWithoutNotificationsInput {
 
 input UserCreateWithoutProfileInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1712,7 +1707,6 @@ input UserCreateWithoutProfileInput {
 
 input UserCreateWithoutQrcodesInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1732,7 +1726,6 @@ input UserCreateWithoutQrcodesInput {
 
 input UserCreateWithoutReceivedConnectionsInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1752,7 +1745,6 @@ input UserCreateWithoutReceivedConnectionsInput {
 
 input UserCreateWithoutSentConnectionsInput {
   id: ID
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1778,8 +1770,6 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  test_ASC
-  test_DESC
   authId_ASC
   authId_DESC
   name_ASC
@@ -1804,7 +1794,6 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  test: String
   authId: String!
   name: String
   picture: String
@@ -1836,7 +1825,6 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1856,7 +1844,6 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyMutationInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1920,7 +1907,6 @@ input UserUpdateOneWithoutSentConnectionsInput {
 }
 
 input UserUpdateWithoutBlockedConnectionsDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1939,7 +1925,6 @@ input UserUpdateWithoutBlockedConnectionsDataInput {
 }
 
 input UserUpdateWithoutNotificationsDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1958,7 +1943,6 @@ input UserUpdateWithoutNotificationsDataInput {
 }
 
 input UserUpdateWithoutProfileDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1977,7 +1961,6 @@ input UserUpdateWithoutProfileDataInput {
 }
 
 input UserUpdateWithoutQrcodesDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -1996,7 +1979,6 @@ input UserUpdateWithoutQrcodesDataInput {
 }
 
 input UserUpdateWithoutReceivedConnectionsDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -2015,7 +1997,6 @@ input UserUpdateWithoutReceivedConnectionsDataInput {
 }
 
 input UserUpdateWithoutSentConnectionsDataInput {
-  test: String
   authId: String
   name: String
   picture: String
@@ -2078,20 +2059,6 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  test: String
-  test_not: String
-  test_in: [String!]
-  test_not_in: [String!]
-  test_lt: String
-  test_lte: String
-  test_gt: String
-  test_gte: String
-  test_contains: String
-  test_not_contains: String
-  test_starts_with: String
-  test_not_starts_with: String
-  test_ends_with: String
-  test_not_ends_with: String
   authId: String
   authId_not: String
   authId_in: [String!]
