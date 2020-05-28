@@ -62,6 +62,10 @@ const typeDefs = gql`
     Deletes a notification.
     """
     deleteNotification(id: ID!): NotificationResponse!
+    """
+    Updates a connection note.
+    """
+    updateConnectionNote(id: ID!, senderNote: NoteInput, recieverNote: NoteInput): ConnectionResponse!
   }
 
   input NoteInput {
@@ -183,5 +187,6 @@ const typeDefs = gql`
     notification: Notification
   }
 `;
+
 
 module.exports = typeDefs;
