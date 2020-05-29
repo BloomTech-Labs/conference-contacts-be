@@ -35,10 +35,6 @@ var models = [
   {
     name: "Notification",
     embedded: false
-  },
-  {
-    name: "Event",
-    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
