@@ -58,8 +58,10 @@ type Connection {
   location: String
   senderNote: String 
   receiverNote: String
-  senderEvent: Event @relation(link: TABLE, name: "SenderEvent")
-  receiverEvent: Event @relation(link: TABLE, name: "ReceiverEvent")
+  senderEvent: String
+  receiverEvent: String
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 enum ConnectionStatus {
   PENDING
@@ -69,12 +71,4 @@ type Notification {
   id: ID! @id
   message: String!
   user: User!
-}
-type Event {
-  id: ID! @id
-  name: String!
-  senderEvent: Connection @relation(name: "SenderEvent")
-  receiverEvent: Connection @relation(name: "ReceiverEvent")
-  createdAt: DateTime! @createdAt
-  updatedAt: DateTime! @updatedAt
 }
