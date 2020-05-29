@@ -379,7 +379,7 @@ const Mutation = {
       where: { id }
     }
     //if sender, try senderEvent
-    if (senderNote) note.senderNote = { senderNote };
+    if (senderNote) note.data = { senderNote };
     //if receiver, try receiverEvent
     if (receiverNote) note.data = { receiverNote };
   
