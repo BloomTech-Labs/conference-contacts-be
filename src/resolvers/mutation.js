@@ -373,33 +373,17 @@ const Mutation = {
 
   // UPDATE A CONNECTION NOTE
   async updateConnectionNote( _, { id, senderNote, receiverNote }, { dataSources: { prisma }, user }) {
-    //check to make sure user can't update note that doesn't belong to them
+    //check to make sure user can't update note that doesn't belong to them - not functional
 
     const note = {
       where: { id }
     }
-    // const receiver = await prisma.connection({ id }).receiver();
-    // const sender = await prisma.connection({ id }).sender();
-  
     //if sender, try senderEvent
     if (senderNote) note.senderNote = { senderNote };
     //if receiver, try receiverEvent
     if (receiverNote) note.data = { receiverNote };
   
-    // try {
-    //     //if the userID = user.id then return senderNote
-    //     if (user.id === sender.id) return note.data = { senderNote };
-    //     //if the user.id = receiver.id then return receiverNote
-    //     if (userID === receiver.id) return note.data = { receiverNote };
-    // } catch (error) {
-    //   return mutationError(error)
-    // }
-
     try {
-      // //if the userID = user.id then return senderNote
-      // if (user.id === sender.id) return note.data = { senderNote };
-      // //if the user.id = receiver.id then return receiverNote
-      // if (userID === receiver.id) return note.data = { receiverNote };
       const connection = await prisma.updateConnection(note)
       return mutationSuccess(204, 'Note updated successfully', { connection });
     } catch (error) {
@@ -409,10 +393,7 @@ const Mutation = {
 
   // UPDATE A CONNECTION EVENT
   async updateConnectionEvent( _, { id, senderEvent, receiverEvent }, { dataSources: { prisma }, user }) {
-    //check to make sure user can't update event that doesn't belong to them
-
-    
-
+    //check to make sure user can't update event that doesn't belong to them -- not functional
 
     const event = {
         where: { id }
