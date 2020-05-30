@@ -45,11 +45,11 @@ const typeDefs = gql`
     """
     Creates a connection request to the specified user.
     """
-    createConnection(userID: ID!, senderCoords: CoordinatesInput!, senderNote: NoteInput!): ConnectionResponse!
+    createConnection(userID: ID!, senderCoords: CoordinatesInput!): ConnectionResponse!
     """
     Accepts an incoming connection request.
     """
-    acceptConnection(id: ID!, receiverCoords: CoordinatesInput!, receiverNote: NoteInput!): ConnectionResponse!
+    acceptConnection(id: ID!, receiverCoords: CoordinatesInput!): ConnectionResponse!
     """
     Blocks an existing connection.
     """
@@ -62,10 +62,14 @@ const typeDefs = gql`
     Deletes a notification.
     """
     deleteNotification(id: ID!): NotificationResponse!
-  }
-
-  input NoteInput {
-    text: String
+    """
+    Updates a connection note.
+    """
+    updateConnectionNote(id: ID!, senderNote: String, receiverNote: String): ConnectionResponse!
+    """
+    Updates an event name
+    """
+    updateConnectionEvent(id: ID!, senderEvent: String, receiverEvent: String): ConnectionResponse!
   }
 
   input CreateUserInput {
@@ -183,5 +187,6 @@ const typeDefs = gql`
     notification: Notification
   }
 `;
+
 
 module.exports = typeDefs;

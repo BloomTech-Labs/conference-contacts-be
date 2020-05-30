@@ -4,12 +4,6 @@ const Connection = {
   },
   sender({ id }, _, { dataSources: { prisma } }) {
     return prisma.connection({ id }).sender();
-  },
-  receiverNote({ id }, _, { dataSources: { prisma } }) {
-    return prisma.connection({ id }).receiverNote();
-  },
-  senderNote({ id }, _, { dataSources: { prisma } }) {
-    return prisma.connection({ id }).senderNote();
   }
 };
 

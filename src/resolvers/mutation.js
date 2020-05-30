@@ -235,7 +235,7 @@ const Mutation = {
   },
 
   // CREATE CONNECTION (THE SENDER)
-  async createConnection(_, { userID, senderCoords, senderNote },{ dataSources: { prisma }, user }) {
+  async createConnection(_, { userID, senderCoords },{ dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
       // users should not be able to send a connection to themself
@@ -264,7 +264,6 @@ const Mutation = {
         receiver: { connect: { id: userID } },
         senderLat: senderCoords.latitude,
         senderLon: senderCoords.longitude,
-        senderNote: senderNote.text,
       });
 
       return mutationSuccess(201, 'Connection created successfully!', {
@@ -276,7 +275,7 @@ const Mutation = {
   },
 
   // ACCEPT CONNECTION (THE RECEIVER)
-  async acceptConnection(_,{ id, receiverCoords, receiverNote },{ dataSources: { prisma }, user }) {
+  async acceptConnection(_,{ id, receiverCoords },{ dataSources: { prisma }, user }) {
     if (!user) throw new AuthenticationError('User does not exist');
     try {
       const receiver = await prisma.connection({ id }).receiver();
@@ -291,7 +290,6 @@ const Mutation = {
           status: 'CONNECTED',
           receiverLat: receiverCoords.latitude,
           receiverLon: receiverCoords.longitude,
-          receiverNote: receiverNote.text,
         }
       });
       // notify the user who sent the request that it was accepted
@@ -371,7 +369,48 @@ const Mutation = {
     } catch (error) {
       return mutationError(error);
     }
+  },
+
+  // UPDATE A CONNECTION NOTE
+  async updateConnectionNote( _, { id, senderNote, receiverNote }, { dataSources: { prisma }, user }) {
+    //check to make sure user can't update note that doesn't belong to them - not functional
+
+    const note = {
+      where: { id }
+    }
+    //if sender, try senderEvent
+    if (senderNote) note.data = { senderNote };
+    //if receiver, try receiverEvent
+    if (receiverNote) note.data = { receiverNote };
+  
+    try {
+      const connection = await prisma.updateConnection(note)
+      return mutationSuccess(204, 'Note updated successfully', { connection });
+    } catch (error) {
+      return mutationError(error);
+    }
+  },
+
+  // UPDATE A CONNECTION EVENT
+  async updateConnectionEvent( _, { id, senderEvent, receiverEvent }, { dataSources: { prisma }, user }) {
+    //check to make sure user can't update event that doesn't belong to them -- not functional
+
+    const event = {
+        where: { id }
+    }
+    //if sender, try senderEvent
+    if (senderEvent) event.senderEvent = { senderEvent };
+    //if receiver, try receiverEvent
+    if (receiverEvent) event.data = { receiverEvent };
+
+    try {
+      const connection = await prisma.updateConnection(event)
+      return mutationSuccess(204, 'Event updated successfully', { connection });
+    } catch (error) {
+      return mutationError(error);
+    }
   }
+  
 };
 
 module.exports = Mutation;
