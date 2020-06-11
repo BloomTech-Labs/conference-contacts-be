@@ -315,6 +315,56 @@ Deletes a notification.
 <td valign="top"><a href="#id">ID</a>!</td>
 <td></td>
 </tr>
+
+<tr>
+<td colspan="2" valign="top"><strong>updateConnectionNote</strong></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
+<td>
+
+Updates a connection note.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">senderNote</td>
+<td valign="top"><a href="#id">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">receiverNote</td>
+<td valign="top"><a href="#id">String</a></td>
+<td></td>
+</tr>
+
+<tr>
+<td colspan="2" valign="top"><strong>deleteConnection</strong></td>
+<td valign="top"><a href="#connectionresponse">ConnectionResponse</a>!</td>
+<td>
+
+Updates a connection event.
+
+</td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">id</td>
+<td valign="top"><a href="#id">ID</a>!</td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">senderEvent</td>
+<td valign="top"><a href="#id">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" align="right" valign="top">receiverEvent</td>
+<td valign="top"><a href="#id">String</a></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -379,6 +429,26 @@ Deletes a notification.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>location</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>senderNote</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>receiverNote</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>senderEvent</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>receiverEvent</strong></td>
 <td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
@@ -772,6 +842,11 @@ Deletes a notification.
 <td valign="top">[<a href="#notification">Notification</a>]!</td>
 <td></td>
 </tr>
+<tr>
+<td colspan="2" valign="top"><strong>username</strong></td>
+<td valign="top"><a href="#notification">String</a></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 
@@ -923,6 +998,11 @@ Deletes a notification.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>email</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>username</strong></td>
 <td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
@@ -1079,6 +1159,11 @@ Deletes a notification.
 </tr>
 <tr>
 <td colspan="2" valign="top"><strong>email</strong></td>
+<td valign="top"><a href="#string">String</a></td>
+<td></td>
+</tr>
+<tr>
+<td colspan="2" valign="top"><strong>username</strong></td>
 <td valign="top"><a href="#string">String</a></td>
 <td></td>
 </tr>
