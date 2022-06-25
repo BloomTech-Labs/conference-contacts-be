@@ -35,7 +35,7 @@
     "apollo-link-http": "^1.5.16",
     "apollo-server-testing": "^2.11.0",
     "jest": "^25.1.0",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "nodemon": "^2.0.2"
   },
   "jest": {
